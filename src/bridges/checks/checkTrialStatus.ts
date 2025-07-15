@@ -1,15 +1,17 @@
+import { getWebContents } from "../../utils/webContents";
 import globalConfig from "../../global.config";
+import Settings from "sketch/settings";
 
 const checkTrialStatus = async () => {
   const trialStartDate =
-    penpot.localStorage.getItem("trial_start_date") !== ""
-      ? parseFloat(penpot.localStorage.getItem("trial_start_date") || "")
+    Settings.globalSettingForKey("trial_start_date") !== ""
+      ? parseFloat(Settings.globalSettingForKey("trial_start_date") || "")
       : null;
   const currentTrialVersion: string =
-    penpot.localStorage.getItem("trial_version") ||
+    Settings.globalSettingForKey("trial_version") ||
     globalConfig.versions.trialVersion;
   const currentTrialTime: number = parseFloat(
-    penpot.localStorage.getItem("trial_time") || "72"
+    Settings.globalSettingForKey("trial_time") || "72"
   );
 
   let consumedTime = 0,
@@ -35,21 +37,25 @@ const checkTrialStatus = async () => {
     else trialStatus = "UNUSED";
   }
 
-  penpot.ui.sendMessage({
-    type: "CHECK_TRIAL_STATUS",
-    data: {
-      planStatus:
-        trialStatus === "PENDING" || !globalConfig.plan.isProEnabled
-          ? "PAID"
-          : "UNPAID",
-      trialStatus: trialStatus,
-      trialRemainingTime: Math.ceil(
-        currentTrialVersion !== globalConfig.versions.trialVersion
-          ? currentTrialTime - consumedTime
-          : globalConfig.plan.trialTime - consumedTime
-      ),
-    },
-  });
+  getWebContents()
+    .executeJavaScript(
+      `sendData(${JSON.stringify({
+        type: "CHECK_TRIAL_STATUS",
+        data: {
+          planStatus:
+            trialStatus === "PENDING" || !globalConfig.plan.isProEnabled
+              ? "PAID"
+              : "UNPAID",
+          trialStatus: trialStatus,
+          trialRemainingTime: Math.ceil(
+            currentTrialVersion !== globalConfig.versions.trialVersion
+              ? currentTrialTime - consumedTime
+              : globalConfig.plan.trialTime - consumedTime
+          ),
+        },
+      })})`
+    )
+    .catch(console.error);
 
   return trialStatus === "PENDING" || !globalConfig.plan.isProEnabled
     ? "PAID"

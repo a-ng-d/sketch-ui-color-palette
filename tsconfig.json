@@ -1,12 +1,13 @@
 {
   "include": [
+    "src/**/*.js",
     "src/**/*.ts",
     "src/**/*.tsx",
+    "resources/**/*.js",
     "resources/**/*.ts",
     "resources/**/*.tsx",
-    "webpack.skpm.config.ts",
-    "env.d.ts",
-    "src/my-command.ts"
+    "webpack.skpm.config.js",
+    "env.d.ts"
   ],
   "compilerOptions": {
     "target": "ES2015",

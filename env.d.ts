@@ -14,3 +14,9 @@ declare module '*.json' {
 declare module 'jszip'
 declare module 'react-dom/client'
 declare module 'apca-w3'
+declare module 'sketch/settings' {
+  export default {
+    globalSettingForKey: (key: string): any => any,
+    setGlobalSettingForKey: (key: string, value: any): void => void
+  }
+}

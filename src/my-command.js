@@ -2,9 +2,13 @@ import BrowserWindow from "sketch-module-web-view";
 import { getWebview } from "sketch-module-web-view/remote";
 import UI from "sketch/ui";
 import Settings from "sketch/settings";
+import checkUserConsent from "./bridges/checks/checkUserConsent";
+import checkTrialStatus from "./bridges/checks/checkTrialStatus";
+import checkUserLicense from "./bridges/checks/checkUserLicense";
+import checkUserPreferences from "./bridges/checks/checkUserPreferences";
+import { setWebContents } from "./utils/webContents";
 
 const webviewIdentifier = "sketch-ui-color-palette.webview";
-let sharedWebContents = null;
 
 export default function () {
   const windowSize = {
@@ -31,7 +35,7 @@ export default function () {
   });
 
   const webContents = browserWindow.webContents;
-  sharedWebContents = webContents;
+  setWebContents(webContents);
 
   // print a message when the page loads
   webContents.on("did-finish-load", () => {
@@ -71,6 +75,13 @@ export default function () {
         })})`
       )
       .catch(console.error);
+
+    // Checks
+    checkUserConsent()
+      .then(() => checkTrialStatus())
+      .then(() => checkUserLicense())
+      .then(() => checkUserPreferences());
+    //.then(() => processSelection())
   });
 
   // add a handler for a call from web content's javascript
@@ -79,19 +90,6 @@ export default function () {
   });
 
   browserWindow.loadURL(require("../resources/webview.html"));
-}
-
-export function getWebContents() {
-  if (sharedWebContents) {
-    return sharedWebContents;
-  } else {
-    const webview = getWebview(webviewIdentifier);
-    if (webview) {
-      return webview.webContents;
-    } else {
-      return null;
-    }
-  }
 }
 
 // When the plugin is shutdown by Sketch (for example when the user disable the plugin)

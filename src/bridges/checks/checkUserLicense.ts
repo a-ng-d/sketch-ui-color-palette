@@ -1,16 +1,25 @@
+import Settings from "sketch/settings";
+import { getWebContents } from "../../utils/webContents";
+
 const checkUserLicense = async () => {
-  const licenseKey = penpot.localStorage.getItem('user_license_key')
-  const instanceId = penpot.localStorage.getItem('user_license_instance_id')
+  const licenseKey = Settings.globalSettingForKey("user_license_key");
+  const instanceId = Settings.globalSettingForKey("user_license_instance_id");
 
-  if (licenseKey !== '' && instanceId !== '')
-    return penpot.ui.sendMessage({
-      type: 'CHECK_USER_LICENSE',
-      data: {
-        licenseKey: licenseKey,
-        instanceId: instanceId,
-      },
-    })
-  return true
-}
+  console.log("ok");
 
-export default checkUserLicense
+  if (licenseKey !== undefined && instanceId !== undefined)
+    getWebContents()
+      .executeJavaScript(
+        `sendData(${JSON.stringify({
+          type: "CHECK_USER_LICENSE",
+          data: {
+            licenseKey: licenseKey,
+            instanceId: instanceId,
+          },
+        })})`
+      )
+      .catch(console.error);
+  return true;
+};
+
+export default checkUserLicense;
