@@ -5,20 +5,16 @@ const checkUserLicense = async () => {
   const licenseKey = Settings.globalSettingForKey("user_license_key");
   const instanceId = Settings.globalSettingForKey("user_license_instance_id");
 
-  console.log("ok");
-
   if (licenseKey !== undefined && instanceId !== undefined)
-    getWebContents()
-      .executeJavaScript(
-        `sendData(${JSON.stringify({
-          type: "CHECK_USER_LICENSE",
-          data: {
-            licenseKey: licenseKey,
-            instanceId: instanceId,
-          },
-        })})`
-      )
-      .catch(console.error);
+    getWebContents().executeJavaScript(
+      `sendData(${JSON.stringify({
+        type: "CHECK_USER_LICENSE",
+        data: {
+          licenseKey: licenseKey,
+          instanceId: instanceId,
+        },
+      })})`
+    );
   return true;
 };
 

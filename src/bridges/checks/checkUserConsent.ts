@@ -18,20 +18,18 @@ const checkUserConsent = async () => {
     })
   );
 
-  getWebContents()
-    .executeJavaScript(
-      `sendData(${JSON.stringify({
-        type: "CHECK_USER_CONSENT",
-        data: {
-          mustUserConsent:
-            currentUserConsentVersion !==
-              globalConfig.versions.userConsentVersion ||
-            currentUserConsentVersion === undefined,
-          userConsent: userConsentData,
-        },
-      })})`
-    )
-    .catch(console.error);
+  getWebContents().executeJavaScript(
+    `sendData(${JSON.stringify({
+      type: "CHECK_USER_CONSENT",
+      data: {
+        mustUserConsent:
+          currentUserConsentVersion !==
+            globalConfig.versions.userConsentVersion ||
+          currentUserConsentVersion === undefined,
+        userConsent: userConsentData,
+      },
+    })})`
+  );
 
   return true;
 };

@@ -37,25 +37,23 @@ const checkTrialStatus = async () => {
     else trialStatus = "UNUSED";
   }
 
-  getWebContents()
-    .executeJavaScript(
-      `sendData(${JSON.stringify({
-        type: "CHECK_TRIAL_STATUS",
-        data: {
-          planStatus:
-            trialStatus === "PENDING" || !globalConfig.plan.isProEnabled
-              ? "PAID"
-              : "UNPAID",
-          trialStatus: trialStatus,
-          trialRemainingTime: Math.ceil(
-            currentTrialVersion !== globalConfig.versions.trialVersion
-              ? currentTrialTime - consumedTime
-              : globalConfig.plan.trialTime - consumedTime
-          ),
-        },
-      })})`
-    )
-    .catch(console.error);
+  getWebContents().executeJavaScript(
+    `sendData(${JSON.stringify({
+      type: "CHECK_TRIAL_STATUS",
+      data: {
+        planStatus:
+          trialStatus === "PENDING" || !globalConfig.plan.isProEnabled
+            ? "PAID"
+            : "UNPAID",
+        trialStatus: trialStatus,
+        trialRemainingTime: Math.ceil(
+          currentTrialVersion !== globalConfig.versions.trialVersion
+            ? currentTrialTime - consumedTime
+            : globalConfig.plan.trialTime - consumedTime
+        ),
+      },
+    })})`
+  );
 
   return trialStatus === "PENDING" || !globalConfig.plan.isProEnabled
     ? "PAID"

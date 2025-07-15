@@ -37,24 +37,22 @@ const checkUserPreferences = async () => {
 
   locales.set((userLanguage as Language) ?? "en-US");
 
-  getWebContents()
-    .executeJavaScript(
-      `sendData(${JSON.stringify({
-        type: "CHECK_USER_PREFERENCES",
-        data: {
-          isWCAGDisplayed: isWCAGDisplayed,
-          isAPCADisplayed: isAPCADisplayed,
-          canDeepSyncStyles: canDeepSyncStyles,
-          canDeepSyncVariables: canDeepSyncVariables,
-          isVsCodeMessageDisplayed:
-            isVsCodeMessageDisplayed === undefined
-              ? true
-              : isVsCodeMessageDisplayed,
-          userLanguage: userLanguage ?? "en-US",
-        },
-      })})`
-    )
-    .catch(console.error);
+  getWebContents().executeJavaScript(
+    `sendData(${JSON.stringify({
+      type: "CHECK_USER_PREFERENCES",
+      data: {
+        isWCAGDisplayed: isWCAGDisplayed,
+        isAPCADisplayed: isAPCADisplayed,
+        canDeepSyncStyles: canDeepSyncStyles,
+        canDeepSyncVariables: canDeepSyncVariables,
+        isVsCodeMessageDisplayed:
+          isVsCodeMessageDisplayed === undefined
+            ? true
+            : isVsCodeMessageDisplayed,
+        userLanguage: userLanguage ?? "en-US",
+      },
+    })})`
+  );
 
   return true;
 };
