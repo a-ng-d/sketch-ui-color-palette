@@ -6,7 +6,10 @@ import checkUserConsent from "./bridges/checks/checkUserConsent";
 import checkTrialStatus from "./bridges/checks/checkTrialStatus";
 import checkUserLicense from "./bridges/checks/checkUserLicense";
 import checkUserPreferences from "./bridges/checks/checkUserPreferences";
+import checkAnnouncementsStatus from "./bridges/checks/checkAnnouncementsStatus";
+import getPalettesOnCurrentPage from "./bridges/getPalettesOnCurrentPage";
 import { setWebContents } from "./utils/webContents";
+import { locales } from "../resources/content/locales";
 
 const webviewIdentifier = "sketch-ui-color-palette.webview";
 
@@ -42,39 +45,31 @@ export default function () {
     UI.message("UI loaded!");
 
     // Canvas > UI
-    webContents
-      .executeJavaScript(
-        `sendData(${JSON.stringify({
-          type: "CHECK_USER_AUTHENTICATION",
-          data: {
-            id: "",
-            fullName: "",
-            avatar: "",
-            accessToken: Settings.globalSettingForKey("supabase_access_token"),
-            refreshToken: Settings.globalSettingForKey(
-              "supabase_refresh_token"
-            ),
-          },
-        })})`
-      )
-      .catch(console.error);
-    webContents
-      .executeJavaScript(
-        `sendData(${JSON.stringify({
-          type: "SET_THEME",
-          data: {
-            theme: UI.getTheme() === "light" ? "penpot-light" : "penpot-dark",
-          },
-        })})`
-      )
-      .catch(console.error);
-    webContents
-      .executeJavaScript(
-        `sendData(${JSON.stringify({
-          type: "CHECK_ANNOUNCEMENTS_VERSION",
-        })})`
-      )
-      .catch(console.error);
+    webContents.executeJavaScript(
+      `sendData(${JSON.stringify({
+        type: "CHECK_USER_AUTHENTICATION",
+        data: {
+          id: "",
+          fullName: "",
+          avatar: "",
+          accessToken: Settings.globalSettingForKey("supabase_access_token"),
+          refreshToken: Settings.globalSettingForKey("supabase_refresh_token"),
+        },
+      })})`
+    );
+    webContents.executeJavaScript(
+      `sendData(${JSON.stringify({
+        type: "SET_THEME",
+        data: {
+          theme: UI.getTheme() === "light" ? "penpot-light" : "penpot-dark",
+        },
+      })})`
+    );
+    webContents.executeJavaScript(
+      `sendData(${JSON.stringify({
+        type: "CHECK_ANNOUNCEMENTS_VERSION",
+      })})`
+    );
 
     // Checks
     checkUserConsent()
@@ -84,10 +79,17 @@ export default function () {
     //.then(() => processSelection())
   });
 
-  // add a handler for a call from web content's javascript
-  webContents.on("nativeLog", (s) => {
-    UI.message(s);
+  webContents.on("CHECK_USER_CONSENT", async () => checkUserConsent());
+  webContents.on("CHECK_ANNOUNCEMENTS_STATUS", async (msg) =>
+    checkAnnouncementsStatus(msg.version)
+  );
+
+  webContents.on("UPDATE_LANGUAGE", (msg) => {
+    Settings.setglobalSettingForKey("user_language", msg.lang);
+    locales.set(msg.lang);
   });
+
+  webContents.on("GET_PALETTES", async () => getPalettesOnCurrentPage());
 
   browserWindow.loadURL(require("../resources/webview.html"));
 }

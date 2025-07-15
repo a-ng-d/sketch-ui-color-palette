@@ -74,6 +74,20 @@ window.sendData = (data) => {
   window.dispatchEvent(event);
 };
 
+const originalPostMessage = parent.postMessage;
+
+parent.postMessage = (message, targetOrigin) => {
+  originalPostMessage.call(parent, message, targetOrigin);
+
+  if (message && message.pluginMessage !== undefined) {
+    const eventName = message.pluginMessage.type || "sketchMessage";
+    const eventData = message.pluginMessage.data || message.pluginMessage;
+
+    window.postMessage(eventName, eventData);
+    console.log(`Message intercepté et transformé: ${eventName}`, eventData);
+  }
+}; 
+
 root.render(
   <ConfigProvider
     limits={{
