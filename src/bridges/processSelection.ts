@@ -1,98 +1,92 @@
-import { uid } from 'uid'
-import chroma from 'chroma-js'
-import { Board, Fill, Shape } from '@penpot/plugin-types'
+import chroma from "chroma-js";
 import {
   HexModel,
   SourceColorConfiguration,
-} from '@a_ng_d/utils-ui-color-palette'
+} from "@a_ng_d/utils-ui-color-palette";
+import Dom from "sketch/dom";
+import Settings from "sketch/settings";
+import { uid } from "uid/single";
 
-export let currentSelection: Array<Shape> = []
-export let previousSelection: Array<Shape> = []
-export let isSelectionChanged = false
+const Document = Dom.getSelectedDocument();
 
-const processSelection = () => {
-  previousSelection = currentSelection.length === 0 ? [] : currentSelection
-  isSelectionChanged = true
+export let currentSelection: Array<any> = [];
+export let previousSelection: Array<any> = [];
+export let isSelectionChanged = false;
 
-  const selection: Array<Shape> = penpot.selection
-  currentSelection = penpot.selection
+const processSelection = (webContents: any) => {
+  previousSelection = currentSelection.length === 0 ? [] : currentSelection;
+  isSelectionChanged = true;
 
-  const viableSelection: Array<SourceColorConfiguration> = []
+  const selection: Array<any> = Document.selectedLayers.layers;
+  currentSelection = Document.selectedLayers;
 
-  const document = selection[0] as Board
+  const viableSelection: Array<SourceColorConfiguration> = [];
+
+  const document = selection[0];
+
   const selectionHandler = (state: string) => {
     const actions: { [key: string]: () => void } = {
       DOCUMENT_SELECTED: async () => {
-        penpot.ui.sendMessage({
-          type: 'DOCUMENT_SELECTED',
-          data: {
-            view: document.getPluginData('view'),
-            id: document.getPluginData('id'),
-            updatedAt: document.getPluginData('updatedAt'),
-            isLinkedToPalette:
-              penpot.currentPage?.getPluginData(
-                `palette_${document.getPluginData('id')}`
-              ) !== '',
-          },
-        })
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: "DOCUMENT_SELECTED",
+            data: {
+              view: document.getPluginData("view"),
+              id: document.getPluginData("id"),
+              updatedAt: document.getPluginData("updatedAt"),
+              isLinkedToPalette:
+                penpot.currentPage?.getPluginData(
+                  `palette_${document.getPluginData("id")}`
+                ) !== "",
+            },
+          })})`
+        );
       },
-      EMPTY_SELECTION: () =>
-        penpot.ui.sendMessage({
-          type: 'EMPTY_SELECTION',
-          data: {},
-        }),
+      EMPTY_SELECTION: () => {
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: "EMPTY_SELECTION",
+          })})`
+        );
+      },
       COLOR_SELECTED: () => {
-        penpot.ui.sendMessage({
-          type: 'COLOR_SELECTED',
-          data: {
-            selection: viableSelection,
-          },
-        })
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: "COLOR_SELECTED",
+            data: {
+              selection: viableSelection,
+            },
+          })})`
+        );
       },
-    }
+    };
 
-    return actions[state]?.()
-  }
+    return actions[state]?.();
+  };
 
   if (
     selection.length === 1 &&
-    document.getPluginData('type') === 'UI_COLOR_PALETTE' &&
-    !(document.isComponentInstance() || document.isComponentMainInstance())
+    Settings.layerSettingForKey(document, "type") === "UI_COLOR_PALETTE" &&
+    (document.type !== "SymbolMaster" || document.type !== "SymbolInstance")
   )
-    selectionHandler('DOCUMENT_SELECTED')
+    selectionHandler("DOCUMENT_SELECTED");
+  else if (selection.length === 0) selectionHandler("EMPTY_SELECTION");
   else if (
-    selection.length === 1 &&
-    document.getPluginDataKeys().length > 0 &&
-    !(document.isComponentInstance() || document.isComponentMainInstance())
+    document.type !== "SymbolMaster" ||
+    document.type !== "SymbolInstance"
   )
-    selectionHandler('DOCUMENT_SELECTED')
-  else if (selection.length === 0) selectionHandler('EMPTY_SELECTION')
-  else if (selection.length > 1 && document.getPluginDataKeys().length !== 0)
-    selectionHandler('EMPTY_SELECTION')
-  else if (
-    selection[0].isComponentInstance() ||
-    selection[0].isComponentMainInstance()
-  )
-    selectionHandler('EMPTY_SELECTION')
-  else if (selection[0].fills === undefined) selectionHandler('EMPTY_SELECTION')
-  else if (
-    (selection[0] as Board).fills &&
-    ((selection[0] as Board).fills as readonly Fill[]).length === 0
-  )
-    selectionHandler('EMPTY_SELECTION')
+    selectionHandler("EMPTY_SELECTION");
+  else if (document.style.fills.length === 0)
+    selectionHandler("EMPTY_SELECTION");
 
   selection.forEach((element) => {
-    const foundColors = (element as Board).fills.filter(
-      (fill) => fill.fillColor !== undefined
-    )
-    if (
-      element.type !== 'group' &&
-      element.type !== 'image' &&
-      element.type !== 'boolean'
-    )
-      if (foundColors.length > 0 && element.getPluginDataKeys().length === 0) {
-        foundColors.forEach((color) => {
-          const hexToGl = chroma(color.fillColor as HexModel).gl()
+    const foundColors = element.style.fills.filter(
+      (fill: any) => fill.fillType === "Color"
+    );
+    if (element.type !== "Group" && element.type !== "Image")
+      if (foundColors.length > 0) {
+        foundColors.forEach((color: any) => {
+          const hexToGl = chroma(color.color as HexModel).gl();
           viableSelection.push({
             name: element.name,
             rgb: {
@@ -100,7 +94,7 @@ const processSelection = () => {
               g: hexToGl[1],
               b: hexToGl[2],
             },
-            source: 'CANVAS',
+            source: "CANVAS",
             id: uid(),
             isRemovable: false,
             hue: {
@@ -111,13 +105,13 @@ const processSelection = () => {
               shift: 100,
               isLocked: false,
             },
-          })
-        })
-        selectionHandler('COLOR_SELECTED')
+          });
+        });
+        selectionHandler("COLOR_SELECTED");
       }
-  })
+  });
 
-  setTimeout(() => (isSelectionChanged = false), 1000)
-}
+  setTimeout(() => (isSelectionChanged = false), 1000);
+};
 
-export default processSelection
+export default processSelection;

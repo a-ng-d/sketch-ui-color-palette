@@ -67,6 +67,7 @@ if (globalConfig.env.isSupabaseEnabled)
     process.env.REACT_APP_SUPABASE_PUBLIC_ANON_KEY ?? ""
   );
 
+// Sketch message translation 
 window.sendData = (data) => {
   var event = new CustomEvent("message", {
     detail: data,
@@ -81,7 +82,7 @@ parent.postMessage = (message, targetOrigin) => {
 
   if (message && message.pluginMessage !== undefined) {
     const eventName = message.pluginMessage.type || "sketchMessage";
-    const eventData = message.pluginMessage.data || message.pluginMessage;
+    const eventData = message.pluginMessage || {};
 
     window.postMessage(eventName, eventData);
     console.log(`Message intercepté et transformé: ${eventName}`, eventData);

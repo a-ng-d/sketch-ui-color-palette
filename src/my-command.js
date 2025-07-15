@@ -8,6 +8,7 @@ import checkUserLicense from "./bridges/checks/checkUserLicense";
 import checkUserPreferences from "./bridges/checks/checkUserPreferences";
 import checkAnnouncementsStatus from "./bridges/checks/checkAnnouncementsStatus";
 import getPalettesOnCurrentPage from "./bridges/getPalettesOnCurrentPage";
+import processSelection from "./bridges/processSelection.ts";
 import { setWebContents } from "./utils/webContents";
 import { locales } from "../resources/content/locales";
 
@@ -71,18 +72,48 @@ export default function () {
     checkUserConsent()
       .then(() => checkTrialStatus())
       .then(() => checkUserLicense())
-      .then(() => checkUserPreferences());
-    //.then(() => processSelection())
+      .then(() => checkUserPreferences())
+      .then(() => processSelection(webContents));
   });
 
   webContents.on("CHECK_USER_CONSENT", async () => checkUserConsent());
   webContents.on("CHECK_ANNOUNCEMENTS_STATUS", async (msg) =>
-    checkAnnouncementsStatus(msg.version)
+    checkAnnouncementsStatus(msg.data.version)
   );
 
   webContents.on("UPDATE_LANGUAGE", (msg) => {
-    Settings.setSettingForKey("user_language", msg.lang);
+    Settings.setSettingForKey("user_language", msg.data.lang);
     locales.set(msg.lang);
+  });
+
+  webContents.on("SET_ITEMS", (msg) => {
+    msg.items.forEach((item) => {
+      if (typeof item.value === "object")
+        Settings.setSettingForKey(item.key, JSON.stringify(item.value));
+      else if (
+        typeof item.value === "boolean" ||
+        typeof item.value === "number"
+      )
+        Settings.setSettingForKey(item.key, item.value.toString());
+      else Settings.setSettingForKey(item.key, item.value);
+    });
+  });
+  webContents.on("GET_ITEMS", (msg) => {
+    msg.items.map((item) => {
+      const value = Settings.getSettingForKey(item);
+      if (value && typeof value === "string")
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: `GET_ITEM_${item.toUpperCase()}`,
+            value: value,
+          })})`
+        );
+    });
+  });
+  webContents.on("DELETE_ITEMS", (msg) => {
+    msg.items.forEach((item) => {
+      Settings.setSettingForKey(item, undefined);
+    });
   });
 
   webContents.on("GET_PALETTES", async () => getPalettesOnCurrentPage());
@@ -98,3 +129,8 @@ export function onShutdown() {
     existingWebview.close();
   }
 }
+
+export const onSelectionChanged = () => {
+  const existingWebview = getWebview(webviewIdentifier);
+  processSelection(existingWebview.webContents);
+};

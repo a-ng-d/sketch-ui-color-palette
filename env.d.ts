@@ -17,10 +17,12 @@ declare module 'apca-w3'
 declare module 'sketch/settings' {
   export default {
     settingForKey: (key: string) => any,
-    setSettingForKey: (key: string, value: any) => void,
+    setSettingForKey: (key: string, value: any) => any,
     documentSettingForKey: (document: any, key: string) => any,
-    setDocumentSettingForKey: (document: any, key: string, value: any) => void
-  }
+    setDocumentSettingForKey: (document: any, key: string, value: any) => any,
+    layerSettingForKey: (layer: any, key: string) => any,
+    setLayerSettingForKey: (layer: any, key: string, value: void) => any,
+  };
 }
 declare module 'sketch/dom' {
   export default {

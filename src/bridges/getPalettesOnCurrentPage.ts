@@ -6,11 +6,11 @@ import Settings from "sketch/settings";
 const Document = Dom.getSelectedDocument();
 
 const getPalettesOnCurrentPage = async () => {
-  const rawDataKeys = Settings.documentSettingForKey(
+  const palettesList: FullConfiguration = Settings.documentSettingForKey(
     Document,
     "ui_color_palettes"
   );
-  if (rawDataKeys === undefined) {
+  if (palettesList === undefined) {
     getWebContents().executeJavaScript(
       `sendData(${JSON.stringify({
         type: "EXPOSE_PALETTES",
@@ -19,10 +19,6 @@ const getPalettesOnCurrentPage = async () => {
     );
     return [];
   }
-
-  console.log("Palettes on current page:", rawDataKeys);
-
-  const palettesList: FullConfiguration = JSON.parse(rawDataKeys);
 
   getWebContents().executeJavaScript(
     `sendData(${JSON.stringify({
