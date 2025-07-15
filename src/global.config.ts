@@ -2,7 +2,7 @@ import { doSpecificMode } from "@ui-lib/stores/features";
 import { Config } from "./types/config";
 import { locales } from "../resources/content/locales";
 
-const isDev = process.env.MODE === "development";
+const isDev = process.env.NODE_ENV === "development";
 
 const globalConfig: Config = {
   limits: {
