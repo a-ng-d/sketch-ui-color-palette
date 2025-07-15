@@ -19,17 +19,26 @@ export default function () {
     width: parseFloat(Settings.settingForKey("plugin_window_width") ?? "640"),
     height: parseFloat(Settings.settingForKey("plugin_window_height") ?? "640"),
   };
+  const windowPosition = {
+    x: parseFloat(Settings.settingForKey("plugin_window_x") ?? "0"),
+    y: parseFloat(Settings.settingForKey("plugin_window_y") ?? "0"),
+  };
 
   const options = {
     identifier: webviewIdentifier,
     width: windowSize.width,
     height: windowSize.height,
+    minWidth: 640,
+    minHeight: 640,
+    x: windowPosition.x,
+    y: windowPosition.y,
+    fullscreenable: false,
     show: false,
+    title: `${locales.get().name}${locales.get().separator}${locales.get().tagline}`,
   };
 
   const browserWindow = new BrowserWindow(options);
 
-  // only show the window when the page has loaded to avoid a white flash
   browserWindow.once("ready-to-show", () => {
     browserWindow.show();
   });
@@ -37,7 +46,6 @@ export default function () {
   const webContents = browserWindow.webContents;
   setWebContents(webContents);
 
-  // print a message when the page loads
   webContents.on("did-finish-load", () => {
     UI.message("UI loaded!");
 
@@ -119,10 +127,20 @@ export default function () {
   webContents.on("GET_PALETTES", async () => getPalettesOnCurrentPage());
 
   browserWindow.loadURL(require("../resources/webview.html"));
+
+  browserWindow.on("resize", () => {
+    const size = browserWindow.getSize();
+    Settings.setSettingForKey("plugin_window_width", size[0]);
+    Settings.setSettingForKey("plugin_window_height", size[1]);
+  });
+
+  browserWindow.on("move", () => {
+    const position = browserWindow.getPosition();
+    Settings.setSettingForKey("plugin_window_x", position[0]);
+    Settings.setSettingForKey("plugin_window_y", position[1]);
+  });
 }
 
-// When the plugin is shutdown by Sketch (for example when the user disable the plugin)
-// we need to close the webview if it's open
 export function onShutdown() {
   const existingWebview = getWebview(webviewIdentifier);
   if (existingWebview) {
