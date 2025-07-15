@@ -17,7 +17,8 @@
     "build": "skpm-build",
     "watch": "skpm-build --watch",
     "start": "skpm-build --watch",
-    "postinstall": "npm run build && skpm-link"
+    "postinstall": "npm run build && skpm-link",
+    "hotreload": "find /Users/a_ng_d/DEV/sketch-ui-color-palette/sketch-ui-color-palette.sketchplugin -name '*js' | entr -r /Applications/Sketch.app/Contents/MacOS/Sketch"
   },
   "devDependencies": {
     "@babel/core": "^7.28.0",
@@ -59,6 +60,7 @@
     "@a_ng_d/figmug-utils": "^0.6.0",
     "@a_ng_d/utils-ui-color-palette": "^1.3.20",
     "@babel/preset-react": "^7.27.1",
+    "@babel/runtime": "^7.27.6",
     "@nanostores/preact": "^0.5.2",
     "@sentry/react": "^8.8.0",
     "@supabase/supabase-js": "^2.44.2",
