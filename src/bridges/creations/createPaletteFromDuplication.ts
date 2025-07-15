@@ -1,42 +1,42 @@
-import { uid } from 'uid'
-import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
-import { locales } from '../../content/locales'
+import { uid } from "uid/single";
+import { FullConfiguration } from "@a_ng_d/utils-ui-color-palette";
+import { locales } from "../../../resources/content/locales";
+import Settings from "sketch/settings";
+import Dom from "sketch/dom";
+
+const Document = Dom.getSelectedDocument();
+const Page = Document.selectedPage;
 
 const createPaletteFromDuplication = async (id: string) => {
-  const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
-  const now = new Date().toISOString()
+  const currentPalettes: Array<FullConfiguration> =
+    Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
+  const basePalette = currentPalettes.find((palette) => palette.meta.id === id);
+  const now = new Date().toISOString();
 
-  if (rawPalette === undefined || rawPalette === null)
-    throw new Error(locales.get().error.unfoundPalette)
+  if (basePalette === undefined)
+    throw new Error(locales.get().error.unfoundPalette);
 
-  const palette = JSON.parse(rawPalette) as FullConfiguration
+  const palette = JSON.parse(JSON.stringify(basePalette)) as FullConfiguration;
 
   palette.base.name = locales
     .get()
-    .browse.copy.replace('{name}', palette.base.name)
-  delete (palette as Partial<FullConfiguration>).libraryData
-  palette.meta.id = uid()
-  palette.meta.publicationStatus.isPublished = false
-  palette.meta.publicationStatus.isShared = false
-  palette.meta.dates.updatedAt = now
-  palette.meta.dates.createdAt = now
-  palette.meta.dates.publishedAt = ''
-  palette.meta.dates.openedAt = now
-  palette.meta.creatorIdentity.creatorId = ''
-  palette.meta.creatorIdentity.creatorFullName = ''
-  palette.meta.creatorIdentity.creatorAvatar = ''
-  
-  penpot.currentPage?.setPluginData(
-    `palette_${palette.meta.id}`,
-    JSON.stringify(palette)
-  )
+    .browse.copy.replace("{name}", palette.base.name);
+  delete (palette as Partial<FullConfiguration>).libraryData;
+  palette.meta.id = uid();
+  palette.meta.publicationStatus.isPublished = false;
+  palette.meta.publicationStatus.isShared = false;
+  palette.meta.dates.updatedAt = now;
+  palette.meta.dates.createdAt = now;
+  palette.meta.dates.publishedAt = "";
+  palette.meta.dates.openedAt = now;
+  palette.meta.creatorIdentity.creatorId = "";
+  palette.meta.creatorIdentity.creatorFullName = "";
+  palette.meta.creatorIdentity.creatorAvatar = "";
 
-  await new Promise((r) => setTimeout(r, 1000))
-  await penpot.currentFile?.saveVersion(
-    `${palette.base.name} - ${locales.get().events.paletteDuplicated}`
-  )
+  currentPalettes.push(palette);
+  Settings.setLayerSettingForKey(Page, "ui_color_palettes", currentPalettes);
 
-  return palette
-}
+  return palette;
+};
 
-export default createPaletteFromDuplication
+export default createPaletteFromDuplication;

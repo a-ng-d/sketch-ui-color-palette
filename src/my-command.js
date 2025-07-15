@@ -11,6 +11,8 @@ import getPalettesOnCurrentPage from "./bridges/getPalettesOnCurrentPage";
 import createPalette from "./bridges/creations/createPalette";
 import createPaletteFromDocument from "./bridges/creations/createPaletteFromDocument";
 import createPaletteFromRemote from "./bridges/creations/createPaletteFromRemote";
+import createPaletteFromDuplication from "./bridges/creations/createPaletteFromDuplication";
+import deletePalette from "./bridges/creations/deletePalette";
 import processSelection from "./bridges/processSelection.ts";
 import { setWebContents } from "./utils/webContents";
 import { locales } from "../resources/content/locales";
@@ -168,6 +170,39 @@ export default function () {
   });
 
   webContents.on("GET_PALETTES", () => getPalettesOnCurrentPage());
+  webContents.on("DUPLICATE_PALETTE", (msg) =>
+    createPaletteFromDuplication(msg.id)
+      .finally(() => {
+        getPalettesOnCurrentPage();
+
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: "STOP_LOADER",
+          })})`
+        );
+      })
+      .catch((error) => {
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: "POST_MESSAGE",
+            data: {
+              type: "ERROR",
+              message: error.message,
+            },
+          })})`
+        );
+      })
+  );
+  webContents.on("DELETE_PALETTE", (msg) =>
+    deletePalette(msg.id).finally(async () => {
+      getPalettesOnCurrentPage();
+      webContents.executeJavaScript(
+        `sendData(${JSON.stringify({
+          type: "STOP_LOADER",
+        })})`
+      );
+    })
+  );
 
   browserWindow.loadURL(require("../resources/webview.html"));
 

@@ -1,21 +1,29 @@
-import { locales } from '../../content/locales'
+import { locales } from "../../../resources/content/locales";
+import Settings from "sketch/settings";
+import Dom from "sketch/dom";
+import { FullConfiguration } from "@a_ng_d/utils-ui-color-palette";
+
+const Document = Dom.getSelectedDocument();
+const Page = Document.selectedPage;
 
 const deletePalette = async (id: string) => {
-  const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
+  console.log("deletePalette", id);
+  const currentPalettes: Array<FullConfiguration> =
+    Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
+  const palette = currentPalettes.find((palette) => palette.meta.id === id);
 
-  if (rawPalette === undefined || rawPalette === null)
-    throw new Error(locales.get().error.unfoundPalette)
+  console.log(currentPalettes, palette);
 
-  const palette = JSON.parse(rawPalette)
+  if (palette === undefined)
+    throw new Error(locales.get().error.unfoundPalette);
 
-  penpot.currentPage?.setPluginData(`palette_${id}`, '')
+  Settings.setLayerSettingForKey(
+    Page,
+    "ui_color_palettes",
+    currentPalettes.filter((palette) => palette.meta.id !== id)
+  );
 
-  await new Promise((r) => setTimeout(r, 1000))
-  await penpot.currentFile?.saveVersion(
-    `${palette.base.name} - ${locales.get().events.paletteRemoved}`
-  )
+  return palette;
+};
 
-  return palette
-}
-
-export default deletePalette
+export default deletePalette;
