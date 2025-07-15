@@ -2,8 +2,8 @@ import Settings from "sketch/settings";
 import { getWebContents } from "../../utils/webContents";
 
 const checkAnnouncementsStatus = (remoteVersion: string) => {
-  const localVersion = Settings.globalSettingForKey("announcements_version");
-  const isOnboardingRead = Settings.globalSettingForKey("is_onboarding_read");
+  const localVersion = Settings.settingForKey("announcements_version");
+  const isOnboardingRead = Settings.settingForKey("is_onboarding_read");
 
   if (localVersion === undefined && remoteVersion === undefined)
     return {

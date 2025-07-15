@@ -4,36 +4,34 @@ import Settings from "sketch/settings";
 import { getWebContents } from "../../utils/webContents";
 
 const checkUserPreferences = async () => {
-  const isWCAGDisplayed = Settings.globalSettingForKey("is_wcag_displayed");
-  const isAPCADisplayed = Settings.globalSettingForKey("is_apca_displayed");
-  const canDeepSyncStyles = Settings.globalSettingForKey(
-    "can_deep_sync_styles"
-  );
-  const canDeepSyncVariables = Settings.globalSettingForKey(
+  const isWCAGDisplayed = Settings.settingForKey("is_wcag_displayed");
+  const isAPCADisplayed = Settings.settingForKey("is_apca_displayed");
+  const canDeepSyncStyles = Settings.settingForKey("can_deep_sync_styles");
+  const canDeepSyncVariables = Settings.settingForKey(
     "can_deep_sync_variables"
   );
-  const isVsCodeMessageDisplayed = Settings.globalSettingForKey(
+  const isVsCodeMessageDisplayed = Settings.settingForKey(
     "is_vscode_message_displayed"
   );
-  const userLanguage = Settings.globalSettingForKey("user_language");
+  const userLanguage = Settings.settingForKey("user_language");
 
   if (isWCAGDisplayed === undefined)
-    Settings.setGlobalSettingForKey("is_wcag_displayed", true);
+    Settings.setSettingForKey("is_wcag_displayed", true);
 
   if (isAPCADisplayed === undefined)
-    Settings.setGlobalSettingForKey("is_apca_displayed", true);
+    Settings.setSettingForKey("is_apca_displayed", true);
 
   if (canDeepSyncStyles === undefined)
-    Settings.setGlobalSettingForKey("can_deep_sync_styles", false);
+    Settings.setSettingForKey("can_deep_sync_styles", false);
 
   if (canDeepSyncVariables === undefined)
-    Settings.setGlobalSettingForKey("can_deep_sync_variables", false);
+    Settings.setSettingForKey("can_deep_sync_variables", false);
 
   if (isVsCodeMessageDisplayed === undefined)
-    Settings.setGlobalSettingForKey("is_vscode_message_displayed", true);
+    Settings.setSettingForKey("is_vscode_message_displayed", true);
 
   if (userLanguage === undefined)
-    Settings.setGlobalSettingForKey("user_language", "en-US");
+    Settings.setSettingForKey("user_language", "en-US");
 
   locales.set((userLanguage as Language) ?? "en-US");
 

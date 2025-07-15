@@ -4,14 +4,14 @@ import Settings from "sketch/settings";
 
 const checkTrialStatus = async () => {
   const trialStartDate =
-    Settings.globalSettingForKey("trial_start_date") !== ""
-      ? parseFloat(Settings.globalSettingForKey("trial_start_date") || "")
+    Settings.settingForKey("trial_start_date") !== ""
+      ? parseFloat(Settings.settingForKey("trial_start_date") || "")
       : null;
   const currentTrialVersion: string =
-    Settings.globalSettingForKey("trial_version") ||
+    Settings.settingForKey("trial_version") ||
     globalConfig.versions.trialVersion;
   const currentTrialTime: number = parseFloat(
-    Settings.globalSettingForKey("trial_time") || "72"
+    Settings.settingForKey("trial_time") || "72"
   );
 
   let consumedTime = 0,

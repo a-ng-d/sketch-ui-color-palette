@@ -15,12 +15,8 @@ const webviewIdentifier = "sketch-ui-color-palette.webview";
 
 export default function () {
   const windowSize = {
-    width: parseFloat(
-      Settings.globalSettingForKey("plugin_window_width") ?? "640"
-    ),
-    height: parseFloat(
-      Settings.globalSettingForKey("plugin_window_height") ?? "640"
-    ),
+    width: parseFloat(Settings.settingForKey("plugin_window_width") ?? "640"),
+    height: parseFloat(Settings.settingForKey("plugin_window_height") ?? "640"),
   };
 
   const options = {
@@ -52,8 +48,8 @@ export default function () {
           id: "",
           fullName: "",
           avatar: "",
-          accessToken: Settings.globalSettingForKey("supabase_access_token"),
-          refreshToken: Settings.globalSettingForKey("supabase_refresh_token"),
+          accessToken: Settings.settingForKey("supabase_access_token"),
+          refreshToken: Settings.settingForKey("supabase_refresh_token"),
         },
       })})`
     );
@@ -85,7 +81,7 @@ export default function () {
   );
 
   webContents.on("UPDATE_LANGUAGE", (msg) => {
-    Settings.setglobalSettingForKey("user_language", msg.lang);
+    Settings.setSettingForKey("user_language", msg.lang);
     locales.set(msg.lang);
   });
 

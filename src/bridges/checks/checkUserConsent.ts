@@ -4,7 +4,7 @@ import Settings from "sketch/settings";
 import { getWebContents } from "../../utils/webContents";
 
 const checkUserConsent = async () => {
-  const currentUserConsentVersion = Settings.globalSettingForKey(
+  const currentUserConsentVersion = Settings.settingForKey(
     "user_consent_version"
   );
 
@@ -13,7 +13,7 @@ const checkUserConsent = async () => {
       return {
         ...consent,
         isConsented:
-          Settings.globalSettingForKey(`${consent.id}_user_consent`) === "true",
+          Settings.settingForKey(`${consent.id}_user_consent`) === "true",
       };
     })
   );
