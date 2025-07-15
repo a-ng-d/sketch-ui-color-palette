@@ -1,0 +1,33 @@
+{
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "resources/**/*.ts",
+    "resources/**/*.tsx",
+    "webpack.skpm.config.ts",
+    "env.d.ts",
+    "src/my-command.ts"
+  ],
+  "compilerOptions": {
+    "target": "ES2015",
+    "lib": ["ES2019", "DOM", "ES6", "DOM.Iterable", "ScriptHost"],
+    "moduleResolution": "node",
+    "module": "ESNext",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "typeRoots": ["./node_modules/@types", "./node_modules/@penpot"],
+    "types": ["node"],
+    "jsx": "react",
+    "skipLibCheck": true,
+    "baseUrl": "./",
+    "paths": {
+      "react": ["./node_modules/preact/compat/"],
+      "react/jsx-runtime": ["./node_modules/preact/jsx-runtime"],
+      "react-dom": ["./node_modules/preact/compat/"],
+      "react-dom/*": ["./node_modules/preact/compat/*"],
+      "jszip": ["./node_modules/jszip/dist/jszip.min.js"],
+      "@ui-lib/*": ["packages/ui-ui-color-palette/src/*"]
+    }
+  }
+}

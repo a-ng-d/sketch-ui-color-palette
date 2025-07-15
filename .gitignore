@@ -1,0 +1,4 @@
+.DS_Store
+node_modules
+sketch-ui-color-palette.sketchplugin
+.env.*
