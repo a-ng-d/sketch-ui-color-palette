@@ -16,7 +16,14 @@ declare module 'react-dom/client'
 declare module 'apca-w3'
 declare module 'sketch/settings' {
   export default {
-    globalSettingForKey: (key: string): any => any,
-    setGlobalSettingForKey: (key: string, value: any): void => void
+    globalSettingForKey: (key: string) => any,
+    setGlobalSettingForKey: (key: string, value: any) => void,
+    documentSettingForKey: (document: any, key: string) => any,
+    setDocumentSettingForKey: (document: any, key: string, value: any) => void
+  }
+}
+declare module 'sketch/dom' {
+  export default {
+    getSelectedDocument: () => any,
   }
 }

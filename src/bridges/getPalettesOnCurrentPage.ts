@@ -1,29 +1,37 @@
-import { FullConfiguration, PaletteData } from '@a_ng_d/utils-ui-color-palette'
+import { FullConfiguration } from "@a_ng_d/utils-ui-color-palette";
+import { getWebContents } from "../utils/webContents";
+import Dom from "sketch/dom";
+import Settings from "sketch/settings";
+
+const Document = Dom.getSelectedDocument();
 
 const getPalettesOnCurrentPage = async () => {
-  const dataKeys = penpot.currentPage?.getPluginDataKeys()
-  if (dataKeys === undefined)
-    return penpot.ui.sendMessage({
-      type: 'EXPOSE_PALETTES',
-      data: [],
-    })
+  const rawDataKeys = Settings.documentSettingForKey(
+    Document,
+    "ui_color_palettes"
+  );
+  if (rawDataKeys === undefined) {
+    getWebContents().executeJavaScript(
+      `sendData(${JSON.stringify({
+        type: "EXPOSE_PALETTES",
+        data: [],
+      })})`
+    );
+    return [];
+  }
 
-  const dataList = dataKeys
-    .filter((data: string) => data.includes('palette_'))
-    .map((key: string) => {
-      const data = penpot.currentPage?.getPluginData(key)
-      return data ? JSON.parse(data) : undefined
-    })
-  const palettesList: Array<PaletteData> = dataList.filter(
-    (data: FullConfiguration) => {
-      if (data !== undefined) return data.type === 'UI_COLOR_PALETTE'
-    }
-  )
+  console.log("Palettes on current page:", rawDataKeys);
 
-  return penpot.ui.sendMessage({
-    type: 'EXPOSE_PALETTES',
-    data: palettesList,
-  })
-}
+  const palettesList: FullConfiguration = JSON.parse(rawDataKeys);
 
-export default getPalettesOnCurrentPage
+  getWebContents().executeJavaScript(
+    `sendData(${JSON.stringify({
+      type: "EXPOSE_PALETTES",
+      data: palettesList,
+    })})`
+  );
+
+  return true;
+};
+
+export default getPalettesOnCurrentPage;
