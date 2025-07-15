@@ -7,19 +7,8 @@ const Document = Dom.getSelectedDocument();
 const Page = Document.selectedPage;
 
 const getPalettesOnCurrentPage = async () => {
-  const palettesList: FullConfiguration = Settings.layerSettingForKey(
-    Page,
-    "ui_color_palettes"
-  );
-  if (palettesList === undefined) {
-    getWebContents().executeJavaScript(
-      `sendData(${JSON.stringify({
-        type: "EXPOSE_PALETTES",
-        data: [],
-      })})`
-    );
-    return [];
-  }
+  const palettesList: FullConfiguration =
+    Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
 
   getWebContents().executeJavaScript(
     `sendData(${JSON.stringify({
@@ -28,7 +17,7 @@ const getPalettesOnCurrentPage = async () => {
     })})`
   );
 
-  return true;
+  return palettesList;
 };
 
 export default getPalettesOnCurrentPage;

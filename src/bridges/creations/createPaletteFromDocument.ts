@@ -1,8 +1,6 @@
-import { uid } from 'uid'
-import { Board } from '@penpot/plugin-types'
-import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
-import processSelection from '../processSelection'
-import { locales } from "../../../resources/content/locales";
+import { uid } from "uid/single";
+import { FullConfiguration } from "@a_ng_d/utils-ui-color-palette";
+import processSelection from "../processSelection";
 import Settings from "sketch/settings";
 import Dom from "sketch/dom";
 import { getWebContents } from "../../utils/webContents";
@@ -11,10 +9,8 @@ const Document = Dom.getSelectedDocument();
 const Page = Document.selectedPage;
 
 const createPaletteFromDocument = async () => {
-  const currentPalettes: Array<FullConfiguration> = Settings.layerSettingForKey(
-    Page,
-    "ui_color_palettes"
-  );
+  const currentPalettes: Array<FullConfiguration> =
+    Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
   const document = Document.selectedLayers.layers[0];
   const backup = Settings.documentSettingForKey(
     document,
@@ -52,4 +48,4 @@ const createPaletteFromDocument = async () => {
   return backup;
 };
 
-export default createPaletteFromDocument
+export default createPaletteFromDocument;

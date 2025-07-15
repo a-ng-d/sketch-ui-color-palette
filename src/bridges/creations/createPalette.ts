@@ -1,4 +1,4 @@
-import { uid } from 'uid'
+import { uid } from "uid/single";
 import {
   ColorConfiguration,
   Data,
@@ -23,10 +23,8 @@ interface Msg {
 }
 
 const createPalette = async (msg: Msg) => {
-  const currentPalettes: Array<FullConfiguration> = Settings.layerSettingForKey(
-    Page,
-    "ui_color_palettes"
-  );
+  const currentPalettes: Array<FullConfiguration> =
+    Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
   const colors: Array<ColorConfiguration> = msg.data.sourceColors
     .map((sourceColor) => {
       return {
@@ -115,4 +113,4 @@ const createPalette = async (msg: Msg) => {
   return palette;
 };
 
-export default createPalette
+export default createPalette;

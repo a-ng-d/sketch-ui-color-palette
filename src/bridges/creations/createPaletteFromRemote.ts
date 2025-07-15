@@ -22,15 +22,11 @@ interface Msg {
 }
 
 const createPaletteFromRemote = async (msg: Msg) => {
-  const currentPalettes: Array<FullConfiguration> = Settings.layerSettingForKey(
-    Page,
-    "ui_color_palettes"
-  );
+  const currentPalettes: Array<FullConfiguration> =
+    Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
   const localPalette = currentPalettes.find(
     (palette) => palette.meta.id === msg.data.meta.id
   );
-
-  console.log(localPalette);
 
   if (localPalette !== undefined)
     throw new Error(locales.get().info.addToLocal);
