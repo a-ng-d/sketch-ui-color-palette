@@ -2,46 +2,54 @@ import { uid } from 'uid'
 import { Board } from '@penpot/plugin-types'
 import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import processSelection from '../processSelection'
-import { locales } from '../../content/locales'
+import { locales } from "../../../resources/content/locales";
+import Settings from "sketch/settings";
+import Dom from "sketch/dom";
+import { getWebContents } from "../../utils/webContents";
+
+const Document = Dom.getSelectedDocument();
+const Page = Document.selectedPage;
 
 const createPaletteFromDocument = async () => {
-  const document = penpot.selection[0] as Board
-  const backup = JSON.parse(
-    document.getPluginData('backup')
-  ) as FullConfiguration
+  const currentPalettes: Array<FullConfiguration> = Settings.layerSettingForKey(
+    Page,
+    "ui_color_palettes"
+  );
+  const document = Document.selectedLayers.layers[0];
+  const backup = Settings.documentSettingForKey(
+    document,
+    "backup"
+  ) as FullConfiguration;
 
-  const now = new Date().toISOString()
-  delete (backup as Partial<FullConfiguration>).libraryData
-  backup.meta.id = uid()
-  backup.meta.dates.openedAt = now
-  backup.meta.dates.createdAt = now
-  backup.meta.dates.updatedAt = now
-  backup.meta.publicationStatus.isPublished = false
-  backup.meta.publicationStatus.isShared = false
-  backup.meta.creatorIdentity.creatorId = ''
-  backup.meta.creatorIdentity.creatorFullName = ''
-  backup.meta.creatorIdentity.creatorAvatar = ''
+  const now = new Date().toISOString();
+  delete (backup as Partial<FullConfiguration>).libraryData;
+  backup.meta.id = uid();
+  backup.meta.dates.openedAt = now;
+  backup.meta.dates.createdAt = now;
+  backup.meta.dates.updatedAt = now;
+  backup.meta.publicationStatus.isPublished = false;
+  backup.meta.publicationStatus.isShared = false;
+  backup.meta.creatorIdentity.creatorId = "";
+  backup.meta.creatorIdentity.creatorFullName = "";
+  backup.meta.creatorIdentity.creatorAvatar = "";
 
-  document.setPluginData('id', backup.meta.id)
-  document.setPluginData('createdAt', now)
-  document.setPluginData('updatedAt', now)
+  Settings.setLayerSettingForKey(document, "id", backup.meta.id);
+  Settings.setLayerSettingForKey(document, "createdAt", now);
+  Settings.setLayerSettingForKey(document, "updatedAt", now);
 
-  penpot.currentPage?.setPluginData(
-    `palette_${backup.meta.id}`,
-    JSON.stringify(backup)
-  )
-  penpot.ui.sendMessage({
-    type: 'LOAD_PALETTE',
-    data: backup,
-  })
-  processSelection()
+  currentPalettes.push(backup);
+  Settings.setLayerSettingForKey(Page, "ui_color_palettes", currentPalettes);
 
-  await new Promise((r) => setTimeout(r, 1000))
-  await penpot.currentFile?.saveVersion(
-    `${backup.base.name} - ${locales.get().events.paletteCreatedFromDocument}`
-  )
+  getWebContents().executeJavaScript(
+    `sendData(${JSON.stringify({
+      type: "LOAD_PALETTE",
+      data: backup,
+    })})`
+  );
 
-  return backup
-}
+  processSelection(getWebContents());
+
+  return backup;
+};
 
 export default createPaletteFromDocument

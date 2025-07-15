@@ -21,7 +21,7 @@ declare module 'sketch/settings' {
     documentSettingForKey: (document: any, key: string) => any,
     setDocumentSettingForKey: (document: any, key: string, value: any) => any,
     layerSettingForKey: (layer: any, key: string) => any,
-    setLayerSettingForKey: (layer: any, key: string, value: void) => any,
+    setLayerSettingForKey: (layer: any, key: string, value: any) => any,
   };
 }
 declare module 'sketch/dom' {

@@ -3,24 +3,35 @@ import {
   ColorConfiguration,
   Data,
   ExchangeConfiguration,
+  FullConfiguration,
   SourceColorConfiguration,
   ThemeConfiguration,
-} from '@a_ng_d/utils-ui-color-palette'
-import { locales } from '../../content/locales'
+} from "@a_ng_d/utils-ui-color-palette";
+import { locales } from "../../../resources/content/locales";
+import Settings from "sketch/settings";
+import Dom from "sketch/dom";
+import { getWebContents } from "../../utils/webContents";
+
+const Document = Dom.getSelectedDocument();
+const Page = Document.selectedPage;
 
 interface Msg {
   data: {
-    sourceColors: Array<SourceColorConfiguration>
-    exchange: ExchangeConfiguration
-  }
+    sourceColors: Array<SourceColorConfiguration>;
+    exchange: ExchangeConfiguration;
+  };
 }
 
 const createPalette = async (msg: Msg) => {
+  const currentPalettes: Array<FullConfiguration> = Settings.layerSettingForKey(
+    Page,
+    "ui_color_palettes"
+  );
   const colors: Array<ColorConfiguration> = msg.data.sourceColors
     .map((sourceColor) => {
       return {
         name: sourceColor.name,
-        description: '',
+        description: "",
         rgb: sourceColor.rgb,
         id: uid(),
         hue: {
@@ -33,31 +44,31 @@ const createPalette = async (msg: Msg) => {
         },
         alpha: {
           isEnabled: false,
-          backgroundColor: '#FFFFFF',
+          backgroundColor: "#FFFFFF",
         },
-      }
+      };
     })
     .sort((a, b) => {
-      if (a.name.localeCompare(b.name) > 0) return 1
-      else if (a.name.localeCompare(b.name) < 0) return -1
-      else return 0
-    })
+      if (a.name.localeCompare(b.name) > 0) return 1;
+      else if (a.name.localeCompare(b.name) < 0) return -1;
+      else return 0;
+    });
 
   const themes: Array<ThemeConfiguration> = [
     {
       name: locales.get().themes.switchTheme.defaultTheme,
-      description: '',
+      description: "",
       scale: msg.data.exchange.scale,
-      paletteBackground: '#FFFFFF',
+      paletteBackground: "#FFFFFF",
       visionSimulationMode: msg.data.exchange.visionSimulationMode,
       textColorsTheme: msg.data.exchange.textColorsTheme,
       isEnabled: true,
-      id: '00000000000',
-      type: 'default theme',
+      id: "00000000000",
+      type: "default theme",
     },
-  ]
+  ];
 
-  const now = new Date().toISOString()
+  const now = new Date().toISOString();
 
   const palette = new Data({
     base: {
@@ -76,36 +87,32 @@ const createPalette = async (msg: Msg) => {
       dates: {
         createdAt: now,
         updatedAt: now,
-        publishedAt: '',
+        publishedAt: "",
         openedAt: now,
       },
       creatorIdentity: {
-        creatorId: '',
-        creatorFullName: '',
-        creatorAvatar: '',
+        creatorId: "",
+        creatorFullName: "",
+        creatorAvatar: "",
       },
       publicationStatus: {
         isShared: false,
         isPublished: false,
       },
     },
-  }).makePaletteFullData()
+  }).makePaletteFullData();
 
-  penpot.currentPage?.setPluginData(
-    `palette_${palette.meta.id}`,
-    JSON.stringify(palette)
-  )
-  penpot.ui.sendMessage({
-    type: 'LOAD_PALETTE',
-    data: palette,
-  })
+  currentPalettes.push(palette);
+  Settings.setLayerSettingForKey(Page, "ui_color_palettes", currentPalettes);
 
-  await new Promise((r) => setTimeout(r, 1000))
-  await penpot.currentFile?.saveVersion(
-    `${palette.base.name} - ${locales.get().events.paletteCreated}`
-  )
+  getWebContents().executeJavaScript(
+    `sendData(${JSON.stringify({
+      type: "LOAD_PALETTE",
+      data: palette,
+    })})`
+  );
 
-  return palette
-}
+  return palette;
+};
 
 export default createPalette

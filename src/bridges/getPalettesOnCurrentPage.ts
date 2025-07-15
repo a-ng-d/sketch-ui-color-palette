@@ -4,10 +4,11 @@ import Dom from "sketch/dom";
 import Settings from "sketch/settings";
 
 const Document = Dom.getSelectedDocument();
+const Page = Document.selectedPage;
 
 const getPalettesOnCurrentPage = async () => {
-  const palettesList: FullConfiguration = Settings.documentSettingForKey(
-    Document,
+  const palettesList: FullConfiguration = Settings.layerSettingForKey(
+    Page,
     "ui_color_palettes"
   );
   if (palettesList === undefined) {

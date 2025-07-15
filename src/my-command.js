@@ -8,6 +8,9 @@ import checkUserLicense from "./bridges/checks/checkUserLicense";
 import checkUserPreferences from "./bridges/checks/checkUserPreferences";
 import checkAnnouncementsStatus from "./bridges/checks/checkAnnouncementsStatus";
 import getPalettesOnCurrentPage from "./bridges/getPalettesOnCurrentPage";
+import createPalette from "./bridges/creations/createPalette";
+import createPaletteFromDocument from "./bridges/creations/createPaletteFromDocument";
+import createPaletteFromRemote from "./bridges/creations/createPaletteFromRemote";
 import processSelection from "./bridges/processSelection.ts";
 import { setWebContents } from "./utils/webContents";
 import { locales } from "../resources/content/locales";
@@ -89,6 +92,46 @@ export default function () {
     checkAnnouncementsStatus(msg.data.version)
   );
 
+  webContents.on("CREATE_PALETTE", (msg) =>
+    createPalette(msg).finally(() =>
+      webContents.executeJavaScript(
+        `sendData(${JSON.stringify({
+          type: "STOP_LOADER",
+        })})`
+      )
+    )
+  );
+  webContents.on("CREATE_PALETTE_FROM_DOCUMENT", () =>
+    createPaletteFromDocument().finally(() =>
+      webContents.executeJavaScript(
+        `sendData(${JSON.stringify({
+          type: "STOP_LOADER",
+        })})`
+      )
+    )
+  );
+  webContents.on("CREATE_PALETTE_FROM_REMOTE", (msg) =>
+    createPaletteFromRemote(msg)
+      .finally(() =>
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: "STOP_LOADER",
+          })})`
+        )
+      )
+      .catch((error) => {
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: "POST_MESSAGE",
+            data: {
+              type: "INFO",
+              message: error.message,
+            },
+          })})`
+        );
+      })
+  );
+
   webContents.on("UPDATE_LANGUAGE", (msg) => {
     Settings.setSettingForKey("user_language", msg.data.lang);
     locales.set(msg.lang);
@@ -124,7 +167,7 @@ export default function () {
     });
   });
 
-  webContents.on("GET_PALETTES", async () => getPalettesOnCurrentPage());
+  webContents.on("GET_PALETTES", () => getPalettesOnCurrentPage());
 
   browserWindow.loadURL(require("../resources/webview.html"));
 
