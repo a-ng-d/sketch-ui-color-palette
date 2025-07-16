@@ -10,7 +10,14 @@
         "run": "onRun",
         "actions": {
           "Shutdown": "onShutdown",
-          "SelectionChanged": "onSelectionChanged"
+          "SelectionChanged": "onChangeSelection",
+          "PreviousPage": "onPreviousPage",
+          "NextPage": "onNextPage",
+          "onPageChanged": "onPageChanged",
+          "NewPage": "onNewPage",
+          "OpenDocument": "onOpenDocument",
+          "CloseDocument": "onCloseDocument",
+          "ShowComponentsPane": "onShowComponentsPane"
         }
       }
     }

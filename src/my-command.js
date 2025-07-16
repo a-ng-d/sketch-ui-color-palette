@@ -9,6 +9,7 @@ import checkUserPreferences from "./bridges/checks/checkUserPreferences";
 import checkAnnouncementsStatus from "./bridges/checks/checkAnnouncementsStatus";
 import getPalettesOnCurrentPage from "./bridges/getPalettesOnCurrentPage";
 import createPalette from "./bridges/creations/createPalette";
+import createDocument from "./bridges/creations/createDocument";
 import createPaletteFromDocument from "./bridges/creations/createPaletteFromDocument";
 import createPaletteFromRemote from "./bridges/creations/createPaletteFromRemote";
 import createPaletteFromDuplication from "./bridges/creations/createPaletteFromDuplication";
@@ -188,6 +189,27 @@ export default function () {
             type: "POST_MESSAGE",
             data: {
               type: "INFO",
+              message: error.message,
+            },
+          })})`
+        );
+      })
+  );
+  webContents.on("CREATE_DOCUMENT", (msg) =>
+    createDocument(msg.id, msg.view)
+      .finally(() =>
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: "STOP_LOADER",
+          })})`
+        )
+      )
+      .catch((error) => {
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: "POST_MESSAGE",
+            data: {
+              type: "ERROR",
               message: error.message,
             },
           })})`
