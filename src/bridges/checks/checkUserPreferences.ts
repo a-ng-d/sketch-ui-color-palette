@@ -39,15 +39,16 @@ const checkUserPreferences = async () => {
     `sendData(${JSON.stringify({
       type: "CHECK_USER_PREFERENCES",
       data: {
-        isWCAGDisplayed: isWCAGDisplayed,
-        isAPCADisplayed: isAPCADisplayed,
-        canDeepSyncStyles: canDeepSyncStyles,
-        canDeepSyncVariables: canDeepSyncVariables,
+        isWCAGDisplayed: isWCAGDisplayed === undefined ? true : isWCAGDisplayed,
+        isAPCADisplayed: isAPCADisplayed === undefined ? true : isAPCADisplayed,
+        canDeepSyncStyles:
+          canDeepSyncStyles === undefined ? false : canDeepSyncStyles,
+        canDeepSyncVariables: canDeepSyncVariables === undefined,
         isVsCodeMessageDisplayed:
           isVsCodeMessageDisplayed === undefined
             ? true
             : isVsCodeMessageDisplayed,
-        userLanguage: userLanguage ?? "en-US",
+        userLanguage: userLanguage === undefined ? "en-US" : userLanguage,
       },
     })})`
   );
