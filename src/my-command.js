@@ -223,26 +223,18 @@ export default function () {
 
   webContents.on("SET_ITEMS", (msg) => {
     msg.items.forEach((item) => {
-      if (typeof item.value === "object")
-        Settings.setSettingForKey(item.key, JSON.stringify(item.value));
-      else if (
-        typeof item.value === "boolean" ||
-        typeof item.value === "number"
-      )
-        Settings.setSettingForKey(item.key, item.value.toString());
-      else Settings.setSettingForKey(item.key, item.value);
+      Settings.setSettingForKey(item.key, item.value);
     });
   });
   webContents.on("GET_ITEMS", (msg) => {
     msg.items.map((item) => {
       const value = Settings.getSettingForKey(item);
-      if (value && typeof value === "string")
-        webContents.executeJavaScript(
-          `sendData(${JSON.stringify({
-            type: `GET_ITEM_${item.toUpperCase()}`,
-            value: value,
-          })})`
-        );
+      webContents.executeJavaScript(
+        `sendData(${JSON.stringify({
+          type: `GET_ITEM_${item.toUpperCase()}`,
+          value: value,
+        })})`
+      );
     });
   });
   webContents.on("DELETE_ITEMS", (msg) => {
