@@ -10,9 +10,6 @@ import Settings from "sketch/settings";
 import Dom from "sketch/dom";
 import { getWebContents } from "../../utils/webContents";
 
-const Document = Dom.getSelectedDocument();
-const Page = Document.selectedPage;
-
 interface Msg {
   data: {
     base: BaseConfiguration;
@@ -22,6 +19,9 @@ interface Msg {
 }
 
 const createPaletteFromRemote = async (msg: Msg) => {
+  const Document = Dom.getSelectedDocument();
+  const Page = Document.selectedPage;
+
   const currentPalettes: Array<FullConfiguration> =
     Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
   const localPalette = currentPalettes.find(

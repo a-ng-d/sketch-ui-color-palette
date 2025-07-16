@@ -12,9 +12,6 @@ import Settings from "sketch/settings";
 import Dom from "sketch/dom";
 import { getWebContents } from "../../utils/webContents";
 
-const Document = Dom.getSelectedDocument();
-const Page = Document.selectedPage;
-
 interface Msg {
   data: {
     sourceColors: Array<SourceColorConfiguration>;
@@ -23,6 +20,9 @@ interface Msg {
 }
 
 const createPalette = async (msg: Msg) => {
+  const Document = Dom.getSelectedDocument();
+  const Page = Document.selectedPage;
+
   const currentPalettes: Array<FullConfiguration> =
     Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
   const colors: Array<ColorConfiguration> = msg.data.sourceColors

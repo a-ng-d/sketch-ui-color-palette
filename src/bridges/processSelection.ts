@@ -7,13 +7,13 @@ import Dom from "sketch/dom";
 import Settings from "sketch/settings";
 import { uid } from "uid/single";
 
-const Document = Dom.getSelectedDocument();
-
 export let currentSelection: Array<any> = [];
 export let previousSelection: Array<any> = [];
 export let isSelectionChanged = false;
 
 const processSelection = (webContents: any) => {
+  const Document = Dom.getSelectedDocument();
+
   previousSelection = currentSelection.length === 0 ? [] : currentSelection;
   isSelectionChanged = true;
 

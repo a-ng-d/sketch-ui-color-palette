@@ -4,10 +4,10 @@ import { locales } from "../../../resources/content/locales";
 import Settings from "sketch/settings";
 import Dom from "sketch/dom";
 
-const Document = Dom.getSelectedDocument();
-const Page = Document.selectedPage;
-
 const createPaletteFromDuplication = async (id: string) => {
+  const Document = Dom.getSelectedDocument();
+  const Page = Document.selectedPage;
+
   const currentPalettes: Array<FullConfiguration> =
     Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
   const basePalette = currentPalettes.find((palette) => palette.meta.id === id);
