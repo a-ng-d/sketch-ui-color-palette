@@ -24,8 +24,18 @@ declare module 'sketch/settings' {
     setLayerSettingForKey: (layer: any, key: string, value: any) => any,
   };
 }
-declare module 'sketch/dom' {
+declare module "sketch/dom" {
   export default {
     getSelectedDocument: () => any,
-  }
+    Artboard: any,
+    Rectangle: any,
+    FlexLayout: any,
+    SharedStyle: any,
+  };
+}
+declare module "sketch" {
+  export default {
+    settingForKey: (key: string) => any,
+    SmartLayout: any,
+  };
 }
