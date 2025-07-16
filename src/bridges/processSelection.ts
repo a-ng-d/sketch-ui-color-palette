@@ -1,5 +1,6 @@
 import chroma from "chroma-js";
 import {
+  FullConfiguration,
   HexModel,
   SourceColorConfiguration,
 } from "@a_ng_d/utils-ui-color-palette";
@@ -14,6 +15,7 @@ export let isSelectionChanged = false;
 
 const processSelection = (webContents?: any) => {
   const Document = Dom.getSelectedDocument();
+  const Page = Document.selectedPage;
   const sharedWebContents =
     webContents === undefined ? getWebContents() : webContents;
 
@@ -30,17 +32,22 @@ const processSelection = (webContents?: any) => {
   const selectionHandler = (state: string) => {
     const actions: { [key: string]: () => void } = {
       DOCUMENT_SELECTED: async () => {
+        console.log(document);
+        const id = Settings.layerSettingForKey(document, "id");
+        const currentPalettes: Array<FullConfiguration> =
+          Settings.layerSettingForKey(Page, "ui_color_palettes");
+        const palette = currentPalettes.find(
+          (palette) => palette.meta.id === id
+        );
+
         sharedWebContents.executeJavaScript(
           `sendData(${JSON.stringify({
             type: "DOCUMENT_SELECTED",
             data: {
-              view: document.getPluginData("view"),
-              id: document.getPluginData("id"),
-              updatedAt: document.getPluginData("updatedAt"),
-              isLinkedToPalette:
-                penpot.currentPage?.getPluginData(
-                  `palette_${document.getPluginData("id")}`
-                ) !== "",
+              view: Settings.layerSettingForKey(document, "view"),
+              id: id,
+              updatedAt: Settings.layerSettingForKey(document, "updatedAt"),
+              isLinkedToPalette: palette !== undefined,
             },
           })})`
         );
@@ -72,46 +79,44 @@ const processSelection = (webContents?: any) => {
     Settings.layerSettingForKey(document, "type") === "UI_COLOR_PALETTE" &&
     (document.type !== "SymbolMaster" || document.type !== "SymbolInstance")
   )
-    selectionHandler("DOCUMENT_SELECTED");
+    return selectionHandler("DOCUMENT_SELECTED");
   else if (selection.length === 0) selectionHandler("EMPTY_SELECTION");
-  else if (
-    document.type !== "SymbolMaster" ||
-    document.type !== "SymbolInstance"
-  )
-    selectionHandler("EMPTY_SELECTION");
-  else if (document.style.fills.length === 0)
-    selectionHandler("EMPTY_SELECTION");
 
   selection.forEach((element) => {
     const foundColors = element.style.fills.filter(
       (fill: any) => fill.fillType === "Color"
     );
-    if (element.type !== "Group" && element.type !== "Image")
-      if (foundColors.length > 0) {
-        foundColors.forEach((color: any) => {
-          const hexToGl = chroma(color.color as HexModel).gl();
-          viableSelection.push({
-            name: element.name,
-            rgb: {
-              r: hexToGl[0],
-              g: hexToGl[1],
-              b: hexToGl[2],
-            },
-            source: "CANVAS",
-            id: uid(),
-            isRemovable: false,
-            hue: {
-              shift: 0,
-              isLocked: false,
-            },
-            chroma: {
-              shift: 100,
-              isLocked: false,
-            },
-          });
+    if (
+      element.type !== "Group" &&
+      element.type !== "Image" &&
+      element.type !== "SymbolMaster" &&
+      element.type !== "SymbolInstance" &&
+      foundColors.length > 0
+    ) {
+      foundColors.forEach((color: any) => {
+        const hexToGl = chroma(color.color as HexModel).gl();
+        viableSelection.push({
+          name: element.name,
+          rgb: {
+            r: hexToGl[0],
+            g: hexToGl[1],
+            b: hexToGl[2],
+          },
+          source: "CANVAS",
+          id: uid(),
+          isRemovable: false,
+          hue: {
+            shift: 0,
+            isLocked: false,
+          },
+          chroma: {
+            shift: 100,
+            isLocked: false,
+          },
         });
-        selectionHandler("COLOR_SELECTED");
-      }
+      });
+      return selectionHandler("COLOR_SELECTED");
+    }
   });
 
   setTimeout(() => (isSelectionChanged = false), 1000);
