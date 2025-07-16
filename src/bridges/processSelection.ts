@@ -6,13 +6,16 @@ import {
 import Dom from "sketch/dom";
 import Settings from "sketch/settings";
 import { uid } from "uid/single";
+import { getWebContents } from "../utils/webContents";
 
 export let currentSelection: Array<any> = [];
 export let previousSelection: Array<any> = [];
 export let isSelectionChanged = false;
 
-const processSelection = (webContents: any) => {
+const processSelection = (webContents?: any) => {
   const Document = Dom.getSelectedDocument();
+  const sharedWebContents =
+    webContents === undefined ? getWebContents() : webContents;
 
   previousSelection = currentSelection.length === 0 ? [] : currentSelection;
   isSelectionChanged = true;
@@ -27,7 +30,7 @@ const processSelection = (webContents: any) => {
   const selectionHandler = (state: string) => {
     const actions: { [key: string]: () => void } = {
       DOCUMENT_SELECTED: async () => {
-        webContents.executeJavaScript(
+        sharedWebContents.executeJavaScript(
           `sendData(${JSON.stringify({
             type: "DOCUMENT_SELECTED",
             data: {
@@ -43,14 +46,14 @@ const processSelection = (webContents: any) => {
         );
       },
       EMPTY_SELECTION: () => {
-        webContents.executeJavaScript(
+        sharedWebContents.executeJavaScript(
           `sendData(${JSON.stringify({
             type: "EMPTY_SELECTION",
           })})`
         );
       },
       COLOR_SELECTED: () => {
-        webContents.executeJavaScript(
+        sharedWebContents.executeJavaScript(
           `sendData(${JSON.stringify({
             type: "COLOR_SELECTED",
             data: {

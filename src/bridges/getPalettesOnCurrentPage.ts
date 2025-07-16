@@ -1,15 +1,18 @@
 import { FullConfiguration } from "@a_ng_d/utils-ui-color-palette";
 import Dom from "sketch/dom";
 import Settings from "sketch/settings";
+import { getWebContents } from "../utils/webContents";
 
-const getPalettesOnCurrentPage = async (webContents: any) => {
+const getPalettesOnCurrentPage = async (webContents?: any) => {
   const Document = Dom.getSelectedDocument();
   const Page = Document.selectedPage;
+  const sharedWebContents =
+    webContents === undefined ? getWebContents() : webContents;
 
-  const palettesList: FullConfiguration =
+  const palettesList: Array<FullConfiguration> =
     Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
 
-  webContents.executeJavaScript(
+  sharedWebContents.executeJavaScript(
     `sendData(${JSON.stringify({
       type: "EXPOSE_PALETTES",
       data: palettesList,
