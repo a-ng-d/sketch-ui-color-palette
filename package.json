@@ -63,6 +63,7 @@
     "@babel/runtime": "^7.27.6",
     "@nanostores/preact": "^0.5.2",
     "@sentry/react": "^8.8.0",
+    "@sketch-hq/sketch-file-format-ts": "^6.5.0",
     "@supabase/supabase-js": "^2.44.2",
     "@types/apca-w3": "^0.1.3",
     "apca-w3": "^0.1.9",

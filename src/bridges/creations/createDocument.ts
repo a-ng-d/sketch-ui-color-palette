@@ -3,16 +3,22 @@ import {
   FullConfiguration,
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
-import { locales } from '../../content/locales'
-import Documents from '../../canvas/Documents'
+import { locales } from "../../../resources/content/locales";
+//import Documents from "../../canvas/Documents";
+import Dom from "sketch/dom";
+import Settings from "sketch/settings";
 
 const createDocument = async (id: string, view: ViewConfiguration) => {
-  const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
+  /*const Document = Dom.getSelectedDocument();
+  const Page = Document.selectedPage;
 
-  if (rawPalette === undefined || rawPalette === null)
-    throw new Error(locales.get().error.unfoundPalette)
+  const currentPalettes: Array<FullConfiguration> =
+    Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
 
-  const palette = JSON.parse(rawPalette) as FullConfiguration
+  const palette = currentPalettes.find((palette) => palette.meta.id === id);
+
+  if (palette === undefined)
+    throw new Error(locales.get().error.unfoundPalette);
 
   const documents = new Documents({
     base: palette.base,
@@ -20,17 +26,14 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
     data: new Data(palette).makePaletteData(),
     meta: palette.meta,
     view: view,
-  })
+  });
 
-  penpot.selection = documents.documents
-  penpot.viewport.zoomIntoView(penpot.selection)
+  Page.layers.push(...documents.documents);
 
-  await new Promise((r) => setTimeout(r, 1000))
-  await penpot.currentFile?.saveVersion(
-    `${palette.base.name} - ${locales.get().events.documentCreated}`
-  )
+  //Document.selectedLayer.push(...documents.documents);
+  Document.centerOnLayer(documents.documents[0]);
 
-  return palette
-}
+  return palette;*/
+};
 
 export default createDocument
