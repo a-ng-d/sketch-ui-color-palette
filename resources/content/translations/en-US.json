@@ -233,6 +233,11 @@
       "plural": "{count} styles created",
       "single": "1 style created"
     },
+    "createdLocalVariables": {
+      "none": "No variable created",
+      "plural": "{count} variables created",
+      "single": "1 variable created"
+    },
     "maxNumberOfSourceColors": "You cannot add more than {maxCount} source colors",
     "maxNumberOfStops": "You cannot add more than {maxCount} stops",
     "maxNumberOfLocalPalettes": "You cannot add more than {maxCount} local palettes",
@@ -243,12 +248,22 @@
       "plural": "{count} styles removed",
       "single": "1 style removed"
     },
+    "removedLocalVariables": {
+      "none": "No variable removed",
+      "plural": "{count} variables removed",
+      "single": "1 variable removed"
+    },
     "signOut": "See you later",
     "themesOnFree": "You cannot add or edit modes in the current plan",
     "updatedLocalStyles": {
       "none": "No style updated",
       "plural": "{count} styles updated",
       "single": "1 style updated"
+    },
+    "updatedLocalVariables": {
+      "none": "No variable updated",
+      "plural": "{count} variables updated",
+      "single": "1 variable updated"
     },
     "createdVariablesAndModes": {
       "noneNone": "No variable and mode created",

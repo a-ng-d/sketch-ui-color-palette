@@ -23,6 +23,8 @@ import updatePalette from "./bridges/updates/updatePalette";
 // import updateDocument from "./bridges/updates/updateDocument";
 import createLocalStyles from "./bridges/creations/createLocalStyles";
 import updateLocalStyles from "./bridges/updates/updateLocalStyles";
+import createLocalVariables from "./bridges/creations/createLocalVariables";
+import updateLocalVariables from "./bridges/updates/updateLocalVariables";
 import jumpToPalette from "./bridges/jumpToPalette";
 import enableTrial from "./bridges/enableTrial";
 import exportJsonDtcg from "./bridges/exports/exportJsonDtcg";
@@ -221,6 +223,40 @@ export default function () {
   webContents.on("SYNC_LOCAL_STYLES", (msg) =>
     createLocalStyles(msg.id)
       .then(async (message) => [message, await updateLocalStyles(msg.id)])
+      .then((messages) =>
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: "POST_MESSAGE",
+            data: {
+              type: "INFO",
+              message: messages.join(locales.get().separator),
+              timer: 10000,
+            },
+          })})`
+        )
+      )
+      .finally(() =>
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: "STOP_LOADER",
+          })})`
+        )
+      )
+      .catch((error) => {
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: "POST_MESSAGE",
+            data: {
+              type: "ERROR",
+              message: error.message,
+            },
+          })})`
+        );
+      })
+  );
+  webContents.on("SYNC_LOCAL_VARIABLES", (msg) =>
+    createLocalVariables(msg.id)
+      .then(async (message) => [message, await updateLocalVariables(msg.id)])
       .then((messages) =>
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({

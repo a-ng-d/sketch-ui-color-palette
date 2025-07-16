@@ -13,10 +13,10 @@ export default class LocalStyle {
   constructor({ name, hex }: { name: string; hex: HexModel }) {
     this.name = name;
     this.hex = hex;
-    this.sharedColorStyle = this.makeLibraryColor();
+    this.sharedColorStyle = this.makeSharedColorStyle();
   }
 
-  makeLibraryColor = () => {
+  makeSharedColorStyle = () => {
     this.sharedColorStyle = SharedStyle.fromStyle({
       name: this.name,
       style: {

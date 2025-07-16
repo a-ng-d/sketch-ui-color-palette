@@ -36,6 +36,6 @@ declare module "sketch/dom" {
 declare module "sketch" {
   export default {
     settingForKey: (key: string) => any,
-    SmartLayout: any,
+    Swatch: any,
   };
 }
