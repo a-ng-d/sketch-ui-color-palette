@@ -4,30 +4,39 @@ import {
   PaletteData,
   PaletteDataColorItem,
   PaletteDataShadeItem,
-} from '@a_ng_d/utils-ui-color-palette'
-import { locales } from '../../content/locales'
+  FullConfiguration,
+} from "@a_ng_d/utils-ui-color-palette";
+import { locales } from "../../../resources/content/locales";
+import Dom from "sketch/dom";
+import Settings from "sketch/settings";
+import { getWebContents } from "../../utils/webContents";
 
 const exportJsonTokensStudio = (id: string) => {
-  const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
+  const Document = Dom.getSelectedDocument();
+  const Page = Document.selectedPage;
 
-  if (rawPalette === undefined || rawPalette === null)
-    return penpot.ui.sendMessage({
-      type: 'EXPORT_PALETTE_JSON',
-      data: {
-        id: '',
-        context: 'TOKENS_AMZN_STYLE_DICTIONARY',
-        code: locales.get().error.export,
-      },
-    })
+  const currentPalettes: Array<FullConfiguration> =
+    Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
+  const palette = currentPalettes.find((palette) => palette.meta.id === id);
 
-  const paletteData: PaletteData = new Data(
-      JSON.parse(rawPalette)
-    ).makePaletteData(),
+  if (palette === undefined)
+    return getWebContents().executeJavaScript(
+      `sendData(${JSON.stringify({
+        type: "EXPORT_PALETTE_JSON",
+        data: {
+          id: "",
+          context: "TOKENS_AMZN_STYLE_DICTIONARY",
+          code: locales.get().error.export,
+        },
+      })})`
+    );
+
+  const paletteData: PaletteData = new Data(palette).makePaletteData(),
     workingThemes =
-      paletteData.themes.filter((theme) => theme.type === 'custom theme')
+      paletteData.themes.filter((theme) => theme.type === "custom theme")
         .length === 0
-        ? paletteData.themes.filter((theme) => theme.type === 'default theme')
-        : paletteData.themes.filter((theme) => theme.type === 'custom theme'),
+        ? paletteData.themes.filter((theme) => theme.type === "default theme")
+        : paletteData.themes.filter((theme) => theme.type === "custom theme"),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     json: { [key: string]: any } = {
       $themes: [],
@@ -36,9 +45,9 @@ const exportJsonTokensStudio = (id: string) => {
         tokenSetOrder: [],
         activeSets: [],
       },
-    }
+    };
 
-  const paletteName = JSON.parse(rawPalette).base.name
+  const paletteName = palette.base.name;
 
   const model = (
     color: PaletteDataColorItem,
@@ -46,64 +55,66 @@ const exportJsonTokensStudio = (id: string) => {
     source: PaletteDataShadeItem
   ) => {
     return {
-      $type: 'color',
+      $type: "color",
       $value: shade.isTransparent
         ? chroma(source.hex)
             .alpha(shade.alpha ?? 1)
             .hex()
         : shade.hex,
       $description:
-        color.description !== ''
+        color.description !== ""
           ? color.description + locales.get().separator + shade.description
           : shade.description,
-    }
-  }
+    };
+  };
 
-  if (workingThemes[0].type === 'custom theme')
+  if (workingThemes[0].type === "custom theme")
     workingThemes.forEach((theme) => {
       theme.colors.forEach((color) => {
         const source = color.shades.find(
-          (shade) => shade.type === 'source color'
-        )
+          (shade) => shade.type === "source color"
+        );
 
-        json[`${theme.name}/${color.name}`] = {}
+        json[`${theme.name}/${color.name}`] = {};
         color.shades.forEach((shade) => {
           if (shade && source)
             json[`${theme.name}/${color.name}`][shade.name] = model(
               color,
               shade,
               source
-            )
-        })
-      })
-    })
+            );
+        });
+      });
+    });
   else
     workingThemes.forEach((theme) => {
       theme.colors.forEach((color) => {
         const source = color.shades.find(
-          (shade) => shade.type === 'source color'
-        )
+          (shade) => shade.type === "source color"
+        );
 
-        json[`${paletteName}/${color.name}`] = {}
+        json[`${paletteName}/${color.name}`] = {};
         color.shades.forEach((shade) => {
           if (shade && source)
             json[`${paletteName}/${color.name}`][shade.name] = model(
               color,
               shade,
               source
-            )
-        })
-      })
-    })
+            );
+        });
+      });
+    });
 
-  return penpot.ui.sendMessage({
-    type: 'EXPORT_PALETTE_JSON',
-    data: {
-      id: '',
-      context: 'TOKENS_TOKENS_STUDIO',
-      code: JSON.stringify(json, null, '  '),
-    },
-  })
-}
+  return getWebContents().executeJavaScript(
+    `sendData(${JSON.stringify({
+      type: "EXPORT_PALETTE_JSON",
+      data: {
+        id: "",
+        context: "TOKENS_TOKENS_STUDIO",
+        code: JSON.stringify(json, null, "  "),
+      },
+    })})`
+  );
+};
 
 export default exportJsonTokensStudio

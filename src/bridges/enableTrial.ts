@@ -1,17 +1,22 @@
+import Settings from "sketch/settings";
+import { getWebContents } from "../utils/webContents";
+
 const enableTrial = async (trialTime: number, trialVersion: string) => {
-  const now = new Date().getTime()
+  const now = new Date().getTime();
 
-  penpot.localStorage.setItem('trial_start_date', now.toString())
-  penpot.localStorage.setItem('trial_version', trialVersion)
-  penpot.localStorage.setItem('trial_time', trialTime.toString())
+  Settings.setSettingForKey("trial_start_date", now.toString());
+  Settings.setSettingForKey("trial_version", trialVersion);
+  Settings.setSettingForKey("trial_time", trialTime.toString());
 
-  return penpot.ui.sendMessage({
-    type: 'ENABLE_TRIAL',
-    data: {
-      date: now,
-      trialTime: trialTime,
-    },
-  })
-}
+  getWebContents().executeJavaScript(
+    `sendData(${JSON.stringify({
+      type: "ENABLE_TRIAL",
+      data: {
+        date: now,
+        trialTime: trialTime,
+      },
+    })})`
+  );
+};
 
-export default enableTrial
+export default enableTrial;
