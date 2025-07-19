@@ -23,7 +23,7 @@ if (globalConfig.env.isMixpanelEnabled) {
   });
   //mixpanel.opt_in_tracking();
 
-  setMixpanelEnv(globalConfig.env.isDev);
+  setMixpanelEnv(process.env.NODE_ENV);
   initMixpanel(mixpanel);
 }
 
@@ -67,12 +67,11 @@ if (globalConfig.env.isSupabaseEnabled)
     process.env.REACT_APP_SUPABASE_PUBLIC_ANON_KEY ?? ""
   );
 
-// Sketch message translation 
 window.sendData = (data) => {
-  var event = new CustomEvent("message", {
+  var pluginEvent = new CustomEvent("pluginMessage", {
     detail: data,
   });
-  window.dispatchEvent(event);
+  window.dispatchEvent(pluginEvent);
 };
 
 const originalPostMessage = parent.postMessage;
