@@ -100,7 +100,7 @@ export default function () {
       `sendData(${JSON.stringify({
         type: "SET_THEME",
         data: {
-          theme: UI.getTheme() === "light" ? "penpot-light" : "penpot-dark",
+          theme: UI.getTheme() === "light" ? "sketch-light" : "sketch-dark",
         },
       })})`
     );
