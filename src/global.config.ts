@@ -81,6 +81,8 @@ const globalConfig: Config = {
       "DOCUMENT_PALETTE_PROPERTIES",
       "DOCUMENT_SHEET",
       "DOCUMENT_PUSH_UPDATES",
+      "DOWNLOAD_EXPORT",
+      "EXPORT_CSV",
     ],
     [
       "LOCAL_PALETTES",
