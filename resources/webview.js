@@ -86,7 +86,11 @@ parent.postMessage = (message, targetOrigin) => {
     window.postMessage(eventName, eventData);
     console.log(`Message intercepté et transformé: ${eventName}`, eventData);
   }
-}; 
+};
+
+window.open = (url) => {
+  window.postMessage("OPEN_IN_BROWSER", { url: url });
+};
 
 root.render(
   <ConfigProvider

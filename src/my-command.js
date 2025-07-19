@@ -69,7 +69,6 @@ export default function () {
       plugins: false,
       devTools: globalConfig.env.isDev,
     },
-    alwaysOnTop: true,
     hidesOnDeactivate: false,
   };
 
@@ -341,6 +340,9 @@ export default function () {
     });
   });
 
+  webContents.on("OPEN_IN_BROWSER", (msg) => {
+    NSWorkspace.sharedWorkspace().openURL(NSURL.URLWithString(msg.url));
+  });
   webContents.on("GET_PALETTES", () => getPalettesOnCurrentPage(webContents));
   webContents.on("JUMP_TO_PALETTE", (msg) =>
     jumpToPalette(msg.id).catch((error) =>
