@@ -75,14 +75,17 @@ const globalConfig: Config = {
   },
   features: doSpecificMode(
     [
-      "SYNC_LOCAL_VARIABLES",
-      "USER_PREFERENCES_SYNC_DEEP_VARIABLES",
       "RESIZE_UI",
       "HELP_CHAT",
+      "DOCUMENT_PALETTE",
+      "DOCUMENT_PALETTE_PROPERTIES",
+      "DOCUMENT_SHEET",
+      "DOCUMENT_PUSH_UPDATES",
     ],
     [
       "LOCAL_PALETTES",
       "SYNC_LOCAL_STYLES",
+      "SYNC_LOCAL_VARIABLES",
       "USER_PREFERENCES_SYNC_DEEP_STYLES",
       "PREVIEW_LOCK_SOURCE_COLORS",
       "SOURCE",
