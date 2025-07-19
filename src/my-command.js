@@ -69,6 +69,8 @@ export default function () {
       plugins: false,
       devTools: globalConfig.env.isDev,
     },
+    alwaysOnTop: true,
+    hidesOnDeactivate: false,
   };
 
   const browserWindow = new BrowserWindow(options);
@@ -199,27 +201,27 @@ export default function () {
         );
       })
   );
-  webContents.on("CREATE_DOCUMENT", (msg) =>
-    createDocument(msg.id, msg.view)
-      .finally(() =>
-        webContents.executeJavaScript(
-          `sendData(${JSON.stringify({
-            type: "STOP_LOADER",
-          })})`
-        )
-      )
-      .catch((error) => {
-        webContents.executeJavaScript(
-          `sendData(${JSON.stringify({
-            type: "POST_MESSAGE",
-            data: {
-              type: "ERROR",
-              message: error.message,
-            },
-          })})`
-        );
-      })
-  );
+  // webContents.on("CREATE_DOCUMENT", (msg) =>
+  //   createDocument(msg.id, msg.view)
+  //     .finally(() =>
+  //       webContents.executeJavaScript(
+  //         `sendData(${JSON.stringify({
+  //           type: "STOP_LOADER",
+  //         })})`
+  //       )
+  //     )
+  //     .catch((error) => {
+  //       webContents.executeJavaScript(
+  //         `sendData(${JSON.stringify({
+  //           type: "POST_MESSAGE",
+  //           data: {
+  //             type: "ERROR",
+  //             message: error.message,
+  //           },
+  //         })})`
+  //       );
+  //     })
+  // );
   webContents.on("SYNC_LOCAL_STYLES", (msg) =>
     createLocalStyles(msg.id)
       .then(async (message) => [message, await updateLocalStyles(msg.id)])
@@ -326,7 +328,9 @@ export default function () {
       webContents.executeJavaScript(
         `sendData(${JSON.stringify({
           type: `GET_ITEM_${item.toUpperCase()}`,
-          value: value,
+          data: {
+            value: value,
+          },
         })})`
       );
     });
