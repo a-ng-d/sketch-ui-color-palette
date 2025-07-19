@@ -8,7 +8,7 @@ module.exports = function (config, entry) {
     new Dotenv({
       path: path.resolve(__dirname, ".env.local"),
       systemvars: true, // Charge également les variables d'environnement système
-      safe: true, // Charge .env.example si présent (facultatif)
+      safe: false, // Charge .env.example si présent (facultatif)
       defaults: false, // Charge .env.defaults si présent (facultatif)
     })
   );
@@ -85,10 +85,10 @@ module.exports = function (config, entry) {
     test: /\.(webp|gif|png|jpe?g|svg)$/i,
     use: [
       {
-        loader: "@skpm/file-loader",
+        loader: "url-loader",
         options: {
-          name: "[name].[ext]",
-          outputPath: "images/",
+          limit: Infinity, // Toujours encoder en base64 quelle que soit la taille
+          encoding: "base64",
         },
       },
     ],
