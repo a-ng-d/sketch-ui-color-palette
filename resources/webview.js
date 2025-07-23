@@ -84,7 +84,6 @@ parent.postMessage = (message, targetOrigin) => {
     const eventData = message.pluginMessage || {};
 
     window.postMessage(eventName, eventData);
-    console.log(`Message intercepté et transformé: ${eventName}`, eventData);
   }
 };
 
