@@ -45,9 +45,9 @@ const globalConfig: Config = {
     platformUrl: "*",
     uiUrl: isDev
       ? "http://localhost:4400"
-      : "https://figma.ui-color-palette.com",
-    documentationUrl: "https://uicp.ylb.lt/docs-penpot-plugin",
-    repositoryUrl: "https://uicp.ylb.lt/repository-penpot-plugin",
+      : "https://sketch.ui-color-palette.com",
+    documentationUrl: "https://uicp.ylb.lt/docs-sketch-plugin",
+    repositoryUrl: "https://uicp.ylb.lt/repository-sketch-plugin",
     communityUrl: "https://uicp.ylb.lt/community",
     supportEmail: "https://uicp.ylb.lt/contact",
     feedbackUrl: "https://uicp.ylb.lt/feedback",
@@ -58,8 +58,8 @@ const globalConfig: Config = {
     licenseUrl: "https://uicp.ylb.lt/license",
     privacyUrl: "https://uicp.ylb.lt/privacy",
     vsCodeFigmaPluginUrl: "https://uicp.ylb.lt/vscode-figma-plugin",
-    isbUrl: "https://isb.ylb.lt/run-figma-plugin",
-    uicpUrl: "https://uicp.ylb.lt/run-penpot-plugin",
+    isbUrl: "https://isb.ylb.lt/website",
+    uicpUrl: "https://uicp.ylb.lt/website",
     storeUrl: isDev
       ? "https://uicp.ylb.lt/store-dev"
       : "https://uicp.ylb.lt/store",
@@ -83,6 +83,7 @@ const globalConfig: Config = {
       "DOCUMENT_PUSH_UPDATES",
       "DOWNLOAD_EXPORT",
       "EXPORT_CSV",
+      "LOCAL_PALETTES_PAGE",
     ],
     [
       "LOCAL_PALETTES",
