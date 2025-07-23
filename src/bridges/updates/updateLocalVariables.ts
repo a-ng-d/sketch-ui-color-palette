@@ -5,10 +5,9 @@ import Settings from "sketch/settings";
 
 const updateLocalVariables = async (id: string) => {
   const Document = Dom.getSelectedDocument();
-  const Page = Document.selectedPage;
 
   const currentPalettes: Array<FullConfiguration> =
-    Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
+    Settings.documentSettingForKey(Document, "ui_color_palettes") ?? [];
   const palette = currentPalettes.find((palette) => palette.meta.id === id);
 
   if (palette === undefined)

@@ -822,6 +822,7 @@
     "noCommunityPaletteOnRemote": "This is quite empty around here! Be the first to share your palette with other users!",
     "noPaletteOnCurrentPageOnDevMode": "You can ask a member with editing permissions to create",
     "noPaletteOnCurrrentPage": "There is no UI Color Palette on this page",
+    "noPaletteOnCurrrentFile": "There is no UI Color Palette on this file",
     "noSelfPaletteOnRemote": "This is quite empty around here! Publish your palette to reuse it across multiple documents",
     "paletteNameRecommendation": "64 characters max is recommended",
     "tooManyThemesToCreateModes": "You cannot create more than 4 modes in the current plan",

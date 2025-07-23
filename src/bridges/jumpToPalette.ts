@@ -6,16 +6,19 @@ import { getWebContents } from "../utils/webContents";
 
 const jumpToPalette = async (id: string) => {
   const Document = Dom.getSelectedDocument();
-  const Page = Document.selectedPage;
 
   const currentPalettes: Array<FullConfiguration> =
-    Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
+    Settings.documentSettingForKey(Document, "ui_color_palettes") ?? [];
   const palette = currentPalettes.find((palette) => palette.meta.id === id);
 
   if (palette === undefined) throw new Error(locales.get().error.fetchPalette);
 
   palette.meta.dates.openedAt = new Date().toISOString();
-  Settings.setLayerSettingForKey(Page, "ui_color_palettes", currentPalettes);
+  Settings.setDocumentSettingForKey(
+    Document,
+    "ui_color_palettes",
+    currentPalettes
+  );
 
   getWebContents().executeJavaScript(
     `sendData(${JSON.stringify({

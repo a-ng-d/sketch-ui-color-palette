@@ -1,6 +1,6 @@
-import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
-import { doScale } from '@a_ng_d/figmug-utils'
-import { ScaleMessage } from '../../types/messages'
+import { Data, FullConfiguration } from "@a_ng_d/utils-ui-color-palette";
+import { doScale } from "@a_ng_d/figmug-utils";
+import { ScaleMessage } from "../../types/messages";
 import { locales } from "../../../resources/content/locales";
 import Dom from "sketch/dom";
 import Settings from "sketch/settings";
@@ -8,10 +8,9 @@ import { getWebContents } from "../../utils/webContents";
 
 const updateScale = async (msg: ScaleMessage) => {
   const Document = Dom.getSelectedDocument();
-  const Page = Document.selectedPage;
 
   const currentPalettes: Array<FullConfiguration> =
-    Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
+    Settings.documentSettingForKey(Document, "ui_color_palettes") ?? [];
   const palette = currentPalettes.find(
     (palette) => palette.meta.id === msg.data.id
   );
@@ -80,9 +79,13 @@ const updateScale = async (msg: ScaleMessage) => {
     })})`
   );
 
-  Settings.setLayerSettingForKey(Page, "ui_color_palettes", currentPalettes);
+  Settings.setDocumentSettingForKey(
+    Document,
+    "ui_color_palettes",
+    currentPalettes
+  );
 
   return palette;
 };
 
-export default updateScale
+export default updateScale;

@@ -1,5 +1,5 @@
-import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
-import { PaletteMessage } from '../../types/messages'
+import { Data, FullConfiguration } from "@a_ng_d/utils-ui-color-palette";
+import { PaletteMessage } from "../../types/messages";
 import { locales } from "../../../resources/content/locales";
 import Dom from "sketch/dom";
 import Settings from "sketch/settings";
@@ -15,10 +15,9 @@ const updatePalette = async ({
   shouldLoadPalette?: boolean;
 }) => {
   const Document = Dom.getSelectedDocument();
-  const Page = Document.selectedPage;
 
   const currentPalettes: Array<FullConfiguration> =
-    Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
+    Settings.documentSettingForKey(Document, "ui_color_palettes") ?? [];
   const palette = currentPalettes.find((palette) => palette.meta.id === msg.id);
   const now = new Date().toISOString();
 
@@ -62,7 +61,11 @@ const updatePalette = async ({
       })})`
     );
 
-  Settings.setLayerSettingForKey(Page, "ui_color_palettes", currentPalettes);
+  Settings.setDocumentSettingForKey(
+    Document,
+    "ui_color_palettes",
+    currentPalettes
+  );
 
   return palette;
 };
@@ -70,23 +73,23 @@ const updatePalette = async ({
 const flattenObject = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   obj: Record<string, any>,
-  prefix = ''
+  prefix = ""
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Record<string, any> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return Object.keys(obj).reduce((acc: Record<string, any>, key: string) => {
-    const pre = prefix.length ? `${prefix}.` : ''
+    const pre = prefix.length ? `${prefix}.` : "";
 
     if (
-      typeof obj[key] === 'object' &&
+      typeof obj[key] === "object" &&
       obj[key] !== null &&
       !Array.isArray(obj[key])
     )
-      Object.assign(acc, flattenObject(obj[key], pre + key))
-    else acc[pre + key] = obj[key]
+      Object.assign(acc, flattenObject(obj[key], pre + key));
+    else acc[pre + key] = obj[key];
 
-    return acc
-  }, {})
-}
+    return acc;
+  }, {});
+};
 
-export default updatePalette
+export default updatePalette;

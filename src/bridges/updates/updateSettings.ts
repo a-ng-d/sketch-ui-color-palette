@@ -7,10 +7,9 @@ import { getWebContents } from "../../utils/webContents";
 
 const updateSettings = async (msg: SettingsMessage) => {
   const Document = Dom.getSelectedDocument();
-  const Page = Document.selectedPage;
 
   const currentPalettes: Array<FullConfiguration> =
-    Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
+    Settings.documentSettingForKey(Document, "ui_color_palettes") ?? [];
   const palette = currentPalettes.find((palette) => palette.meta.id === msg.id);
   const now = new Date().toISOString();
 
@@ -45,7 +44,11 @@ const updateSettings = async (msg: SettingsMessage) => {
     palette.libraryData
   );
 
-  Settings.setLayerSettingForKey(Page, "ui_color_palettes", currentPalettes);
+  Settings.setDocumentSettingForKey(
+    Document,
+    "ui_color_palettes",
+    currentPalettes
+  );
 
   return palette;
 };

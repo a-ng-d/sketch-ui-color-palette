@@ -5,12 +5,11 @@ import { getWebContents } from "../utils/webContents";
 
 const getPalettesOnCurrentPage = async (webContents?: any) => {
   const Document = Dom.getSelectedDocument();
-  const Page = Document.selectedPage;
   const sharedWebContents =
     webContents === undefined ? getWebContents() : webContents;
 
   const palettesList: Array<FullConfiguration> =
-    Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
+    Settings.documentSettingForKey(Document, "ui_color_palettes") ?? [];
 
   sharedWebContents.executeJavaScript(
     `sendData(${JSON.stringify({

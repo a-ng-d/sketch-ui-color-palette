@@ -21,10 +21,9 @@ interface Msg {
 
 const createPalette = async (msg: Msg) => {
   const Document = Dom.getSelectedDocument();
-  const Page = Document.selectedPage;
 
   const currentPalettes: Array<FullConfiguration> =
-    Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
+    Settings.documentSettingForKey(Document, "ui_color_palettes") ?? [];
   const colors: Array<ColorConfiguration> = msg.data.sourceColors
     .map((sourceColor) => {
       return {
@@ -101,7 +100,11 @@ const createPalette = async (msg: Msg) => {
   }).makePaletteFullData();
 
   currentPalettes.push(palette);
-  Settings.setLayerSettingForKey(Page, "ui_color_palettes", currentPalettes);
+  Settings.setDocumentSettingForKey(
+    Document,
+    "ui_color_palettes",
+    currentPalettes
+  );
 
   getWebContents().executeJavaScript(
     `sendData(${JSON.stringify({

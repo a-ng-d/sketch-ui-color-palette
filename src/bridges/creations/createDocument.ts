@@ -13,7 +13,7 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
   const Page = Document.selectedPage;
 
   const currentPalettes: Array<FullConfiguration> =
-    Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
+    Settings.documentSettingForKey(Document, "ui_color_palettes") ?? [];
 
   const palette = currentPalettes.find((palette) => palette.meta.id === id);
 

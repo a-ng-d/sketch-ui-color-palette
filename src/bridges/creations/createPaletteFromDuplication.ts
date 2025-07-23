@@ -6,10 +6,9 @@ import Dom from "sketch/dom";
 
 const createPaletteFromDuplication = async (id: string) => {
   const Document = Dom.getSelectedDocument();
-  const Page = Document.selectedPage;
 
   const currentPalettes: Array<FullConfiguration> =
-    Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
+    Settings.documentSettingForKey(Document, "ui_color_palettes") ?? [];
   const basePalette = currentPalettes.find((palette) => palette.meta.id === id);
   const now = new Date().toISOString();
 
@@ -34,7 +33,11 @@ const createPaletteFromDuplication = async (id: string) => {
   palette.meta.creatorIdentity.creatorAvatar = "";
 
   currentPalettes.push(palette);
-  Settings.setLayerSettingForKey(Page, "ui_color_palettes", currentPalettes);
+  Settings.setDocumentSettingForKey(
+    Document,
+    "ui_color_palettes",
+    currentPalettes
+  );
 
   return palette;
 };

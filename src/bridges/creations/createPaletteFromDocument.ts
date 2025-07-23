@@ -7,10 +7,9 @@ import { getWebContents } from "../../utils/webContents";
 
 const createPaletteFromDocument = async () => {
   const Document = Dom.getSelectedDocument();
-  const Page = Document.selectedPage;
 
   const currentPalettes: Array<FullConfiguration> =
-    Settings.layerSettingForKey(Page, "ui_color_palettes") ?? [];
+    Settings.documentSettingForKey(Document, "ui_color_palettes") ?? [];
   const document = Document.selectedLayers.layers[0];
   const backup = Settings.documentSettingForKey(
     document,
@@ -29,12 +28,16 @@ const createPaletteFromDocument = async () => {
   backup.meta.creatorIdentity.creatorFullName = "";
   backup.meta.creatorIdentity.creatorAvatar = "";
 
-  Settings.setLayerSettingForKey(document, "id", backup.meta.id);
-  Settings.setLayerSettingForKey(document, "createdAt", now);
-  Settings.setLayerSettingForKey(document, "updatedAt", now);
+  Settings.setDocumentSettingForKey(Document, "id", backup.meta.id);
+  Settings.setDocumentSettingForKey(Document, "createdAt", now);
+  Settings.setDocumentSettingForKey(Document, "updatedAt", now);
 
   currentPalettes.push(backup);
-  Settings.setLayerSettingForKey(Page, "ui_color_palettes", currentPalettes);
+  Settings.setDocumentSettingForKey(
+    Document,
+    "ui_color_palettes",
+    currentPalettes
+  );
 
   getWebContents().executeJavaScript(
     `sendData(${JSON.stringify({
