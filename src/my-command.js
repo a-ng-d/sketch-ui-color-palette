@@ -316,6 +316,19 @@ export default function () {
     }
   });
 
+
+  webContents.on("POST_MESSAGE", (msg) => {
+    console.log(`Message received: ${msg.data.type}`, msg.data.message);
+    webContents.executeJavaScript(
+      `sendData(${JSON.stringify({
+        type: "POST_MESSAGE",
+        data: {
+          type: msg.data.type,
+          message: msg.data.message,
+        },
+      })})`
+    );
+  });
   webContents.on("SET_ITEMS", (msg) => {
     msg.items.forEach((item) => {
       Settings.setSettingForKey(item.key, item.value);
@@ -447,6 +460,7 @@ export default function () {
         },
       })})`
     );
+    checkTrialStatus();
   });
   webContents.on("WELCOME_TO_PRO", () => {
     const userId = Settings.settingForKey("user_id") || "";
