@@ -1,13 +1,13 @@
+import Settings from "sketch/settings";
+import Dom from "sketch/dom";
 import {
   Data,
   PaletteData,
   FullConfiguration,
 } from "@a_ng_d/utils-ui-color-palette";
 import { Case } from "@a_ng_d/figmug-utils";
-import { locales } from "../../../resources/content/locales";
-import Dom from "sketch/dom";
-import Settings from "sketch/settings";
 import { getWebContents } from "../../utils/webContents";
+import { locales } from "../../../resources/content/locales";
 
 const exportSwiftUI = (id: string) => {
   const Document = Dom.getSelectedDocument();

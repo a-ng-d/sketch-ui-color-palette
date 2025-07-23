@@ -1,0 +1,5 @@
+# ESLint ignores
+node_modules/
+dist/
+packages/
+sketch-ui-color-palette.sketchplugin/

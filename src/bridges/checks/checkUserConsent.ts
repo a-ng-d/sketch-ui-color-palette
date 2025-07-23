@@ -1,7 +1,7 @@
-import { userConsent } from '../../utils/userConsent'
-import globalConfig from '../../global.config'
 import Settings from "sketch/settings";
 import { getWebContents } from "../../utils/webContents";
+import { userConsent } from '../../utils/userConsent'
+import globalConfig from '../../global.config'
 
 const checkUserConsent = async () => {
   const currentUserConsentVersion = Settings.settingForKey(

@@ -1,6 +1,6 @@
-import { HexModel } from "@a_ng_d/utils-ui-color-palette";
-import FileFormat from "@sketch-hq/sketch-file-format-ts";
 import Dom from "sketch/dom";
+import FileFormat from "@sketch-hq/sketch-file-format-ts";
+import { HexModel } from "@a_ng_d/utils-ui-color-palette";
 
 const Document = Dom.getSelectedDocument();
 const SharedStyle = Dom.SharedStyle;

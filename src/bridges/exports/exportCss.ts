@@ -1,3 +1,5 @@
+import Settings from "sketch/settings";
+import Dom from "sketch/dom";
 import chroma from 'chroma-js'
 import {
   ColorSpaceConfiguration,
@@ -7,10 +9,8 @@ import {
   FullConfiguration,
 } from "@a_ng_d/utils-ui-color-palette";
 import { Case } from '@a_ng_d/figmug-utils'
-import { locales } from "../../../resources/content/locales";
-import Dom from "sketch/dom";
-import Settings from "sketch/settings";
 import { getWebContents } from "../../utils/webContents";
+import { locales } from "../../../resources/content/locales";
 
 const exportCss = (id: string, colorSpace: ColorSpaceConfiguration) => {
   const Document = Dom.getSelectedDocument();

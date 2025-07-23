@@ -32,7 +32,10 @@
     "watch": "skpm-build --watch",
     "start": "skpm-build --watch",
     "postinstall": "npm run build && skpm-link",
-    "hotreload": "find /Users/a_ng_d/DEV/sketch-ui-color-palette/sketch-ui-color-palette.sketchplugin -name '*js' | entr -r /Applications/Sketch.app/Contents/MacOS/Sketch"
+    "hotreload": "find /Users/a_ng_d/DEV/sketch-ui-color-palette/sketch-ui-color-palette.sketchplugin -name '*js' | entr -r /Applications/Sketch.app/Contents/MacOS/Sketch",
+    "typecheck": "npx tsc --noEmit",
+    "lint": "npx eslint ./src/** --fix --ext .js,.ts,.tsx .",
+    "format": "npx prettier './src, ./resources' --write"
   },
   "devDependencies": {
     "@babel/core": "^7.28.0",

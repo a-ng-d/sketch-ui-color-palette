@@ -1,46 +1,46 @@
-import BrowserWindow from "sketch-module-web-view";
 import { getWebview } from "sketch-module-web-view/remote";
+import BrowserWindow from "sketch-module-web-view";
 import UI from "sketch/ui";
 import Settings from "sketch/settings";
-import checkUserConsent from "./bridges/checks/checkUserConsent";
-import checkTrialStatus from "./bridges/checks/checkTrialStatus";
-import checkUserLicense from "./bridges/checks/checkUserLicense";
-import checkUserPreferences from "./bridges/checks/checkUserPreferences";
-import checkAnnouncementsStatus from "./bridges/checks/checkAnnouncementsStatus";
-import getPalettesOnCurrentPage from "./bridges/getPalettesOnCurrentPage";
-import createPalette from "./bridges/creations/createPalette";
-import createDocument from "./bridges/creations/createDocument";
-import createPaletteFromDocument from "./bridges/creations/createPaletteFromDocument";
-import createPaletteFromRemote from "./bridges/creations/createPaletteFromRemote";
-import createPaletteFromDuplication from "./bridges/creations/createPaletteFromDuplication";
-import deletePalette from "./bridges/creations/deletePalette";
-import processSelection from "./bridges/processSelection.ts";
-import updateScale from "./bridges/updates/updateScale";
-import updateColors from "./bridges/updates/updateColors";
+import { locales } from "../resources/content/locales";
+import { setWebContents } from "./utils/webContents";
+import globalConfig from "./global.config.ts";
 import updateThemes from "./bridges/updates/updateThemes";
 import updateSettings from "./bridges/updates/updateSettings";
+import updateScale from "./bridges/updates/updateScale";
 import updatePalette from "./bridges/updates/updatePalette";
-// import updateDocument from "./bridges/updates/updateDocument";
-import createLocalStyles from "./bridges/creations/createLocalStyles";
-import updateLocalStyles from "./bridges/updates/updateLocalStyles";
-import createLocalVariables from "./bridges/creations/createLocalVariables";
 import updateLocalVariables from "./bridges/updates/updateLocalVariables";
+import updateLocalStyles from "./bridges/updates/updateLocalStyles";
+import updateColors from "./bridges/updates/updateColors";
+import processSelection from "./bridges/processSelection.ts";
 import jumpToPalette from "./bridges/jumpToPalette";
-import enableTrial from "./bridges/enableTrial";
-import exportJsonDtcg from "./bridges/exports/exportJsonDtcg";
-import exportJson from "./bridges/exports/exportJson";
-import exportJsonAmznStyleDictionary from "./bridges/exports/exportJsonAmznStyleDictionary";
-import exportJsonTokensStudio from "./bridges/exports/exportJsonTokensStudio";
-import exportCss from "./bridges/exports/exportCss";
+import getPalettesOnCurrentPage from "./bridges/getPalettesOnCurrentPage";
+import exportXml from "./bridges/exports/exportXml";
+import exportUIKit from "./bridges/exports/exportUIKit";
 import exportTailwind from "./bridges/exports/exportTailwind";
 import exportSwiftUI from "./bridges/exports/exportSwiftUI";
-import exportUIKit from "./bridges/exports/exportUIKit";
 import exportKt from "./bridges/exports/exportKt";
-import exportXml from "./bridges/exports/exportXml";
+import exportJsonTokensStudio from "./bridges/exports/exportJsonTokensStudio";
+import exportJsonDtcg from "./bridges/exports/exportJsonDtcg";
+import exportJsonAmznStyleDictionary from "./bridges/exports/exportJsonAmznStyleDictionary";
+import exportJson from "./bridges/exports/exportJson";
 import exportCsv from "./bridges/exports/exportCsv";
-import { setWebContents } from "./utils/webContents";
-import { locales } from "../resources/content/locales";
-import globalConfig from "./global.config.ts";
+import exportCss from "./bridges/exports/exportCss";
+import enableTrial from "./bridges/enableTrial";
+import deletePalette from "./bridges/creations/deletePalette";
+import createPaletteFromRemote from "./bridges/creations/createPaletteFromRemote";
+import createPaletteFromDuplication from "./bridges/creations/createPaletteFromDuplication";
+import createPaletteFromDocument from "./bridges/creations/createPaletteFromDocument";
+import createPalette from "./bridges/creations/createPalette";
+import createLocalVariables from "./bridges/creations/createLocalVariables";
+import createLocalStyles from "./bridges/creations/createLocalStyles";
+import checkUserPreferences from "./bridges/checks/checkUserPreferences";
+import checkUserLicense from "./bridges/checks/checkUserLicense";
+import checkUserConsent from "./bridges/checks/checkUserConsent";
+import checkTrialStatus from "./bridges/checks/checkTrialStatus";
+import checkAnnouncementsStatus from "./bridges/checks/checkAnnouncementsStatus";
+// import createDocument from "./bridges/creations/createDocument";
+// import updateDocument from "./bridges/updates/updateDocument";
 
 const webviewIdentifier = "sketch-ui-color-palette.webview";
 
@@ -291,29 +291,29 @@ export default function () {
   );
 
   webContents.on("EXPORT_PALETTE", (msg) => {
-    if (msg.export === "TOKENS_DTCG") {
+    if (msg.export === "TOKENS_DTCG") 
       exportJsonDtcg(msg.id, msg.colorSpace);
-    } else if (msg.export === "TOKENS_GLOBAL") {
+     else if (msg.export === "TOKENS_GLOBAL") 
       exportJson(msg.id);
-    } else if (msg.export === "TOKENS_AMZN_STYLE_DICTIONARY") {
+     else if (msg.export === "TOKENS_AMZN_STYLE_DICTIONARY") 
       exportJsonAmznStyleDictionary(msg.id);
-    } else if (msg.export === "TOKENS_TOKENS_STUDIO") {
+     else if (msg.export === "TOKENS_TOKENS_STUDIO") 
       exportJsonTokensStudio(msg.id);
-    } else if (msg.export === "CSS") {
+     else if (msg.export === "CSS") 
       exportCss(msg.id, msg.colorSpace);
-    } else if (msg.export === "TAILWIND") {
+     else if (msg.export === "TAILWIND") 
       exportTailwind(msg.id);
-    } else if (msg.export === "APPLE_SWIFTUI") {
+     else if (msg.export === "APPLE_SWIFTUI") 
       exportSwiftUI(msg.id);
-    } else if (msg.export === "APPLE_UIKIT") {
+     else if (msg.export === "APPLE_UIKIT") 
       exportUIKit(msg.id);
-    } else if (msg.export === "ANDROID_COMPOSE") {
+     else if (msg.export === "ANDROID_COMPOSE") 
       exportKt(msg.id);
-    } else if (msg.export === "ANDROID_XML") {
+     else if (msg.export === "ANDROID_XML") 
       exportXml(msg.id);
-    } else if (msg.export === "CSV") {
+     else if (msg.export === "CSV") 
       exportCsv(msg.id);
-    }
+    
   });
 
   webContents.on("POST_MESSAGE", (msg) => {
@@ -502,9 +502,9 @@ export default function () {
 
 export function onShutdown() {
   const existingWebview = getWebview(webviewIdentifier);
-  if (existingWebview) {
+  if (existingWebview) 
     existingWebview.close();
-  }
+  
 }
 
 export const onChangeSelection = () => {

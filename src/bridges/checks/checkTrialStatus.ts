@@ -1,6 +1,6 @@
+import Settings from "sketch/settings";
 import { getWebContents } from "../../utils/webContents";
 import globalConfig from "../../global.config";
-import Settings from "sketch/settings";
 
 const checkTrialStatus = async () => {
   const trialStartDate =

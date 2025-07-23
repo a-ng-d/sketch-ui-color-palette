@@ -1,7 +1,7 @@
-import { locales } from "../../../resources/content/locales";
 import Settings from "sketch/settings";
 import Dom from "sketch/dom";
 import { FullConfiguration } from "@a_ng_d/utils-ui-color-palette";
+import { locales } from "../../../resources/content/locales";
 
 const deletePalette = async (id: string) => {
   const Document = Dom.getSelectedDocument();

@@ -1,6 +1,6 @@
-import { FullConfiguration } from "@a_ng_d/utils-ui-color-palette";
-import Dom from "sketch/dom";
 import Settings from "sketch/settings";
+import Dom from "sketch/dom";
+import { FullConfiguration } from "@a_ng_d/utils-ui-color-palette";
 import { getWebContents } from "../utils/webContents";
 
 const getPalettesOnCurrentPage = async (webContents?: any) => {

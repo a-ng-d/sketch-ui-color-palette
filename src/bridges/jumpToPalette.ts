@@ -1,8 +1,8 @@
-import { FullConfiguration } from "@a_ng_d/utils-ui-color-palette";
-import { locales } from "../../resources/content/locales";
-import Dom from "sketch/dom";
 import Settings from "sketch/settings";
+import Dom from "sketch/dom";
+import { FullConfiguration } from "@a_ng_d/utils-ui-color-palette";
 import { getWebContents } from "../utils/webContents";
+import { locales } from "../../resources/content/locales";
 
 const jumpToPalette = async (id: string) => {
   const Document = Dom.getSelectedDocument();

@@ -1,8 +1,8 @@
-import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
-import { locales } from "../../../resources/content/locales";
-import LocalStyle from "../../canvas/LocalStyle";
-import Dom from "sketch/dom";
 import Settings from "sketch/settings";
+import Dom from "sketch/dom";
+import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import LocalStyle from "../../canvas/LocalStyle";
+import { locales } from "../../../resources/content/locales";
 
 const createLocalStyles = async (id: string) => {
   const Document = Dom.getSelectedDocument();

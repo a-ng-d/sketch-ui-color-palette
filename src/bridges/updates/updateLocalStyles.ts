@@ -1,7 +1,7 @@
+import Settings from "sketch/settings";
+import Dom from "sketch/dom";
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { locales } from "../../../resources/content/locales";
-import Dom from "sketch/dom";
-import Settings from "sketch/settings";
 
 const updateLocalStyles = async (id: string) => {
   const Document = Dom.getSelectedDocument();
@@ -43,13 +43,13 @@ const updateLocalStyles = async (id: string) => {
           k++;
         }
       });
-      if (idsToRemove.length > 0) {
-        for (let i = Document.sharedLayerStyles.length - 1; i >= 0; i--) {
-          if (idsToRemove.includes(Document.sharedLayerStyles[i].id)) {
+      if (idsToRemove.length > 0) 
+        for (let i = Document.sharedLayerStyles.length - 1; i >= 0; i--) 
+          if (idsToRemove.includes(Document.sharedLayerStyles[i].id)) 
             Document.sharedLayerStyles.splice(i, 1);
-          }
-        }
-      }
+          
+        
+      
     }
 
     palette.libraryData

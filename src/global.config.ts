@@ -1,6 +1,6 @@
 import { doSpecificMode } from "@ui-lib/stores/features";
-import { Config } from "./types/config";
 import { locales } from "../resources/content/locales";
+import { Config } from "./types/config";
 
 const isDev = process.env.NODE_ENV === "development";
 

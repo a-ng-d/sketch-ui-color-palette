@@ -1,12 +1,12 @@
+import { uid } from "uid/single";
+import Settings from "sketch/settings";
+import Dom from "sketch/dom";
 import chroma from "chroma-js";
 import {
   FullConfiguration,
   HexModel,
   SourceColorConfiguration,
 } from "@a_ng_d/utils-ui-color-palette";
-import Dom from "sketch/dom";
-import Settings from "sketch/settings";
-import { uid } from "uid/single";
 import { getWebContents } from "../utils/webContents";
 
 export let currentSelection: Array<any> = [];

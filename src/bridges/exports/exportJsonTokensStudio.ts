@@ -1,3 +1,5 @@
+import Settings from "sketch/settings";
+import Dom from "sketch/dom";
 import chroma from 'chroma-js'
 import {
   Data,
@@ -6,10 +8,8 @@ import {
   PaletteDataShadeItem,
   FullConfiguration,
 } from "@a_ng_d/utils-ui-color-palette";
-import { locales } from "../../../resources/content/locales";
-import Dom from "sketch/dom";
-import Settings from "sketch/settings";
 import { getWebContents } from "../../utils/webContents";
+import { locales } from "../../../resources/content/locales";
 
 const exportJsonTokensStudio = (id: string) => {
   const Document = Dom.getSelectedDocument();

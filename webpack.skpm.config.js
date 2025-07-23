@@ -1,5 +1,5 @@
-const Dotenv = require("dotenv-webpack");
 const path = require("path");
+const Dotenv = require("dotenv-webpack");
 
 module.exports = function (config, entry) {
   config.plugins = config.plugins || [];
