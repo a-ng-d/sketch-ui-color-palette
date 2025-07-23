@@ -1,34 +1,33 @@
-import Settings from "sketch/settings";
-import Dom from "sketch/dom";
+import Settings from 'sketch/settings'
+import Dom from 'sketch/dom'
 import {
   BaseConfiguration,
   Data,
   FullConfiguration,
   MetaConfiguration,
   ThemeConfiguration,
-} from "@a_ng_d/utils-ui-color-palette";
-import { getWebContents } from "../../utils/webContents";
-import { locales } from "../../../resources/content/locales";
+} from '@a_ng_d/utils-ui-color-palette'
+import { getWebContents } from '../../utils/webContents'
+import { locales } from '../../../resources/content/locales'
 
 interface Msg {
   data: {
-    base: BaseConfiguration;
-    themes: Array<ThemeConfiguration>;
-    meta: MetaConfiguration;
-  };
+    base: BaseConfiguration
+    themes: Array<ThemeConfiguration>
+    meta: MetaConfiguration
+  }
 }
 
 const createPaletteFromRemote = async (msg: Msg) => {
-  const Document = Dom.getSelectedDocument();
+  const Document = Dom.getSelectedDocument()
 
   const currentPalettes: Array<FullConfiguration> =
-    Settings.documentSettingForKey(Document, "ui_color_palettes") ?? [];
+    Settings.documentSettingForKey(Document, 'ui_color_palettes') ?? []
   const localPalette = currentPalettes.find(
     (palette) => palette.meta.id === msg.data.meta.id
-  );
+  )
 
-  if (localPalette !== undefined)
-    throw new Error(locales.get().info.addToLocal);
+  if (localPalette !== undefined) throw new Error(locales.get().info.addToLocal)
 
   const palette = new Data({
     base: {
@@ -60,23 +59,23 @@ const createPaletteFromRemote = async (msg: Msg) => {
         isPublished: msg.data.meta.publicationStatus.isPublished,
       },
     },
-  }).makePaletteFullData();
+  }).makePaletteFullData()
 
-  currentPalettes.push(palette);
+  currentPalettes.push(palette)
   Settings.setDocumentSettingForKey(
     Document,
-    "ui_color_palettes",
+    'ui_color_palettes',
     currentPalettes
-  );
+  )
 
   getWebContents().executeJavaScript(
     `sendData(${JSON.stringify({
-      type: "LOAD_PALETTE",
+      type: 'LOAD_PALETTE',
       data: palette,
     })})`
-  );
+  )
 
-  return palette;
-};
+  return palette
+}
 
-export default createPaletteFromRemote;
+export default createPaletteFromRemote

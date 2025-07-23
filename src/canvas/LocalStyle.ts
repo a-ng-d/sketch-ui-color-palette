@@ -1,19 +1,19 @@
-import Dom from "sketch/dom";
-import FileFormat from "@sketch-hq/sketch-file-format-ts";
-import { HexModel } from "@a_ng_d/utils-ui-color-palette";
+import Dom from 'sketch/dom'
+import FileFormat from '@sketch-hq/sketch-file-format-ts'
+import { HexModel } from '@a_ng_d/utils-ui-color-palette'
 
-const Document = Dom.getSelectedDocument();
-const SharedStyle = Dom.SharedStyle;
+const Document = Dom.getSelectedDocument()
+const SharedStyle = Dom.SharedStyle
 
 export default class LocalStyle {
-  private name: string;
-  private hex: HexModel;
-  sharedColorStyle: FileFormat.SharedStyle;
+  private name: string
+  private hex: HexModel
+  sharedColorStyle: FileFormat.SharedStyle
 
   constructor({ name, hex }: { name: string; hex: HexModel }) {
-    this.name = name;
-    this.hex = hex;
-    this.sharedColorStyle = this.makeSharedColorStyle();
+    this.name = name
+    this.hex = hex
+    this.sharedColorStyle = this.makeSharedColorStyle()
   }
 
   makeSharedColorStyle = () => {
@@ -23,13 +23,13 @@ export default class LocalStyle {
         fills: [
           {
             color: this.hex,
-            fillType: "Color",
+            fillType: 'Color',
           },
         ],
       },
       document: Document,
-    });
+    })
 
-    return this.sharedColorStyle;
-  };
+    return this.sharedColorStyle
+  }
 }

@@ -1,41 +1,41 @@
-import Settings from "sketch/settings";
-import Dom from "sketch/dom";
+import Settings from 'sketch/settings'
+import Dom from 'sketch/dom'
 import {
   Data,
   PaletteData,
   PaletteDataShadeItem,
   FullConfiguration,
-} from "@a_ng_d/utils-ui-color-palette";
-import { getWebContents } from "../../utils/webContents";
-import { locales } from "../../../resources/content/locales";
+} from '@a_ng_d/utils-ui-color-palette'
+import { getWebContents } from '../../utils/webContents'
+import { locales } from '../../../resources/content/locales'
 
 const exportJson = (id: string) => {
-  const Document = Dom.getSelectedDocument();
+  const Document = Dom.getSelectedDocument()
 
   const currentPalettes: Array<FullConfiguration> =
-    Settings.documentSettingForKey(Document, "ui_color_palettes") ?? [];
-  const palette = currentPalettes.find((palette) => palette.meta.id === id);
+    Settings.documentSettingForKey(Document, 'ui_color_palettes') ?? []
+  const palette = currentPalettes.find((palette) => palette.meta.id === id)
 
   if (palette === undefined)
     return getWebContents().executeJavaScript(
       `sendData(${JSON.stringify({
-        type: "EXPORT_PALETTE_JSON",
+        type: 'EXPORT_PALETTE_JSON',
         data: {
-          id: "",
-          context: "TOKENS_GLOBAL",
+          id: '',
+          context: 'TOKENS_GLOBAL',
           code: locales.get().error.export,
         },
       })})`
-    );
+    )
 
   const paletteData: PaletteData = new Data(palette).makePaletteData(),
     workingThemes =
-      paletteData.themes.filter((theme) => theme.type === "custom theme")
+      paletteData.themes.filter((theme) => theme.type === 'custom theme')
         .length === 0
-        ? paletteData.themes.filter((theme) => theme.type === "default theme")
-        : paletteData.themes.filter((theme) => theme.type === "custom theme"),
+        ? paletteData.themes.filter((theme) => theme.type === 'default theme')
+        : paletteData.themes.filter((theme) => theme.type === 'custom theme'),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    json: { [key: string]: any } = {};
+    json: { [key: string]: any } = {}
 
   const model = (shade: PaletteDataShadeItem) => {
     return {
@@ -81,9 +81,9 @@ const exportJson = (id: string) => {
       },
       hex: shade.hex,
       description: shade.description,
-      type: "color shade",
-    };
-  };
+      type: 'color shade',
+    }
+  }
 
   const modelWithAlpha = (
     shade: PaletteDataShadeItem,
@@ -133,63 +133,63 @@ const exportJson = (id: string) => {
       hex: source.hex,
       alpha: shade.alpha,
       description: shade.description,
-      type: "color shade",
-    };
-  };
+      type: 'color shade',
+    }
+  }
 
-  if (workingThemes[0].type === "custom theme")
+  if (workingThemes[0].type === 'custom theme')
     workingThemes.forEach((theme) => {
-      json[theme.name] = {};
+      json[theme.name] = {}
       theme.colors.forEach((color) => {
         const source = color.shades.find(
-          (shade) => shade.type === "source color"
-        );
+          (shade) => shade.type === 'source color'
+        )
 
-        json[theme.name][color.name] = {};
+        json[theme.name][color.name] = {}
         color.shades.forEach((shade) => {
           if (shade && source)
             json[theme.name][color.name][shade.name] = shade.isTransparent
               ? modelWithAlpha(shade, source)
-              : model(shade);
-        });
-        json[theme.name][color.name]["description"] = color.description;
-        json[theme.name][color.name]["type"] = "color";
-      });
-      json[theme.name]["description"] = theme.description;
-      json[theme.name]["type"] = "color theme";
-    });
+              : model(shade)
+        })
+        json[theme.name][color.name]['description'] = color.description
+        json[theme.name][color.name]['type'] = 'color'
+      })
+      json[theme.name]['description'] = theme.description
+      json[theme.name]['type'] = 'color theme'
+    })
   else
     workingThemes.forEach((theme) => {
       theme.colors.forEach((color) => {
         const source = color.shades.find(
-          (shade) => shade.type === "source color"
-        );
+          (shade) => shade.type === 'source color'
+        )
 
-        json[color.name] = {};
+        json[color.name] = {}
         color.shades.forEach((shade) => {
           if (shade && source)
             json[color.name][shade.name] = shade.isTransparent
               ? modelWithAlpha(shade, source)
-              : model(shade);
-        });
-        json[color.name]["description"] = color.description;
-        json[color.name]["type"] = "color";
-      });
-    });
+              : model(shade)
+        })
+        json[color.name]['description'] = color.description
+        json[color.name]['type'] = 'color'
+      })
+    })
 
-  json["descrption"] = paletteData.description;
-  json["type"] = "color palette";
+  json['descrption'] = paletteData.description
+  json['type'] = 'color palette'
 
   return getWebContents().executeJavaScript(
     `sendData(${JSON.stringify({
-      type: "EXPORT_PALETTE_JSON",
+      type: 'EXPORT_PALETTE_JSON',
       data: {
-        id: "",
-        context: "TOKENS_GLOBAL",
-        code: JSON.stringify(json, null, "  "),
+        id: '',
+        context: 'TOKENS_GLOBAL',
+        code: JSON.stringify(json, null, '  '),
       },
     })})`
-  );
-};
+  )
+}
 
 export default exportJson

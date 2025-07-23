@@ -1,10 +1,10 @@
-let sharedWebContents: any = null;
+let sharedWebContents: any = null
 
 export const getWebContents = () => {
-  return sharedWebContents;
-};
+  return sharedWebContents
+}
 
 export const setWebContents = (webContents: any) => {
-  sharedWebContents = webContents;
-  return webContents;
-};
+  sharedWebContents = webContents
+  return webContents
+}

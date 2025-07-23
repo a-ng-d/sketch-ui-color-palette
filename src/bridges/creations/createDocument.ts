@@ -1,11 +1,11 @@
-import Settings from "sketch/settings";
-import Dom from "sketch/dom";
+import Settings from 'sketch/settings'
+import Dom from 'sketch/dom'
 import {
   Data,
   FullConfiguration,
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
-import { locales } from "../../../resources/content/locales";
+import { locales } from '../../../resources/content/locales'
 //import Documents from "../../canvas/Documents";
 
 const createDocument = async (id: string, view: ViewConfiguration) => {
@@ -34,6 +34,6 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
   Document.centerOnLayer(documents.documents[0]);
 
   return palette;*/
-};
+}
 
 export default createDocument

@@ -1,5 +1,5 @@
-import Settings from "sketch/settings";
-import Dom from "sketch/dom";
+import Settings from 'sketch/settings'
+import Dom from 'sketch/dom'
 import chroma from 'chroma-js'
 import {
   ColorSpaceConfiguration,
@@ -7,38 +7,38 @@ import {
   PaletteData,
   PaletteDataShadeItem,
   FullConfiguration,
-} from "@a_ng_d/utils-ui-color-palette";
+} from '@a_ng_d/utils-ui-color-palette'
 import { Case } from '@a_ng_d/figmug-utils'
-import { getWebContents } from "../../utils/webContents";
-import { locales } from "../../../resources/content/locales";
+import { getWebContents } from '../../utils/webContents'
+import { locales } from '../../../resources/content/locales'
 
 const exportCss = (id: string, colorSpace: ColorSpaceConfiguration) => {
-  const Document = Dom.getSelectedDocument();
+  const Document = Dom.getSelectedDocument()
 
   const currentPalettes: Array<FullConfiguration> =
-    Settings.documentSettingForKey(Document, "ui_color_palettes") ?? [];
-  const palette = currentPalettes.find((palette) => palette.meta.id === id);
+    Settings.documentSettingForKey(Document, 'ui_color_palettes') ?? []
+  const palette = currentPalettes.find((palette) => palette.meta.id === id)
 
   if (palette === undefined)
     return getWebContents().executeJavaScript(
       `sendData(${JSON.stringify({
-        type: "EXPORT_PALETTE_CSS",
+        type: 'EXPORT_PALETTE_CSS',
         data: {
-          id: "",
-          context: "CSS",
+          id: '',
+          context: 'CSS',
           colorSpace: colorSpace,
           code: locales.get().error.export,
         },
       })})`
-    );
+    )
 
   const paletteData: PaletteData = new Data(palette).makePaletteData(),
     workingThemes =
-      paletteData.themes.filter((theme) => theme.type === "custom theme")
+      paletteData.themes.filter((theme) => theme.type === 'custom theme')
         .length === 0
-        ? paletteData.themes.filter((theme) => theme.type === "default theme")
-        : paletteData.themes.filter((theme) => theme.type === "custom theme"),
-    css: Array<string> = [];
+        ? paletteData.themes.filter((theme) => theme.type === 'default theme')
+        : paletteData.themes.filter((theme) => theme.type === 'custom theme'),
+    css: Array<string> = []
 
   const setValueAccordingToColorSpace = (shade: PaletteDataShadeItem) => {
     const actions: { [action: string]: () => void } = {
@@ -59,10 +59,10 @@ const exportCss = (id: string, colorSpace: ColorSpaceConfiguration) => {
         `color(display-p3 ${shade.gl[0].toFixed(3)} ${shade.gl[1].toFixed(
           3
         )} ${shade.gl[2].toFixed(3)})`,
-    };
+    }
 
-    return actions[colorSpace ?? "RGB"]?.();
-  };
+    return actions[colorSpace ?? 'RGB']?.()
+  }
 
   const setValueAccordingToAlpha = (
     shade: PaletteDataShadeItem,
@@ -89,47 +89,47 @@ const exportCss = (id: string, colorSpace: ColorSpaceConfiguration) => {
         `color(display-p3 ${source.gl[0].toFixed(3)} ${source.gl[1].toFixed(
           3
         )} ${source.gl[2].toFixed(3)} / ${shade.alpha?.toFixed(2) ?? 1})`,
-    };
+    }
 
-    return actions[colorSpace ?? "RGB"]?.();
-  };
+    return actions[colorSpace ?? 'RGB']?.()
+  }
 
   workingThemes.forEach((theme) => {
-    const rowCss: Array<string> = [];
+    const rowCss: Array<string> = []
     theme.colors.forEach((color) => {
-      rowCss.push(`/* ${color.name} */`);
+      rowCss.push(`/* ${color.name} */`)
       color.shades.reverse().forEach((shade) => {
-        const source = color.shades.find((c) => c.type === "source color");
+        const source = color.shades.find((c) => c.type === 'source color')
 
         if (source)
           rowCss.push(
             `--${new Case(color.name).doKebabCase()}-${shade.name}: ${shade.isTransparent ? setValueAccordingToAlpha(shade, source) : setValueAccordingToColorSpace(shade)};`
-          );
-      });
+          )
+      })
 
-      rowCss.push("");
-    });
-    rowCss.pop();
+      rowCss.push('')
+    })
+    rowCss.pop()
     css.push(
       `:root${
-        theme.type === "custom theme"
+        theme.type === 'custom theme'
           ? `[data-theme='${new Case(theme.name).doKebabCase()}']`
-          : ""
-      } {\n  ${rowCss.join("\n  ")}\n}`
-    );
-  });
+          : ''
+      } {\n  ${rowCss.join('\n  ')}\n}`
+    )
+  })
 
   return getWebContents().executeJavaScript(
     `sendData(${JSON.stringify({
-      type: "EXPORT_PALETTE_CSS",
+      type: 'EXPORT_PALETTE_CSS',
       data: {
-        id: "",
-        context: "CSS",
+        id: '',
+        context: 'CSS',
         colorSpace: colorSpace,
-        code: css.join("\n\n"),
+        code: css.join('\n\n'),
       },
     })})`
-  );
-};
+  )
+}
 
 export default exportCss

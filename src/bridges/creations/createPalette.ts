@@ -1,6 +1,6 @@
-import { uid } from "uid/single";
-import Settings from "sketch/settings";
-import Dom from "sketch/dom";
+import { uid } from 'uid/single'
+import Settings from 'sketch/settings'
+import Dom from 'sketch/dom'
 import {
   ColorConfiguration,
   Data,
@@ -8,27 +8,27 @@ import {
   FullConfiguration,
   SourceColorConfiguration,
   ThemeConfiguration,
-} from "@a_ng_d/utils-ui-color-palette";
-import { getWebContents } from "../../utils/webContents";
-import { locales } from "../../../resources/content/locales";
+} from '@a_ng_d/utils-ui-color-palette'
+import { getWebContents } from '../../utils/webContents'
+import { locales } from '../../../resources/content/locales'
 
 interface Msg {
   data: {
-    sourceColors: Array<SourceColorConfiguration>;
-    exchange: ExchangeConfiguration;
-  };
+    sourceColors: Array<SourceColorConfiguration>
+    exchange: ExchangeConfiguration
+  }
 }
 
 const createPalette = async (msg: Msg) => {
-  const Document = Dom.getSelectedDocument();
+  const Document = Dom.getSelectedDocument()
 
   const currentPalettes: Array<FullConfiguration> =
-    Settings.documentSettingForKey(Document, "ui_color_palettes") ?? [];
+    Settings.documentSettingForKey(Document, 'ui_color_palettes') ?? []
   const colors: Array<ColorConfiguration> = msg.data.sourceColors
     .map((sourceColor) => {
       return {
         name: sourceColor.name,
-        description: "",
+        description: '',
         rgb: sourceColor.rgb,
         id: uid(),
         hue: {
@@ -41,31 +41,31 @@ const createPalette = async (msg: Msg) => {
         },
         alpha: {
           isEnabled: false,
-          backgroundColor: "#FFFFFF",
+          backgroundColor: '#FFFFFF',
         },
-      };
+      }
     })
     .sort((a, b) => {
-      if (a.name.localeCompare(b.name) > 0) return 1;
-      else if (a.name.localeCompare(b.name) < 0) return -1;
-      else return 0;
-    });
+      if (a.name.localeCompare(b.name) > 0) return 1
+      else if (a.name.localeCompare(b.name) < 0) return -1
+      else return 0
+    })
 
   const themes: Array<ThemeConfiguration> = [
     {
       name: locales.get().themes.switchTheme.defaultTheme,
-      description: "",
+      description: '',
       scale: msg.data.exchange.scale,
-      paletteBackground: "#FFFFFF",
+      paletteBackground: '#FFFFFF',
       visionSimulationMode: msg.data.exchange.visionSimulationMode,
       textColorsTheme: msg.data.exchange.textColorsTheme,
       isEnabled: true,
-      id: "00000000000",
-      type: "default theme",
+      id: '00000000000',
+      type: 'default theme',
     },
-  ];
+  ]
 
-  const now = new Date().toISOString();
+  const now = new Date().toISOString()
 
   const palette = new Data({
     base: {
@@ -84,36 +84,36 @@ const createPalette = async (msg: Msg) => {
       dates: {
         createdAt: now,
         updatedAt: now,
-        publishedAt: "",
+        publishedAt: '',
         openedAt: now,
       },
       creatorIdentity: {
-        creatorId: "",
-        creatorFullName: "",
-        creatorAvatar: "",
+        creatorId: '',
+        creatorFullName: '',
+        creatorAvatar: '',
       },
       publicationStatus: {
         isShared: false,
         isPublished: false,
       },
     },
-  }).makePaletteFullData();
+  }).makePaletteFullData()
 
-  currentPalettes.push(palette);
+  currentPalettes.push(palette)
   Settings.setDocumentSettingForKey(
     Document,
-    "ui_color_palettes",
+    'ui_color_palettes',
     currentPalettes
-  );
+  )
 
   getWebContents().executeJavaScript(
     `sendData(${JSON.stringify({
-      type: "LOAD_PALETTE",
+      type: 'LOAD_PALETTE',
       data: palette,
     })})`
-  );
+  )
 
-  return palette;
-};
+  return palette
+}
 
-export default createPalette;
+export default createPalette

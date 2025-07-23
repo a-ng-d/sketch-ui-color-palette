@@ -1,21 +1,21 @@
-import Settings from "sketch/settings";
-import { getWebContents } from "../../utils/webContents";
+import Settings from 'sketch/settings'
+import { getWebContents } from '../../utils/webContents'
 
 const checkUserLicense = async () => {
-  const licenseKey = Settings.settingForKey("user_license_key");
-  const instanceId = Settings.settingForKey("user_license_instance_id");
+  const licenseKey = Settings.settingForKey('user_license_key')
+  const instanceId = Settings.settingForKey('user_license_instance_id')
 
   if (licenseKey !== undefined && instanceId !== undefined)
     getWebContents().executeJavaScript(
       `sendData(${JSON.stringify({
-        type: "CHECK_USER_LICENSE",
+        type: 'CHECK_USER_LICENSE',
         data: {
           licenseKey: licenseKey,
           instanceId: instanceId,
         },
       })})`
-    );
-  return true;
-};
+    )
+  return true
+}
 
-export default checkUserLicense;
+export default checkUserLicense

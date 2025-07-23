@@ -1,95 +1,95 @@
-import { createRoot } from "react-dom/client";
-import React from "react";
-import mixpanel from "mixpanel-browser";
-import App from "@ui-lib/ui/App";
-import { initMixpanel, setMixpanelEnv } from "@ui-lib/external/tracking/client";
-import { initSupabase } from "@ui-lib/external/auth/client";
-import { ThemeProvider } from "@ui-lib/config/ThemeContext";
-import { ConfigProvider } from "@ui-lib/config/ConfigContext";
-import * as Sentry from "@sentry/react";
-import globalConfig from "../src/global.config";
+import { createRoot } from 'react-dom/client'
+import React from 'react'
+import mixpanel from 'mixpanel-browser'
+import App from '@ui-lib/ui/App'
+import { initMixpanel, setMixpanelEnv } from '@ui-lib/external/tracking/client'
+import { initSupabase } from '@ui-lib/external/auth/client'
+import { ThemeProvider } from '@ui-lib/config/ThemeContext'
+import { ConfigProvider } from '@ui-lib/config/ConfigContext'
+import * as Sentry from '@sentry/react'
+import globalConfig from '../src/global.config'
 
-const container = document.getElementById("app"),
-  root = createRoot(container);
+const container = document.getElementById('app'),
+  root = createRoot(container)
 
 if (globalConfig.env.isMixpanelEnabled) {
   mixpanel.init(process.env.REACT_APP_MIXPANEL_TOKEN, {
-    api_host: "https://api-eu.mixpanel.com",
+    api_host: 'https://api-eu.mixpanel.com',
     debug: globalConfig.env.isDev,
     disable_persistence: true,
     disable_cookie: true,
     ignore_dnt: true,
     opt_out_tracking_by_default: true,
-  });
+  })
   //mixpanel.opt_in_tracking();
 
-  setMixpanelEnv(process.env.NODE_ENV);
-  initMixpanel(mixpanel);
+  setMixpanelEnv(process.env.NODE_ENV)
+  initMixpanel(mixpanel)
 }
 
 if (globalConfig.env.isMixpanelEnabled && !globalConfig.env.isDev)
   Sentry.init({
     dsn: process.env.REACT_APP_SENTRY_DSN,
-    environment: "production",
+    environment: 'production',
     integrations: [
       Sentry.browserTracingIntegration(),
       Sentry.replayIntegration(),
       Sentry.feedbackIntegration({
-        colorScheme: "system",
+        colorScheme: 'system',
         autoInject: false,
       }),
     ],
     tracesSampleRate: 0.1,
     replaysSessionSampleRate: 0.05,
     replaysOnErrorSampleRate: 0.5,
-  });
+  })
 else if (globalConfig.env.isDev) {
   const devLogger = {
     captureException: (error) => {
-      console.group("🐛 Dev Error Logger");
-      console.error(error);
-      console.groupEnd();
+      console.group('🐛 Dev Error Logger')
+      console.error(error)
+      console.groupEnd()
     },
     captureMessage: (message) => {
-      console.group("📝 Dev Message Logger");
-      console.info(message);
-      console.groupEnd();
+      console.group('📝 Dev Message Logger')
+      console.info(message)
+      console.groupEnd()
     },
-  };
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  window.Sentry = devLogger;
+  window.Sentry = devLogger
 }
 
 if (globalConfig.env.isSupabaseEnabled)
   initSupabase(
     globalConfig.urls.databaseUrl,
-    process.env.REACT_APP_SUPABASE_PUBLIC_ANON_KEY ?? ""
-  );
+    process.env.REACT_APP_SUPABASE_PUBLIC_ANON_KEY ?? ''
+  )
 
 window.sendData = (data) => {
-  var pluginEvent = new CustomEvent("pluginMessage", {
+  var pluginEvent = new CustomEvent('pluginMessage', {
     detail: data,
-  });
-  window.dispatchEvent(pluginEvent);
-};
+  })
+  window.dispatchEvent(pluginEvent)
+}
 
-const originalPostMessage = parent.postMessage;
+const originalPostMessage = parent.postMessage
 
 parent.postMessage = (message, targetOrigin) => {
-  originalPostMessage.call(parent, message, targetOrigin);
+  originalPostMessage.call(parent, message, targetOrigin)
 
   if (message && message.pluginMessage !== undefined) {
-    const eventName = message.pluginMessage.type || "sketchMessage";
-    const eventData = message.pluginMessage || {};
+    const eventName = message.pluginMessage.type || 'sketchMessage'
+    const eventData = message.pluginMessage || {}
 
-    window.postMessage(eventName, eventData);
+    window.postMessage(eventName, eventData)
   }
-};
+}
 
 window.open = (url) => {
-  window.postMessage("OPEN_IN_BROWSER", { url: url });
-};
+  window.postMessage('OPEN_IN_BROWSER', { url: url })
+}
 
 root.render(
   <ConfigProvider
@@ -159,4 +159,4 @@ root.render(
       <App />
     </ThemeProvider>
   </ConfigProvider>
-);
+)
