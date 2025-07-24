@@ -64,7 +64,8 @@ export default function () {
     x: windowPosition.x,
     y: windowPosition.y,
     fullscreenable: false,
-    show: false,
+    show: true,
+    isClosable: true,
     title: `${locales.get().name}${locales.get().separator}${locales.get().tagline}`,
     webPreferences: {
       plugins: false,
@@ -502,5 +503,10 @@ export const onChangeSelection = () => {
 
 export const onOpenDocument = () => {
   const existingWebview = getWebview(webviewIdentifier)
-  if (existingWebview) getPalettesOnCurrentFile(existingWebview.webContents)
+  if (existingWebview) existingWebview.reload()
+}
+
+export const onCloseDocument = () => {
+  const existingWebview = getWebview(webviewIdentifier)
+  if (existingWebview) existingWebview.close()
 }
