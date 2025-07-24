@@ -464,7 +464,7 @@
       "label": "Edit a UI Color Palette"
     },
     "open": {
-      "description": "WCAG-Compliant Color Palette Suite",
+      "description": "WCAG Palette Manager for Apps & Websites",
       "label": "Open UI Color Palette"
     }
   },
@@ -726,7 +726,7 @@
     "activatedLicense": "The license key \"{licenseKey}\" has been activated",
     "unlinkedLicense": "Your license key \"{licenseKey}\" has been unlinked"
   },
-  "tagline": "WCAG-Compliant Color Palette Suite",
+  "tagline": "WCAG Palette Manager for Apps & Websites",
   "themes": {
     "actions": {
       "moreParameters": "More parameters",

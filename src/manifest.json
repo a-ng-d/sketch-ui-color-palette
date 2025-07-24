@@ -9,7 +9,7 @@
   "identifier": "com.ui-color-palette.sketch",
   "commands": [
     {
-      "name": "UI Color Palette",
+      "name": "🎨 UI Color Palette",
       "identifier": "com.ui-color-palette.sketch.run",
       "script": "./runUicp.js",
       "handlers": {
@@ -24,7 +24,7 @@
     }
   ],
   "menu": {
-    "title": "UI Color Palette",
+    "title": "🎨 UI Color Palette",
     "items": ["com.ui-color-palette.sketch.run"],
     "isRoot": true
   },
