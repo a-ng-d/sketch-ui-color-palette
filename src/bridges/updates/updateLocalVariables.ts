@@ -1,6 +1,7 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import LocalVariable from '../../canvas/LocalVariable'
 import { locales } from '../../../resources/content/locales'
 
 const updateLocalVariables = async (id: string) => {
@@ -13,7 +14,7 @@ const updateLocalVariables = async (id: string) => {
   if (palette === undefined) throw new Error(locales.get().error.unfoundPalette)
 
   palette.libraryData = new Data(palette).makeLibraryData(
-    ['variable_id', 'hex'],
+    ['hex'],
     palette.libraryData
   )
 
@@ -56,9 +57,13 @@ const updateLocalVariables = async (id: string) => {
         }
       })
       if (namesToRemove.length > 0)
-        for (let i = Document.swatches.length - 1; i >= 0; i--)
-          if (namesToRemove.includes(Document.swatches[i].name))
-            Document.swatches.splice(i, 1)
+        namesToRemove.forEach((name) => {
+          const index = localVariables.findIndex((v: any) => v.name === name)
+          if (index !== -1) {
+            localVariables.splice(index, 1)
+            Document.swatches.splice(index, 1)
+          }
+        })
     }
 
     palette.libraryData
@@ -68,14 +73,32 @@ const updateLocalVariables = async (id: string) => {
           : item.id.includes('00000000000')
       })
       .forEach((item) => {
+        const path = [
+          item.paletteName,
+          item.themeName === ''
+            ? locales.get().themes.defaultName
+            : item.themeName,
+          item.colorName === ''
+            ? locales.get().colors.defaultName
+            : item.colorName,
+          item.shadeName,
+        ]
+          .filter((item) => item !== '' && item !== 'None')
+          .join('/')
+
         const variableMatch = localVariables.find(
-          (localVariable: any) => localVariable.id === item.variableId
+          (localVariable: any) => localVariable.name === path
         )
         const hex = item.hex?.length === 7 ? item.hex + 'ff' : item.hex
 
-        if (variableMatch !== undefined) {
+        if (variableMatch !== undefined && hex !== undefined) {
           if (variableMatch.color !== hex) {
-            variableMatch.color = hex
+            const index = localVariables.findIndex((v: any) => v.name === path)
+            if (index !== -1) {
+              localVariables.splice(index, 1)
+              Document.swatches.splice(index, 1)
+              new LocalVariable({ name: path, hex: hex })
+            }
             j++
           }
 

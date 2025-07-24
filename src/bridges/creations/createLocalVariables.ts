@@ -53,7 +53,7 @@ const createLocalVariables = async (id: string) => {
           ) === undefined &&
           item.hex !== undefined
         ) {
-          const variable = new LocalVariable({
+          new LocalVariable({
             name: path,
             hex: item.hex,
           })
