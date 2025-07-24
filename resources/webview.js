@@ -12,9 +12,15 @@ import globalConfig from '../src/global.config'
 const container = document.getElementById('app'),
   root = createRoot(container)
 
-if (globalConfig.env.isMixpanelEnabled) {
-  // eslint-disable-next-line no-undef
-  mixpanel.init(process.env.REACT_APP_MIXPANEL_TOKEN, {
+// eslint-disable-next-line no-undef
+const mixpanelToken = process.env.REACT_APP_MIXPANEL_TOKEN
+// eslint-disable-next-line no-undef
+const sentryDsn = process.env.REACT_APP_SENTRY_DSN
+// eslint-disable-next-line no-undef
+const supabaseAnonKey = process.env.REACT_APP_SUPABASE_PUBLIC_ANON_KEY
+
+if (globalConfig.env.isMixpanelEnabled && mixpanelToken !== undefined) {
+  mixpanel.init(mixpanelToken, {
     api_host: 'https://api-eu.mixpanel.com',
     debug: globalConfig.env.isDev,
     disable_persistence: true,
@@ -29,10 +35,13 @@ if (globalConfig.env.isMixpanelEnabled) {
   initMixpanel(mixpanel)
 }
 
-if (globalConfig.env.isMixpanelEnabled && !globalConfig.env.isDev)
+if (
+  globalConfig.env.isMixpanelEnabled &&
+  !globalConfig.env.isDev &&
+  sentryDsn !== undefined
+)
   Sentry.init({
-    // eslint-disable-next-line no-undef
-    dsn: process.env.REACT_APP_SENTRY_DSN,
+    dsn: sentryDsn,
     environment: 'production',
     integrations: [
       Sentry.browserTracingIntegration(),
@@ -64,12 +73,8 @@ else if (globalConfig.env.isDev) {
   window.Sentry = devLogger
 }
 
-if (globalConfig.env.isSupabaseEnabled)
-  initSupabase(
-    globalConfig.urls.databaseUrl,
-    // eslint-disable-next-line no-undef
-    process.env.REACT_APP_SUPABASE_PUBLIC_ANON_KEY ?? ''
-  )
+if (globalConfig.env.isSupabaseEnabled && supabaseAnonKey !== undefined)
+  initSupabase(globalConfig.urls.databaseUrl, supabaseAnonKey)
 
 window.sendData = (data) => {
   var pluginEvent = new CustomEvent('pluginMessage', {
