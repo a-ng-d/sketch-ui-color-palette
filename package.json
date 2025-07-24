@@ -30,11 +30,10 @@
     "update:figmug": "npm i @a_ng_d/figmug-ui@latest @a_ng_d/figmug-utils@latest",
     "update:uicp": "npm i @a_ng_d/utils-ui-color-palette@latest",
     "start:ext": "npm run start:packages -w ui-ui-color-palette",
+    "start:dev": "skpm-build --watch",
     "build": "skpm-build",
     "watch": "skpm-build --watch",
-    "start": "skpm-build --watch",
-    "postinstall": "npm run build && skpm-link",
-    "hotreload": "find /Users/a_ng_d/DEV/sketch-ui-color-palette/sketch-ui-color-palette.sketchplugin -name '*js' | entr -r /Applications/Sketch.app/Contents/MacOS/Sketch",
+    "hotreload": "find ./sketch-ui-color-palette.sketchplugin -name '*js' | entr -r /Applications/Sketch.app/Contents/MacOS/Sketch",
     "typecheck": "npx tsc --noEmit",
     "lint": "npx eslint ./src ./resources --fix --ext .js,.ts,.tsx .",
     "format": "npx prettier './src' './resources' --write"
