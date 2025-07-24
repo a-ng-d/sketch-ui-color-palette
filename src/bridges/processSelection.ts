@@ -31,7 +31,6 @@ const processSelection = (webContents?: any) => {
   const selectionHandler = (state: string) => {
     const actions: { [key: string]: () => void } = {
       DOCUMENT_SELECTED: async () => {
-        console.log(document)
         const id = Settings.documentSettingForKey(Document, 'id')
         const currentPalettes: Array<FullConfiguration> =
           Settings.documentSettingForKey(Document, 'ui_color_palettes')
