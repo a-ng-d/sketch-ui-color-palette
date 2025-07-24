@@ -22,7 +22,7 @@ if (globalConfig.env.isMixpanelEnabled) {
     ignore_dnt: true,
     opt_out_tracking_by_default: true,
   })
-  //mixpanel.opt_in_tracking();
+  mixpanel.opt_in_tracking()
 
   // eslint-disable-next-line no-undef
   setMixpanelEnv(process.env.NODE_ENV)
