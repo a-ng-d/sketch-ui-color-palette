@@ -43,9 +43,13 @@ const updateLocalStyles = async (id: string) => {
         }
       })
       if (idsToRemove.length > 0)
-        for (let i = Document.sharedLayerStyles.length - 1; i >= 0; i--)
-          if (idsToRemove.includes(Document.sharedLayerStyles[i].id))
-            Document.sharedLayerStyles.splice(i, 1)
+        idsToRemove.forEach((id) => {
+          const index = localStyles.findIndex((v: any) => v.id === id)
+          if (index !== -1) {
+            localStyles.splice(index, 1)
+            Document.sharedLayerStyles.splice(index, 1)
+          }
+        })
     }
 
     palette.libraryData
