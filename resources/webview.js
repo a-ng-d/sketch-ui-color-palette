@@ -13,6 +13,7 @@ const container = document.getElementById('app'),
   root = createRoot(container)
 
 if (globalConfig.env.isMixpanelEnabled) {
+  // eslint-disable-next-line no-undef
   mixpanel.init(process.env.REACT_APP_MIXPANEL_TOKEN, {
     api_host: 'https://api-eu.mixpanel.com',
     debug: globalConfig.env.isDev,
@@ -23,12 +24,14 @@ if (globalConfig.env.isMixpanelEnabled) {
   })
   //mixpanel.opt_in_tracking();
 
+  // eslint-disable-next-line no-undef
   setMixpanelEnv(process.env.NODE_ENV)
   initMixpanel(mixpanel)
 }
 
 if (globalConfig.env.isMixpanelEnabled && !globalConfig.env.isDev)
   Sentry.init({
+    // eslint-disable-next-line no-undef
     dsn: process.env.REACT_APP_SENTRY_DSN,
     environment: 'production',
     integrations: [
@@ -64,6 +67,7 @@ else if (globalConfig.env.isDev) {
 if (globalConfig.env.isSupabaseEnabled)
   initSupabase(
     globalConfig.urls.databaseUrl,
+    // eslint-disable-next-line no-undef
     process.env.REACT_APP_SUPABASE_PUBLIC_ANON_KEY ?? ''
   )
 
