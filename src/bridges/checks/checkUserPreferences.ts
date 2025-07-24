@@ -33,6 +33,8 @@ const checkUserPreferences = async () => {
 
   locales.set((userLanguage as Language) ?? 'en-US')
 
+  console.log(canDeepSyncStyles, canDeepSyncVariables)
+
   getWebContents().executeJavaScript(
     `sendData(${JSON.stringify({
       type: 'CHECK_USER_PREFERENCES',
@@ -41,7 +43,8 @@ const checkUserPreferences = async () => {
         isAPCADisplayed: isAPCADisplayed === undefined ? true : isAPCADisplayed,
         canDeepSyncStyles:
           canDeepSyncStyles === undefined ? false : canDeepSyncStyles,
-        canDeepSyncVariables: canDeepSyncVariables === undefined,
+        canDeepSyncVariables:
+          canDeepSyncVariables === undefined ? false : canDeepSyncVariables,
         isVsCodeMessageDisplayed:
           isVsCodeMessageDisplayed === undefined
             ? true
