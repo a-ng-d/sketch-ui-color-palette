@@ -240,6 +240,8 @@
   },
   "info": {
     "addToLocal": "The palette already exists in this page",
+    "announcements": "There is no announcement for now",
+    "onboarding": "There is no onboarding for now",
     "createdLocalStyles": {
       "none": "No style created",
       "plural": "{count} styles created",
