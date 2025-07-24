@@ -12,8 +12,18 @@ This plugin will allow you to:
 - Generate code in various languages.
 - Publish the palette for reuse across multiple documents or add shared palettes from the community.
 
+---
+
+## Installation
+- [Download](https://uicp.ylb.lt/download-sketch-plugin) the latest release of the plugin
+- Un-zip
+- Double-click on sketch-ui-color-palette.sketchplugin
+- _Enjoy!_
+
 ## Documentation
 The full documentation can be consulted on [docs.ui-color-palette.com](https://uicp.ylb.lt/docs-sketch-plugin).
+
+---
 
 ## Contribution
 ### Community
@@ -48,12 +58,7 @@ skpm log
 
 The `-f` option causes `skpm log` to not stop when the end of logs is reached, but rather to wait for additional data to be appended to the input
 
-### Beta test
-- Go to the [Actions](https://github.com/a-ng-d/sketch-ui-color-palette/actions) sections and access the `Build and Download UI Color Palette` tab.
-- Click `Run workflow`, then select a branch and confirm.
-- Wait a minute, and once finished, download the artifact (which is a ZIP file containing the plugin).
-- Go to Sketch, then `Plugins` > `Development` > `Import plugin from manifest…` and choose `manifest.json` in the unzipped folder.
-- _Enjoy!_
+---
 
 ## Attribution
 - The colors are managed thanks to the [chroma.js](https://github.com/gka/chroma.js) library by [Gregor Aisch](https://github.com/gka).
@@ -61,4 +66,4 @@ The `-f` option causes `skpm log` to not stop when the end of logs is reached, b
 
 ## Support
 - [Follow the plugin LinkedIn page](https://uicp.ylb.lt/network).
-- [Connect to my Sketch resources page](https://uicp.ylb.lt/author).
+- [Connect to my personal LinkedIn](https://uicp.ylb.lt/author).
