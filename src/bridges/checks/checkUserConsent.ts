@@ -12,8 +12,7 @@ const checkUserConsent = async () => {
     userConsent.map(async (consent) => {
       return {
         ...consent,
-        isConsented:
-          Settings.settingForKey(`${consent.id}_user_consent`) === 'true',
+        isConsented: Settings.settingForKey(`${consent.id}_user_consent`),
       }
     })
   )

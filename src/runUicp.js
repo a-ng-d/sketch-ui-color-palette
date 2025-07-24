@@ -83,8 +83,6 @@ export default function () {
   setWebContents(webContents)
 
   webContents.on('did-finish-load', () => {
-    UI.message('UI loaded!')
-
     // Canvas > UI
     webContents.executeJavaScript(
       `sendData(${JSON.stringify({
@@ -325,7 +323,7 @@ export default function () {
   })
   webContents.on('GET_ITEMS', (msg) => {
     msg.items.map((item) => {
-      const value = Settings.getSettingForKey(item)
+      const value = Settings.settingForKey(item)
       webContents.executeJavaScript(
         `sendData(${JSON.stringify({
           type: `GET_ITEM_${item.toUpperCase()}`,
@@ -492,17 +490,17 @@ export default function () {
   })
 }
 
-export function onShutdown() {
+export const onShutdown = () => {
   const existingWebview = getWebview(webviewIdentifier)
   if (existingWebview) existingWebview.close()
 }
 
 export const onChangeSelection = () => {
   const existingWebview = getWebview(webviewIdentifier)
-  processSelection(existingWebview.webContents)
+  if (existingWebview) processSelection(existingWebview.webContents)
 }
 
 export const onOpenDocument = () => {
   const existingWebview = getWebview(webviewIdentifier)
-  getPalettesOnCurrentFile(existingWebview.webContents)
+  if (existingWebview) getPalettesOnCurrentFile(existingWebview.webContents)
 }
