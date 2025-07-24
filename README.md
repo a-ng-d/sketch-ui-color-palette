@@ -1,82 +1,42 @@
-# sketch-ui-color-palette
+![GitHub package.json version](https://img.shields.io/github/package-json/v/a-ng-d/sketch-ui-color-palette?color=informational) ![GitHub last commit](https://img.shields.io/github/last-commit/a-ng-d/sketch-ui-color-palette?color=informational) ![GitHub](https://img.shields.io/github/license/a-ng-d/sketch-ui-color-palette?color=informational)
 
-## Installation
+# UI Color Palette
+UI Color Palette is a Sketch plugin that creates consistent and accessible color palettes specifically for UI. The plugin uses alternative color spaces, like `LCH`, `OKLCH`, `CIELAB`, `OKLAB`, and `HSLuv`, to create color shades based on the configured lightness scale. These spaces ensure [WCAG standards](https://www.w3.org/WAI/standards-guidelines/wcag/) compliance and sufficient contrast between information and background color.
 
-- [Download](../../releases/latest/download/sketch-ui-color-palette.sketchplugin.zip) the latest release of the plugin
-- Un-zip
-- Double-click on sketch-ui-color-palette.sketchplugin
+The idea to make this Sketch plugin comes from the article: [Accessible Palette: stop using HSL for color systems](https://wildbit.com/blog/accessible-palette-stop-using-hsl-for-color-systems).
 
-## Development Guide
+This plugin will allow you to:
+- Create a complete palette from any existing color to help you build a color scaling (or Primitive colors).
+- Manage the color palette in real-time to control the contrast.
+- Sync the color shades with local styles, variables, and third-party plugins.
+- Generate code in various languages.
+- Publish the palette for reuse across multiple documents or add shared palettes from the community.
 
-_This plugin was created using `skpm`. For a detailed explanation on how things work, checkout the [skpm Readme](https://github.com/skpm/skpm/blob/master/README.md)._
+## Documentation
+The full documentation can be consulted on [docs.ui-color-palette.com](https://uicp.ylb.lt/docs-sketch-plugin).
 
-### Usage
+## Contribution
+### Community
+Ask questions, submit your ideas or requests on [Canny](https://uicp.ylb.lt/ideas).
 
-Install the dependencies
+### Issues
+Have you encountered a bug? Could a feature be improved?
+Go to the [Issues](https://uicp.ylb.lt/report-for-sketch-plugin) section and browse the existing tickets or create a new one.
 
-```bash
-npm install
-```
-
-Once the installation is done, you can run some commands inside the project folder:
-
-```bash
-npm run build
-```
-
-To watch for changes:
-
-```bash
-npm run watch
-```
-
-### Custom Configuration
-
-#### Babel
-
-To customize Babel, you have two options:
-
-- You may create a [`.babelrc`](https://babeljs.io/docs/usage/babelrc) file in your project's root directory. Any settings you define here will overwrite matching config-keys within skpm preset. For example, if you pass a "presets" object, it will replace & reset all Babel presets that skpm defaults to.
-
-- If you'd like to modify or add to the existing Babel config, you must use a `webpack.skpm.config.js` file. Visit the [Webpack](#webpack) section for more info.
-
-#### Webpack
-
-To customize webpack create `webpack.skpm.config.js` file which exports function that will change webpack's config.
-
-```js
-/**
- * Function that mutates original webpack config.
- * Supports asynchronous changes when promise is returned.
- *
- * @param {object} config - original webpack config.
- * @param {object} entry - entry property from webpack config
- * @param {boolean} entry.isPluginCommand - whether the config is for a plugin command or a resource
- **/
-module.exports = function(config, entry) {
-  /** you can change config here **/
-};
-```
-
-To use the polyfills or the mocks for certain Node.js globals and modules use the `node` property.
-
-Visit [the official documention](https://webpack.js.org/configuration/node/) for available options.
-
-```js
-if(entry.isPluginCommand ){
-  config.node = {
-    setImmediate: false
-  }
-} else {
-  config.node = false;
-}
-```
+### Development
+- Clone this repository (or fork it).
+- Install dependencies with `npm install`.
+- Run `npm run start:dev` to watch in development mode.
+- Run `npm run start:ext` to run the external services such as the workers ansd the auth lobby.
+- Run `npm run hotreload` to reload Sketch if there is a change.
+- Go to Sketch, then `Plugins` > `🎨 UI Color Palette`.
+- Create a `Branch` and open a `Pull Request`.
+- _Let's do this._
 
 ### Debugging
 
 To view the output of your `console.log`, you have a few different options:
 
-- Use the [`sketch-dev-tools`](https://github.com/skpm/sketch-dev-tools)
 - Open `Console.app` and look for the sketch logs
 - Look at the `~/Library/Logs/com.bohemiancoding.sketch3/Plugin Output.log` file
 
@@ -88,23 +48,17 @@ skpm log
 
 The `-f` option causes `skpm log` to not stop when the end of logs is reached, but rather to wait for additional data to be appended to the input
 
-### Publishing your plugin
+### Beta test
+- Go to the [Actions](https://github.com/a-ng-d/sketch-ui-color-palette/actions) sections and access the `Build and Download UI Color Palette` tab.
+- Click `Run workflow`, then select a branch and confirm.
+- Wait a minute, and once finished, download the artifact (which is a ZIP file containing the plugin).
+- Go to Sketch, then `Plugins` > `Development` > `Import plugin from manifest…` and choose `manifest.json` in the unzipped folder.
+- _Enjoy!_
 
-```bash
-skpm publish <bump>
-```
+## Attribution
+- The colors are managed thanks to the [chroma.js](https://github.com/gka/chroma.js) library by [Gregor Aisch](https://github.com/gka).
+- The APCA algorithm is provided thanks to the [apca-w3](https://www.npmjs.com/package/apca-w3) module by [Andrew Somers](https://github.com/Myndex).
 
-(where `bump` can be `patch`, `minor` or `major`)
-
-`skpm publish` will create a new release on your GitHub repository and create an appcast file in order for Sketch users to be notified of the update.
-
-You will need to specify a `repository` in the `package.json`:
-
-```diff
-...
-+ "repository" : {
-+   "type": "git",
-+   "url": "git+https://github.com/ORG/NAME.git"
-+  }
-...
-```
+## Support
+- [Follow the plugin LinkedIn page](https://uicp.ylb.lt/network).
+- [Connect to my Sketch resources page](https://uicp.ylb.lt/author).
