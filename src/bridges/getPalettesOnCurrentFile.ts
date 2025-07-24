@@ -3,7 +3,7 @@ import Dom from 'sketch/dom'
 import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { getWebContents } from '../utils/webContents'
 
-const getPalettesOnCurrentPage = async (webContents?: any) => {
+const getPalettesOnCurrentFile = async (webContents?: any) => {
   const Document = Dom.getSelectedDocument()
   const sharedWebContents =
     webContents === undefined ? getWebContents() : webContents
@@ -21,4 +21,4 @@ const getPalettesOnCurrentPage = async (webContents?: any) => {
   return palettesList
 }
 
-export default getPalettesOnCurrentPage
+export default getPalettesOnCurrentFile

@@ -2,43 +2,44 @@ import { getWebview } from 'sketch-module-web-view/remote'
 import BrowserWindow from 'sketch-module-web-view'
 import UI from 'sketch/ui'
 import Settings from 'sketch/settings'
-import { locales } from '../resources/content/locales'
-import { setWebContents } from './utils/webContents'
+import webviewHtmlUrl from '../resources/webview.html'
+import { locales } from '../resources/content/locales.ts'
+import { setWebContents } from './utils/webContents.ts'
 import globalConfig from './global.config.ts'
-import updateThemes from './bridges/updates/updateThemes'
-import updateSettings from './bridges/updates/updateSettings'
-import updateScale from './bridges/updates/updateScale'
-import updatePalette from './bridges/updates/updatePalette'
-import updateLocalVariables from './bridges/updates/updateLocalVariables'
-import updateLocalStyles from './bridges/updates/updateLocalStyles'
-import updateColors from './bridges/updates/updateColors'
+import updateThemes from './bridges/updates/updateThemes.ts'
+import updateSettings from './bridges/updates/updateSettings.ts'
+import updateScale from './bridges/updates/updateScale.ts'
+import updatePalette from './bridges/updates/updatePalette.ts'
+import updateLocalVariables from './bridges/updates/updateLocalVariables.ts'
+import updateLocalStyles from './bridges/updates/updateLocalStyles.ts'
+import updateColors from './bridges/updates/updateColors.ts'
 import processSelection from './bridges/processSelection.ts'
-import jumpToPalette from './bridges/jumpToPalette'
-import getPalettesOnCurrentPage from './bridges/getPalettesOnCurrentPage'
-import exportXml from './bridges/exports/exportXml'
-import exportUIKit from './bridges/exports/exportUIKit'
-import exportTailwind from './bridges/exports/exportTailwind'
-import exportSwiftUI from './bridges/exports/exportSwiftUI'
-import exportKt from './bridges/exports/exportKt'
-import exportJsonTokensStudio from './bridges/exports/exportJsonTokensStudio'
-import exportJsonDtcg from './bridges/exports/exportJsonDtcg'
-import exportJsonAmznStyleDictionary from './bridges/exports/exportJsonAmznStyleDictionary'
-import exportJson from './bridges/exports/exportJson'
-import exportCsv from './bridges/exports/exportCsv'
-import exportCss from './bridges/exports/exportCss'
-import enableTrial from './bridges/enableTrial'
-import deletePalette from './bridges/creations/deletePalette'
-import createPaletteFromRemote from './bridges/creations/createPaletteFromRemote'
-import createPaletteFromDuplication from './bridges/creations/createPaletteFromDuplication'
-import createPaletteFromDocument from './bridges/creations/createPaletteFromDocument'
-import createPalette from './bridges/creations/createPalette'
-import createLocalVariables from './bridges/creations/createLocalVariables'
-import createLocalStyles from './bridges/creations/createLocalStyles'
-import checkUserPreferences from './bridges/checks/checkUserPreferences'
-import checkUserLicense from './bridges/checks/checkUserLicense'
-import checkUserConsent from './bridges/checks/checkUserConsent'
-import checkTrialStatus from './bridges/checks/checkTrialStatus'
-import checkAnnouncementsStatus from './bridges/checks/checkAnnouncementsStatus'
+import jumpToPalette from './bridges/jumpToPalette.ts'
+import getPalettesOnCurrentFile from './bridges/getPalettesOnCurrentFile.ts'
+import exportXml from './bridges/exports/exportXml.ts'
+import exportUIKit from './bridges/exports/exportUIKit.ts'
+import exportTailwind from './bridges/exports/exportTailwind.ts'
+import exportSwiftUI from './bridges/exports/exportSwiftUI.ts'
+import exportKt from './bridges/exports/exportKt.ts'
+import exportJsonTokensStudio from './bridges/exports/exportJsonTokensStudio.ts'
+import exportJsonDtcg from './bridges/exports/exportJsonDtcg.ts'
+import exportJsonAmznStyleDictionary from './bridges/exports/exportJsonAmznStyleDictionary.ts'
+import exportJson from './bridges/exports/exportJson.ts'
+import exportCsv from './bridges/exports/exportCsv.ts'
+import exportCss from './bridges/exports/exportCss.ts'
+import enableTrial from './bridges/enableTrial.ts'
+import deletePalette from './bridges/creations/deletePalette.ts'
+import createPaletteFromRemote from './bridges/creations/createPaletteFromRemote.ts'
+import createPaletteFromDuplication from './bridges/creations/createPaletteFromDuplication.ts'
+import createPaletteFromDocument from './bridges/creations/createPaletteFromDocument.ts'
+import createPalette from './bridges/creations/createPalette.ts'
+import createLocalVariables from './bridges/creations/createLocalVariables.ts'
+import createLocalStyles from './bridges/creations/createLocalStyles.ts'
+import checkUserPreferences from './bridges/checks/checkUserPreferences.ts'
+import checkUserLicense from './bridges/checks/checkUserLicense.ts'
+import checkUserConsent from './bridges/checks/checkUserConsent.ts'
+import checkTrialStatus from './bridges/checks/checkTrialStatus.ts'
+import checkAnnouncementsStatus from './bridges/checks/checkAnnouncementsStatus.ts'
 // import createDocument from "./bridges/creations/createDocument";
 // import updateDocument from "./bridges/updates/updateDocument";
 
@@ -342,9 +343,10 @@ export default function () {
   })
 
   webContents.on('OPEN_IN_BROWSER', (msg) => {
+    // eslint-disable-next-line no-undef
     NSWorkspace.sharedWorkspace().openURL(NSURL.URLWithString(msg.url))
   })
-  webContents.on('GET_PALETTES', () => getPalettesOnCurrentPage(webContents))
+  webContents.on('GET_PALETTES', () => getPalettesOnCurrentFile(webContents))
   webContents.on('JUMP_TO_PALETTE', (msg) =>
     jumpToPalette(msg.id).catch((error) =>
       webContents.executeJavaScript(
@@ -361,7 +363,7 @@ export default function () {
   webContents.on('DUPLICATE_PALETTE', (msg) =>
     createPaletteFromDuplication(msg.id)
       .finally(() => {
-        getPalettesOnCurrentPage()
+        getPalettesOnCurrentFile()
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({
             type: 'STOP_LOADER',
@@ -382,7 +384,7 @@ export default function () {
   )
   webContents.on('DELETE_PALETTE', (msg) =>
     deletePalette(msg.id).finally(() => {
-      getPalettesOnCurrentPage(webContents)
+      getPalettesOnCurrentFile(webContents)
       webContents.executeJavaScript(
         `sendData(${JSON.stringify({
           type: 'STOP_LOADER',
@@ -475,7 +477,7 @@ export default function () {
     )
   })
 
-  browserWindow.loadURL(require('../resources/webview.html'))
+  browserWindow.loadURL(webviewHtmlUrl)
 
   browserWindow.on('resize', () => {
     const size = browserWindow.getSize()
@@ -500,26 +502,7 @@ export const onChangeSelection = () => {
   processSelection(existingWebview.webContents)
 }
 
-export const onPreviousPage = () => {
-  console.log('Previous page action triggered')
-}
-
-export const onNextPage = () => {
-  console.log('Next page action triggered')
-}
-
-export const onNewPage = () => {
-  console.log('New page created')
-}
-
 export const onOpenDocument = () => {
-  console.log('Open document')
-}
-
-export const onShowComponentsPane = () => {
-  console.log('Show components pane')
-}
-
-export const onCloseDocument = () => {
-  console.log('Close document')
+  const existingWebview = getWebview(webviewIdentifier)
+  getPalettesOnCurrentFile(existingWebview.webContents)
 }

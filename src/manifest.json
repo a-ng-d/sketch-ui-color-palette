@@ -1,29 +1,32 @@
 {
-  "compatibleVersion": 3,
-  "bundleVersion": 1,
+  "name": "UI Color Palette・WCAG-Compliant Color Palette Suite",
+  "author": "Aurélien Grimaud",
+  "description": "UI Color Palette is a Sketch plugin that creates, manages, deploys, and publishes consistent and accessible color palettes.",
+  "homepage": "https://uicp.ylb.lt/website",
+  "version": "5.0.0",
+  "scope": "document",
+  "identifier": "com.ui-color-palette.sketch",
   "commands": [
     {
-      "name": "my-command",
-      "identifier": "sketch-ui-color-palette.my-command-identifier",
-      "script": "./my-command.js",
+      "name": "UI Color Palette",
+      "identifier": "com.ui-color-palette.sketch.run",
+      "script": "./runUicp.js",
       "handlers": {
         "run": "onRun",
         "actions": {
           "Shutdown": "onShutdown",
           "SelectionChanged": "onChangeSelection",
-          "PreviousPage": "onPreviousPage",
-          "NextPage": "onNextPage",
-          "onPageChanged": "onPageChanged",
-          "NewPage": "onNewPage",
           "OpenDocument": "onOpenDocument",
-          "CloseDocument": "onCloseDocument",
-          "ShowComponentsPane": "onShowComponentsPane"
+          "CloseDocument": "onCloseDocument"
         }
       }
     }
   ],
   "menu": {
-    "title": "sketch-ui-color-palette",
-    "items": ["sketch-ui-color-palette.my-command-identifier"]
-  }
+    "title": "UI Color Palette",
+    "items": ["com.ui-color-palette.sketch.run"],
+    "isRoot": true
+  },
+  "compatibleVersion": "69.0",
+  "bundleVersion": 1
 }
