@@ -52,8 +52,7 @@ jobs:
       run: |
         npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
         npm install
-        npm run install:packages
-        npm run build
+        npm run build:prod
     
     - name: Prepare artifact
       run: |
