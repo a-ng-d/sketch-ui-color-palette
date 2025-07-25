@@ -69,7 +69,7 @@ export default function () {
     title: `${locales.get().name}${locales.get().separator}${locales.get().tagline}`,
     webPreferences: {
       plugins: false,
-      devTools: globalConfig.env.isDev,
+      devTools: true,
     },
     hidesOnDeactivate: false,
   }

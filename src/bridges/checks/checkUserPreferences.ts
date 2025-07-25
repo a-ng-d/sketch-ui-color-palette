@@ -33,8 +33,6 @@ const checkUserPreferences = async () => {
 
   locales.set((userLanguage as Language) ?? 'en-US')
 
-  console.log(canDeepSyncStyles, canDeepSyncVariables)
-
   getWebContents().executeJavaScript(
     `sendData(${JSON.stringify({
       type: 'CHECK_USER_PREFERENCES',
