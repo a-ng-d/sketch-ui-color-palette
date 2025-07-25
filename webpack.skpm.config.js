@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
 const Dotenv = require('dotenv-webpack')
+const SentryWebpackPlugin = require('@sentry/webpack-plugin')
 
 module.exports = function (config, entry) {
   config.plugins = config.plugins || []
@@ -11,6 +12,14 @@ module.exports = function (config, entry) {
       systemvars: true,
     })
   )
+  if (process.env.SENTRY_AUTH_TOKEN)
+    config.plugins.push(
+      new SentryWebpackPlugin({
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        org: 'yelbolt',
+        project: 'ui-color-palette',
+      })
+    )
 
   config.node = entry.isPluginCommand
     ? false

@@ -3,6 +3,7 @@ import React from 'react'
 import mixpanel from 'mixpanel-browser'
 import App from '@ui-lib/ui/App'
 import { initMixpanel, setMixpanelEnv } from '@ui-lib/external/tracking/client'
+import { initSentry } from '@ui-lib/external/monitoring/client'
 import { initSupabase } from '@ui-lib/external/auth/client'
 import { ThemeProvider } from '@ui-lib/config/ThemeContext'
 import { ConfigProvider } from '@ui-lib/config/ConfigContext'
@@ -36,10 +37,10 @@ if (globalConfig.env.isMixpanelEnabled && mixpanelToken !== undefined) {
 }
 
 if (
-  globalConfig.env.isMixpanelEnabled &&
+  globalConfig.env.isSentryEnabled &&
   !globalConfig.env.isDev &&
   sentryDsn !== undefined
-)
+) {
   Sentry.init({
     dsn: sentryDsn,
     environment: 'production',
@@ -53,9 +54,11 @@ if (
     ],
     tracesSampleRate: 0.1,
     replaysSessionSampleRate: 0.05,
-    replaysOnErrorSampleRate: 0.5,
+    replaysOnErrorSampleRate: 0.1,
   })
-else if (globalConfig.env.isDev) {
+
+  initSentry(Sentry)
+} else {
   const devLogger = {
     captureException: (error) => {
       console.group('🐛 Dev Error Logger')
@@ -166,6 +169,13 @@ root.render(
       mode={globalConfig.env.colorMode}
     >
       <App />
+      <button
+        onClick={() => {
+          throw new Error('Test Sentry')
+        }}
+      >
+        Test Sentry
+      </button>
     </ThemeProvider>
   </ConfigProvider>
 )
