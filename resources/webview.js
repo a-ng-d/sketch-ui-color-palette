@@ -100,6 +100,7 @@ parent.postMessage = (message, targetOrigin) => {
 }
 
 window.open = (url) => {
+  console.log('Opening URL in browser:', url)
   window.postMessage('OPEN_IN_BROWSER', { url: url })
 }
 
