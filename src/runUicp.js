@@ -470,7 +470,7 @@ export default function () {
           connectionStatus: 'UNCONNECTED',
           userFullName: '',
           userAvatar: '',
-          userId: undefined,
+          userId: '',
         },
       })})`
     )
