@@ -1,0 +1,50 @@
+name: Build and Download UI Color Palette
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    name: Build with Node
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Create .env.local file
+      run: |
+        touch .env.local
+        echo REACT_APP_SUPABASE_URL="${{ vars.REACT_APP_SUPABASE_URL }}" >> .env.local
+        echo REACT_APP_SUPABASE_PUBLIC_ANON_KEY="${{ secrets.REACT_APP_SUPABASE_PUBLIC_ANON_KEY }}" >> .env.local
+        echo REACT_APP_SENTRY_DSN="${{ vars.REACT_APP_SENTRY_DSN }}" >> .env.local
+        echo REACT_APP_MIXPANEL_TOKEN="${{ secrets.REACT_APP_MIXPANEL_TOKEN }}" >> .env.local
+        echo REACT_APP_AUTH_WORKER_URL="${{ vars.REACT_APP_AUTH_WORKER_URL }}" >> .env.local
+        echo REACT_APP_ANNOUNCEMENTS_WORKER_URL="${{ vars.REACT_APP_ANNOUNCEMENTS_WORKER_URL }}" >> .env.local
+        echo REACT_APP_NOTION_ANNOUNCEMENTS_ID="${{ vars.REACT_APP_NOTION_ANNOUNCEMENTS_ID }}" >> .env.local
+        echo REACT_APP_LEMONSQUEEZY_URL="${{ vars.REACT_APP_LEMONSQUEEZY_URL }}" >> .env.local
+        echo REACT_APP_LEMONSQUEEZY_API_KEY="${{ secrets.REACT_APP_LEMONSQUEEZY_API_KEY }}" >> .env.local
+        cat .env.local
+        touch .env.sentry-build-plugin
+        echo SENTRY_AUTH_TOKEN="${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env.sentry-build-plugin
+        cat .env.sentry-build-plugin
+
+    - name: Install and Build
+      run: |
+        npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+        npm install
+        npm run build:prod
+    
+    - name: Archive production artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: sketch-ui-color-palette
+        path: sketch-ui-color-palette.sketchplugin
+        retention-days: 5
