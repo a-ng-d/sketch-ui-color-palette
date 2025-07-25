@@ -17,7 +17,7 @@ This plugin will allow you to:
 ## Installation
 - [Download](https://uicp.ylb.lt/download-sketch-plugin) the latest release of the plugin
 - Un-zip
-- Double-click on sketch-ui-color-palette.sketchplugin
+- Double-click on `sketch-ui-color-palette.sketchplugin`
 - _Enjoy!_
 
 ## Documentation
