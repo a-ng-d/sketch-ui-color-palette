@@ -14,7 +14,15 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        submodules: true
+        submodules: 'recursive'
+        fetch-depth: 0
+
+
+    - name: Initialize and update submodules
+      run: |
+        git submodule update --init --recursive --force
+        echo "Submodule structure:"
+        ls -la packages/ui-ui-color-palette/src/stores/ || echo "Stores directory not found"
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
@@ -38,10 +46,22 @@ jobs:
         echo SENTRY_AUTH_TOKEN="${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env.sentry-build-plugin
         cat .env.sentry-build-plugin
 
+    - name: Verify required files
+      run: |
+        if [ ! -f "packages/ui-ui-color-palette/src/stores/features.ts" ] && 
+           [ ! -f "packages/ui-ui-color-palette/src/stores/features.js" ] && 
+           [ ! -f "packages/ui-ui-color-palette/src/stores/features/index.ts" ]; then
+          echo "ERROR: Features file not found in expected locations"
+          echo "Available files:"
+          find packages/ui-ui-color-palette/src/ -name "*.ts" -o -name "*.js" | head -10
+          exit 1
+        fi
+
     - name: Install and Build
       run: |
         npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
         npm install
+        npm run install:packages
         npm run build:prod
     
     - name: Archive production artifact
