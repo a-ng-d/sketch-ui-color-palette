@@ -57,6 +57,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: sketch-ui-color-palette
-        path: |
-          sketch-ui-color-palette.sketchplugin
+        path: ./sketch-ui-color-palette.sketchplugin
         retention-days: 5
