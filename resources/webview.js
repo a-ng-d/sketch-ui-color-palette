@@ -168,13 +168,6 @@ root.render(
       mode={globalConfig.env.colorMode}
     >
       <App />
-      <button
-        onClick={() => {
-          throw new Error('Test Sentry')
-        }}
-      >
-        Test Sentry
-      </button>
     </ThemeProvider>
   </ConfigProvider>
 )
