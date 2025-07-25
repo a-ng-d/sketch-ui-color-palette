@@ -46,17 +46,6 @@ jobs:
         echo SENTRY_AUTH_TOKEN="${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env.sentry-build-plugin
         cat .env.sentry-build-plugin
 
-    - name: Verify required files
-      run: |
-        if [ ! -f "packages/ui-ui-color-palette/src/stores/features.ts" ] && 
-           [ ! -f "packages/ui-ui-color-palette/src/stores/features.js" ] && 
-           [ ! -f "packages/ui-ui-color-palette/src/stores/features/index.ts" ]; then
-          echo "ERROR: Features file not found in expected locations"
-          echo "Available files:"
-          find packages/ui-ui-color-palette/src/ -name "*.ts" -o -name "*.js" | head -10
-          exit 1
-        fi
-
     - name: Install and Build
       run: |
         npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
@@ -64,9 +53,13 @@ jobs:
         npm run install:packages
         npm run build:prod
     
+    - name: Zip plugin
+      run: |
+        zip -r sketch-ui-color-palette.zip sketch-ui-color-palette.sketchplugin
+
     - name: Archive production artifact
       uses: actions/upload-artifact@v4
       with:
         name: sketch-ui-color-palette
-        path: sketch-ui-color-palette.sketchplugin
+        path: sketch-ui-color-palette.zip
         retention-days: 5
