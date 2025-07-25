@@ -45,7 +45,7 @@ if (
     dsn: sentryDsn,
     environment: 'production',
     initialScope: {
-      tags: { platform: this.props.config.env.platform },
+      tags: { platform: globalConfig.env.platform },
     },
     integrations: [
       Sentry.browserTracingIntegration(),
