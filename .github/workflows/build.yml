@@ -53,13 +53,10 @@ jobs:
         npm run install:packages
         npm run build:prod
     
-    - name: Zip plugin
-      run: |
-        zip -r sketch-ui-color-palette.zip sketch-ui-color-palette.sketchplugin
-
     - name: Archive production artifact
       uses: actions/upload-artifact@v4
       with:
         name: sketch-ui-color-palette
-        path: sketch-ui-color-palette.zip
+        path: |
+          sketch-ui-color-palette.sketchplugin
         retention-days: 5
