@@ -37,8 +37,10 @@ jobs:
         echo REACT_APP_SENTRY_DSN="${{ vars.REACT_APP_SENTRY_DSN }}" >> .env.local
         echo REACT_APP_MIXPANEL_TOKEN="${{ secrets.REACT_APP_MIXPANEL_TOKEN }}" >> .env.local
         echo REACT_APP_AUTH_WORKER_URL="${{ vars.REACT_APP_AUTH_WORKER_URL }}" >> .env.local
+        echo REACT_APP_AUTH_WORKER_URL="${{ vars.REACT_APP_AUTH_URL }}" >> .env.local
         echo REACT_APP_ANNOUNCEMENTS_WORKER_URL="${{ vars.REACT_APP_ANNOUNCEMENTS_WORKER_URL }}" >> .env.local
         echo REACT_APP_NOTION_ANNOUNCEMENTS_ID="${{ vars.REACT_APP_NOTION_ANNOUNCEMENTS_ID }}" >> .env.local
+        echo REACT_APP_NOTION_ONBOARDING_ID="${{ vars.REACT_APP_NOTION_ONBOARDING_ID }}" >> .env.local
         echo REACT_APP_LEMONSQUEEZY_URL="${{ vars.REACT_APP_LEMONSQUEEZY_URL }}" >> .env.local
         echo REACT_APP_LEMONSQUEEZY_API_KEY="${{ secrets.REACT_APP_LEMONSQUEEZY_API_KEY }}" >> .env.local
         cat .env.local
