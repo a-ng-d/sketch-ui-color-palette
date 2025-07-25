@@ -92,7 +92,6 @@ window.sendData = (data) => {
 const originalPostMessage = parent.postMessage
 
 parent.postMessage = (message, targetOrigin) => {
-  console.log('Intercepted postMessage:', message, targetOrigin)
   originalPostMessage.call(parent, message, targetOrigin)
 
   if (message && message.pluginMessage !== undefined) {
@@ -101,11 +100,6 @@ parent.postMessage = (message, targetOrigin) => {
 
     window.postMessage(eventName, eventData)
   }
-}
-
-window.open = (url) => {
-  console.log('Opening URL in browser:', url)
-  window.postMessage('OPEN_IN_BROWSER', { url: url })
 }
 
 root.render(

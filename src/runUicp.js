@@ -343,7 +343,7 @@ export default function () {
 
   webContents.on('OPEN_IN_BROWSER', (msg) => {
     // eslint-disable-next-line no-undef
-    NSWorkspace.sharedWorkspace().openURL(NSURL.URLWithString(msg.url))
+    NSWorkspace.sharedWorkspace().openURL(NSURL.URLWithString(msg.data.url))
   })
   webContents.on('GET_PALETTES', () => getPalettesOnCurrentFile(webContents))
   webContents.on('JUMP_TO_PALETTE', (msg) =>
