@@ -44,6 +44,9 @@ if (
   Sentry.init({
     dsn: sentryDsn,
     environment: 'production',
+    initialScope: {
+      tags: { platform: this.props.config.env.platform },
+    },
     integrations: [
       Sentry.browserTracingIntegration(),
       Sentry.replayIntegration(),
