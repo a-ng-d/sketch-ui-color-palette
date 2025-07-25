@@ -92,6 +92,7 @@ window.sendData = (data) => {
 const originalPostMessage = parent.postMessage
 
 parent.postMessage = (message, targetOrigin) => {
+  console.log('Intercepted postMessage:', message, targetOrigin)
   originalPostMessage.call(parent, message, targetOrigin)
 
   if (message && message.pluginMessage !== undefined) {
