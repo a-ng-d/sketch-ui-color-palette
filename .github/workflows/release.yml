@@ -64,6 +64,12 @@ jobs:
         cp -r sketch-ui-color-palette.sketchplugin artifact/
         ls -la artifact/
 
+    - name: Zip Sketch plugin
+      run: |
+        cd artifact
+        zip -r sketch-ui-color-palette.sketchplugin.zip sketch-ui-color-palette.sketchplugin
+        ls -lh sketch-ui-color-palette.sketchplugin.zip
+
     - name: Archive production artifact
       uses: actions/upload-artifact@v4
       with:
@@ -72,6 +78,7 @@ jobs:
         retention-days: 0
         
   create-release:
+    name: Create release
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -114,6 +121,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: artifact/sketch-ui-color-palette.sketchplugin
-        asset_name: sketch-ui-color-palette.sketchplugin
+        asset_path: artifact/sketch-ui-color-palette.sketchplugin.zip
+        asset_name: sketch-ui-color-palette.sketchplugin.zip
         asset_content_type: application/zip
