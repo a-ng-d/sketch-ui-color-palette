@@ -10,7 +10,7 @@
   "appcast": "https://raw.githubusercontent.com/a-ng-d/sketch-ui-color-palette/refs/heads/dev/appcast.json",
   "commands": [
     {
-      "name": "🎨 UI Color Palette",
+      "name": "🎨 UI Color Palette",
       "identifier": "com.ui-color-palette.sketch.run",
       "script": "./runUicp.js",
       "shortcut": "cmd alt p",
@@ -26,7 +26,7 @@
     }
   ],
   "menu": {
-    "title": "🎨 UI Color Palette",
+    "title": "🎨 UI Color Palette",
     "items": ["com.ui-color-palette.sketch.run"],
     "isRoot": true
   },
