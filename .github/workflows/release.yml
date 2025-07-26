@@ -112,7 +112,7 @@ jobs:
         release_name: ${{ github.event.pull_request.title}}
         body: |
           ## What's Changed
-          [Friendly release note](https://ui-color-palette.canny.io/changelog/v${{ steps.extract_version.outputs.package_version }})
+          [Friendly release note](https://ui-color-palette.canny.io/changelog/ui-color-palette-${{ steps.extract_version.outputs.package_version }})
 
     - name: Upload plugin as release asset
       if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'releases/ui-color-palette/')
