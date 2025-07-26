@@ -60,6 +60,12 @@ jobs:
         cp -r sketch-ui-color-palette.sketchplugin artifact/
         ls -la artifact/
 
+    - name: Zip Sketch plugin
+      run: |
+        cd artifact
+        zip -r sketch-ui-color-palette.sketchplugin.zip sketch-ui-color-palette.sketchplugin
+        ls -lh sketch-ui-color-palette.sketchplugin.zip
+
     - name: Archive production artifact
       uses: actions/upload-artifact@v4
       with:
