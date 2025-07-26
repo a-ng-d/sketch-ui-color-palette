@@ -83,7 +83,7 @@ if (globalConfig.env.isSupabaseEnabled && supabaseAnonKey !== undefined)
   initSupabase(globalConfig.urls.databaseUrl, supabaseAnonKey)
 
 window.sendData = (data) => {
-  var pluginEvent = new CustomEvent('pluginMessage', {
+  const pluginEvent = new CustomEvent('pluginMessage', {
     detail: data,
   })
   window.dispatchEvent(pluginEvent)
