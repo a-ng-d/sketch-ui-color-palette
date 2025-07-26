@@ -1,0 +1,119 @@
+name: Release for Sketch
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - dev
+
+jobs:
+  build:
+    name: Build with Node
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
+        fetch-depth: 0
+
+
+    - name: Initialize and update submodules
+      run: |
+        git submodule update --init --recursive --force
+        echo "Submodule structure:"
+        ls -la packages/ui-ui-color-palette/src/stores/ || echo "Stores directory not found"
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Create .env.local file
+      run: |
+        touch .env.local
+        echo REACT_APP_SUPABASE_URL="${{ vars.REACT_APP_SUPABASE_URL }}" >> .env.local
+        echo REACT_APP_SUPABASE_PUBLIC_ANON_KEY="${{ secrets.REACT_APP_SUPABASE_PUBLIC_ANON_KEY }}" >> .env.local
+        echo REACT_APP_SENTRY_DSN="${{ vars.REACT_APP_SENTRY_DSN }}" >> .env.local
+        echo REACT_APP_MIXPANEL_TOKEN="${{ secrets.REACT_APP_MIXPANEL_TOKEN }}" >> .env.local
+        echo REACT_APP_AUTH_WORKER_URL="${{ vars.REACT_APP_AUTH_WORKER_URL }}" >> .env.local
+        echo REACT_APP_AUTH_URL="${{ vars.REACT_APP_AUTH_URL }}" >> .env.local
+        echo REACT_APP_ANNOUNCEMENTS_WORKER_URL="${{ vars.REACT_APP_ANNOUNCEMENTS_WORKER_URL }}" >> .env.local
+        echo REACT_APP_NOTION_ANNOUNCEMENTS_ID="${{ vars.REACT_APP_NOTION_ANNOUNCEMENTS_ID }}" >> .env.local
+        echo REACT_APP_NOTION_ONBOARDING_ID="${{ vars.REACT_APP_NOTION_ONBOARDING_ID }}" >> .env.local
+        echo REACT_APP_LEMONSQUEEZY_URL="${{ vars.REACT_APP_LEMONSQUEEZY_URL }}" >> .env.local
+        echo REACT_APP_LEMONSQUEEZY_API_KEY="${{ secrets.REACT_APP_LEMONSQUEEZY_API_KEY }}" >> .env.local
+        cat .env.local
+        touch .env.sentry-build-plugin
+        echo SENTRY_AUTH_TOKEN="${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env.sentry-build-plugin
+        cat .env.sentry-build-plugin
+
+    - name: Install and Build
+      run: |
+        npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+        npm install
+        npm run build:prod
+    
+    - name: Prepare artifact
+      run: |
+        mkdir -p artifact
+        cp -r sketch-ui-color-palette.sketchplugin artifact/
+        ls -la artifact/
+
+    - name: Archive production artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: sketch-ui-color-palette
+        path: artifact/
+        retention-days: 0
+        
+  create-release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Download build artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: sketch-ui-color-palette
+        path: artifact/
+
+    - name: Extract package version
+      id: extract_version
+      run: |
+        package_version=$(jq -r '.version' package.json)
+        echo "package_version=$package_version" >> $GITHUB_OUTPUT
+
+    - name: Create release
+      id: create_release
+      if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'releases/ui-color-palette/')
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ steps.extract_version.outputs.package_version }}
+        release_name: ${{ github.event.pull_request.title}}
+        body: |
+          ## What's Changed
+          [Friendly release note](https://ui-color-palette.canny.io/changelog/v${{ steps.extract_version.outputs.package_version }})
+
+    - name: Upload plugin as release asset
+      if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'releases/ui-color-palette/')
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: artifact/sketch-ui-color-palette.sketchplugin
+        asset_name: sketch-ui-color-palette.sketchplugin
+        asset_content_type: application/zip
