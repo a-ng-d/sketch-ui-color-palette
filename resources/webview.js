@@ -94,8 +94,6 @@ const originalPostMessage = parent.postMessage
 parent.postMessage = (message, targetOrigin) => {
   originalPostMessage.call(parent, message, targetOrigin)
 
-  console.log('Post message to parent:', message)
-
   if (message && message.pluginMessage !== undefined) {
     const eventName = message.pluginMessage.type || 'sketchMessage'
     const eventData = message.pluginMessage || {}
