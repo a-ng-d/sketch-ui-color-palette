@@ -7,11 +7,13 @@
   "icon": "./uicp_icon.png",
   "scope": "document",
   "identifier": "com.ui-color-palette.sketch",
+  "appcast": "https://raw.githubusercontent.com/a-ng-d/sketch-ui-color-palette/refs/heads/dev/appcast.json",
   "commands": [
     {
       "name": "🎨 UI Color Palette",
       "identifier": "com.ui-color-palette.sketch.run",
       "script": "./runUicp.js",
+      "shortcut": "cmd alt p",
       "handlers": {
         "run": "onRun",
         "actions": {
