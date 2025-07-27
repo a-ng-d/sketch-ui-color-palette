@@ -6,6 +6,14 @@
   "author": "Aurélien Grimaud",
   "license": "MIT",
   "repository": "https://github.com/a-ng-d/sketch-ui-color-palette",
+  "keywords": [
+    "color",
+    "color-scheme",
+    "lch",
+    "color-system",
+    "ui-color",
+    "sketch-plugin"
+  ],
   "workspaces": [
     "packages/ui-ui-color-palette",
     "packages/ui-ui-color-palette/packages/auth-yelbolt",
