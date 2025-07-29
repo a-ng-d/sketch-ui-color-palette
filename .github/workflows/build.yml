@@ -3,7 +3,7 @@ name: Build and Download UI Color Palette
 on: workflow_dispatch
 
 jobs:
-  build:
+  build-plugin:
     name: Build with Node
     runs-on: ubuntu-latest
 
@@ -16,7 +16,6 @@ jobs:
       with:
         submodules: 'recursive'
         fetch-depth: 0
-
 
     - name: Initialize and update submodules
       run: |
