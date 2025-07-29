@@ -7,80 +7,76 @@ on:
       - dev
 
 jobs:
-  build:
+  build-plugin:
     name: Build with Node
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [20.x]
-
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'releases/ui-color-palette/')
     steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: 'recursive'
-        fetch-depth: 0
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+          fetch-depth: 0
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
+      - name: Initialize and update submodules
+        run: |
+          git submodule update --init --recursive --force
+          echo "Submodule structure:"
+          ls -la packages/ui-ui-color-palette/src/stores/ || echo "Stores directory not found"
 
-    - name: Initialize and update submodules
-      run: |
-        git submodule update --init --recursive --force
-        echo "Submodule structure:"
-        ls -la packages/ui-ui-color-palette/src/stores/ || echo "Stores directory not found"
+      - name: Create .env.local file
+        run: |
+          touch .env.local
+          echo REACT_APP_SUPABASE_URL="${{ vars.REACT_APP_SUPABASE_URL }}" >> .env.local
+          echo REACT_APP_SUPABASE_PUBLIC_ANON_KEY="${{ secrets.REACT_APP_SUPABASE_PUBLIC_ANON_KEY }}" >> .env.local
+          echo REACT_APP_SENTRY_DSN="${{ vars.REACT_APP_SENTRY_DSN }}" >> .env.local
+          echo REACT_APP_MIXPANEL_TOKEN="${{ secrets.REACT_APP_MIXPANEL_TOKEN }}" >> .env.local
+          echo REACT_APP_AUTH_WORKER_URL="${{ vars.REACT_APP_AUTH_WORKER_URL }}" >> .env.local
+          echo REACT_APP_AUTH_URL="${{ vars.REACT_APP_AUTH_URL }}" >> .env.local
+          echo REACT_APP_ANNOUNCEMENTS_WORKER_URL="${{ vars.REACT_APP_ANNOUNCEMENTS_WORKER_URL }}" >> .env.local
+          echo REACT_APP_NOTION_ANNOUNCEMENTS_ID="${{ vars.REACT_APP_NOTION_ANNOUNCEMENTS_ID }}" >> .env.local
+          echo REACT_APP_NOTION_ONBOARDING_ID="${{ vars.REACT_APP_NOTION_ONBOARDING_ID }}" >> .env.local
+          echo REACT_APP_LEMONSQUEEZY_URL="${{ vars.REACT_APP_LEMONSQUEEZY_URL }}" >> .env.local
+          echo REACT_APP_LEMONSQUEEZY_API_KEY="${{ secrets.REACT_APP_LEMONSQUEEZY_API_KEY }}" >> .env.local
+          cat .env.local
+          touch .env.sentry-build-plugin
+          echo SENTRY_AUTH_TOKEN="${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env.sentry-build-plugin
+          cat .env.sentry-build-plugin
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Install and Build
+        run: |
+          npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+          npm install
+          npm run build:prod
+      
+      - name: Prepare artifact
+        run: |
+          mkdir -p artifact
+          cp -r sketch-ui-color-palette.sketchplugin artifact/
+          ls -la artifact/
 
-    - name: Create .env.local file
-      run: |
-        touch .env.local
-        echo REACT_APP_SUPABASE_URL="${{ vars.REACT_APP_SUPABASE_URL }}" >> .env.local
-        echo REACT_APP_SUPABASE_PUBLIC_ANON_KEY="${{ secrets.REACT_APP_SUPABASE_PUBLIC_ANON_KEY }}" >> .env.local
-        echo REACT_APP_SENTRY_DSN="${{ vars.REACT_APP_SENTRY_DSN }}" >> .env.local
-        echo REACT_APP_MIXPANEL_TOKEN="${{ secrets.REACT_APP_MIXPANEL_TOKEN }}" >> .env.local
-        echo REACT_APP_AUTH_WORKER_URL="${{ vars.REACT_APP_AUTH_WORKER_URL }}" >> .env.local
-        echo REACT_APP_AUTH_URL="${{ vars.REACT_APP_AUTH_URL }}" >> .env.local
-        echo REACT_APP_ANNOUNCEMENTS_WORKER_URL="${{ vars.REACT_APP_ANNOUNCEMENTS_WORKER_URL }}" >> .env.local
-        echo REACT_APP_NOTION_ANNOUNCEMENTS_ID="${{ vars.REACT_APP_NOTION_ANNOUNCEMENTS_ID }}" >> .env.local
-        echo REACT_APP_NOTION_ONBOARDING_ID="${{ vars.REACT_APP_NOTION_ONBOARDING_ID }}" >> .env.local
-        echo REACT_APP_LEMONSQUEEZY_URL="${{ vars.REACT_APP_LEMONSQUEEZY_URL }}" >> .env.local
-        echo REACT_APP_LEMONSQUEEZY_API_KEY="${{ secrets.REACT_APP_LEMONSQUEEZY_API_KEY }}" >> .env.local
-        cat .env.local
-        touch .env.sentry-build-plugin
-        echo SENTRY_AUTH_TOKEN="${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env.sentry-build-plugin
-        cat .env.sentry-build-plugin
+      - name: Zip Sketch plugin
+        run: |
+          cd artifact
+          zip -r sketch-ui-color-palette.sketchplugin.zip sketch-ui-color-palette.sketchplugin
+          ls -lh sketch-ui-color-palette.sketchplugin.zip
 
-    - name: Install and Build
-      run: |
-        npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
-        npm install
-        npm run build:prod
-    
-    - name: Prepare artifact
-      run: |
-        mkdir -p artifact
-        cp -r sketch-ui-color-palette.sketchplugin artifact/
-        ls -la artifact/
-
-    - name: Zip Sketch plugin
-      run: |
-        cd artifact
-        zip -r sketch-ui-color-palette.sketchplugin.zip sketch-ui-color-palette.sketchplugin
-        ls -lh sketch-ui-color-palette.sketchplugin.zip
-
-    - name: Archive production artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: sketch-ui-color-palette
-        path: artifact/
-        retention-days: 5
+      - name: Archive production artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sketch-ui-color-palette
+          path: artifact/
+          retention-days: 5
         
   create-release:
     name: Create release
-    needs: build
+    needs: build-plugin
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'releases/ui-color-palette/')
     permissions:
       contents: write
     steps:
@@ -103,7 +99,6 @@ jobs:
 
     - name: Create release
       id: create_release
-      if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'releases/ui-color-palette/')
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
