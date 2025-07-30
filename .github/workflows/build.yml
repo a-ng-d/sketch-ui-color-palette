@@ -6,7 +6,6 @@ jobs:
   build-plugin:
     name: Build with Node
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
       with:
@@ -20,8 +19,6 @@ jobs:
     - name: Initialize and update submodules
       run: |
         git submodule update --init --recursive --force
-        echo "Submodule structure:"
-        ls -la packages/ui-ui-color-palette/src/stores/ || echo "Stores directory not found"
 
     - name: Create .env.local file
       run: |
