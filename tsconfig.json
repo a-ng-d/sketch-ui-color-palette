@@ -28,7 +28,7 @@
       "react-dom": ["./node_modules/preact/compat/"],
       "react-dom/*": ["./node_modules/preact/compat/*"],
       "jszip": ["./node_modules/jszip/dist/jszip.min.js"],
-      "@ui-lib/*": ["packages/ui-ui-color-palette/src/*"]
+      "@ui-lib/*": ["./packages/ui-ui-color-palette/src/*"]
     }
   }
 }
