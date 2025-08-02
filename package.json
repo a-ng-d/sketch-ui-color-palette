@@ -17,6 +17,7 @@
   "workspaces": [
     "packages/ui-ui-color-palette",
     "packages/ui-ui-color-palette/packages/auth-yelbolt",
+    "packages/ui-ui-color-palette/packages/auth-yelbolt/ui-color-palette",
     "packages/ui-ui-color-palette/packages/auth-yelbolt-worker",
     "packages/ui-ui-color-palette/packages/announcements-yelbolt-worker"
   ],
@@ -33,11 +34,11 @@
     "sketch-assets-file": "sketch-assets/icons.sketch"
   },
   "scripts": {
-    "install:packages": "npm install --workspaces",
-    "update:packages": "git submodule update --remote --merge",
+    "install:ext": "npm install --workspaces",
+    "update:ext": "git submodule update --remote --merge",
     "update:figmug": "npm i @a_ng_d/figmug-ui@latest @a_ng_d/figmug-utils@latest",
     "update:uicp": "npm i @a_ng_d/utils-ui-color-palette@latest",
-    "start:ext": "npm run start:packages -w ui-ui-color-palette",
+    "start:ext": "npm run start:ext -w ui-ui-color-palette",
     "start:dev": "skpm-build --watch",
     "build": "cross-env NODE_ENV=development skpm-build",
     "build:prod": "cross-env NODE_ENV=production skpm-build",
