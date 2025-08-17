@@ -1,5 +1,6 @@
 import { doSpecificMode } from '@ui-lib/stores/features'
 import { locales } from '../resources/content/locales'
+import package_json from '../package.json'
 import { Config } from './types/config'
 
 const isDev = process.env.NODE_ENV === 'development'
@@ -27,8 +28,10 @@ const globalConfig: Config = {
     trialTime: 72,
   },
   dbs: {
-    palettesDbTableName: isDev ? 'sandbox.palettes' : 'palettes',
-    palettesStorageName: isDev ? 'palette.screenshots' : 'palette.screenshots',
+    palettesDbViewName: isDev
+      ? 'sandbox_palettes_with_creators'
+      : 'palettes_with_creators',
+    palettesDbTableName: isDev ? 'sandbox_palettes' : 'palettes',
   },
   urls: {
     authWorkerUrl: isDev
@@ -72,6 +75,7 @@ const globalConfig: Config = {
     trialVersion: '2024.03',
     algorithmVersion: 'v3',
     paletteVersion: '2025.06',
+    pluginVersion: package_json.version,
   },
   features: doSpecificMode(
     [
@@ -128,7 +132,7 @@ const globalConfig: Config = {
       'SETTINGS_VISION_SIMULATION_MODE_ACHROMATOMALY',
       'SETTINGS_VISION_SIMULATION_MODE_ACHROMATOPSIA',
     ],
-    ['SCALE_CONTRAST_RATIO']
+    ['SCALE_CONTRAST_RATIO', 'INVOLVE_COMMUNITY']
   ),
   locales: locales.get(),
 }
