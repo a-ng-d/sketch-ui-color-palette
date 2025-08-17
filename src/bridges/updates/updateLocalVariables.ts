@@ -34,22 +34,28 @@ const updateLocalVariables = async (id: string) => {
     if (canDeepSyncVariables ?? false) {
       const namesToRemove: Array<string> = []
       localVariables.forEach((localVariable: any) => {
-        const hasVariableMatch = palette.libraryData.some((libraryItem) => {
-          const path = [
-            libraryItem.paletteName,
-            libraryItem.themeName === ''
-              ? locales.get().themes.defaultName
-              : libraryItem.themeName,
-            libraryItem.colorName === ''
-              ? locales.get().colors.defaultName
-              : libraryItem.colorName,
-            libraryItem.shadeName,
-          ]
-            .filter((item) => item !== '' && item !== 'None')
-            .join('/')
+        const hasVariableMatch = palette.libraryData
+          .filter((item) => {
+            return hasThemes
+              ? !item.id.includes('00000000000')
+              : item.id.includes('00000000000')
+          })
+          .some((libraryItem) => {
+            const path = [
+              libraryItem.paletteName,
+              libraryItem.themeName === ''
+                ? locales.get().themes.defaultName
+                : libraryItem.themeName,
+              libraryItem.colorName === ''
+                ? locales.get().colors.defaultName
+                : libraryItem.colorName,
+              libraryItem.shadeName,
+            ]
+              .filter((item) => item !== '' && item !== 'None')
+              .join('/')
 
-          return path === localVariable.name
-        })
+            return path === localVariable.name
+          })
 
         if (!hasVariableMatch) {
           namesToRemove.push(localVariable.name)

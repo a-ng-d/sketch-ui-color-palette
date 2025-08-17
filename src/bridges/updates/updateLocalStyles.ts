@@ -33,9 +33,13 @@ const updateLocalStyles = async (id: string) => {
     if (canDeepSyncStyles ?? false) {
       const idsToRemove: Array<string> = []
       localStyles.forEach((localStyle: any) => {
-        const hasStyleMatch = palette.libraryData.some(
-          (libraryItem) => libraryItem.styleId === localStyle.id
-        )
+        const hasStyleMatch = palette.libraryData
+          .filter((item) => {
+            return hasThemes
+              ? !item.id.includes('00000000000')
+              : item.id.includes('00000000000')
+          })
+          .some((libraryItem) => libraryItem.styleId === localStyle.id)
 
         if (!hasStyleMatch) {
           idsToRemove.push(localStyle.id)
