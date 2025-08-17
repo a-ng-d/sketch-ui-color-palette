@@ -5,7 +5,6 @@ import Settings from 'sketch/settings'
 import webviewHtmlUrl from '../resources/webview.html'
 import { locales } from '../resources/content/locales.ts'
 import { setWebContents } from './utils/webContents.ts'
-import globalConfig from './global.config.ts'
 import updateThemes from './bridges/updates/updateThemes.ts'
 import updateSettings from './bridges/updates/updateSettings.ts'
 import updateScale from './bridges/updates/updateScale.ts'
@@ -16,17 +15,6 @@ import updateColors from './bridges/updates/updateColors.ts'
 import processSelection from './bridges/processSelection.ts'
 import jumpToPalette from './bridges/jumpToPalette.ts'
 import getPalettesOnCurrentFile from './bridges/getPalettesOnCurrentFile.ts'
-import exportXml from './bridges/exports/exportXml.ts'
-import exportUIKit from './bridges/exports/exportUIKit.ts'
-import exportTailwind from './bridges/exports/exportTailwind.ts'
-import exportSwiftUI from './bridges/exports/exportSwiftUI.ts'
-import exportKt from './bridges/exports/exportKt.ts'
-import exportJsonTokensStudio from './bridges/exports/exportJsonTokensStudio.ts'
-import exportJsonDtcg from './bridges/exports/exportJsonDtcg.ts'
-import exportJsonAmznStyleDictionary from './bridges/exports/exportJsonAmznStyleDictionary.ts'
-import exportJson from './bridges/exports/exportJson.ts'
-import exportCsv from './bridges/exports/exportCsv.ts'
-import exportCss from './bridges/exports/exportCss.ts'
 import enableTrial from './bridges/enableTrial.ts'
 import deletePalette from './bridges/creations/deletePalette.ts'
 import createPaletteFromRemote from './bridges/creations/createPaletteFromRemote.ts'
@@ -289,22 +277,6 @@ export default function () {
         )
       })
   )
-
-  webContents.on('EXPORT_PALETTE', (msg) => {
-    if (msg.export === 'TOKENS_DTCG') exportJsonDtcg(msg.id, msg.colorSpace)
-    else if (msg.export === 'TOKENS_GLOBAL') exportJson(msg.id)
-    else if (msg.export === 'TOKENS_AMZN_STYLE_DICTIONARY')
-      exportJsonAmznStyleDictionary(msg.id)
-    else if (msg.export === 'TOKENS_TOKENS_STUDIO')
-      exportJsonTokensStudio(msg.id)
-    else if (msg.export === 'CSS') exportCss(msg.id, msg.colorSpace)
-    else if (msg.export === 'TAILWIND') exportTailwind(msg.id)
-    else if (msg.export === 'APPLE_SWIFTUI') exportSwiftUI(msg.id)
-    else if (msg.export === 'APPLE_UIKIT') exportUIKit(msg.id)
-    else if (msg.export === 'ANDROID_COMPOSE') exportKt(msg.id)
-    else if (msg.export === 'ANDROID_XML') exportXml(msg.id)
-    else if (msg.export === 'CSV') exportCsv(msg.id)
-  })
 
   webContents.on('POST_MESSAGE', (msg) => {
     webContents.executeJavaScript(
