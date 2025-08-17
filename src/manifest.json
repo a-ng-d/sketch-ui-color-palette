@@ -1,6 +1,7 @@
 {
   "name": "UI Color Palette /one・WCAG Color Palette Manager for Apps & Websites",
   "author": "Aurélien Grimaud",
+  "authorEmail": "hello@ui-color-palette.com",
   "description": "Color Palettes that meet WCAG Guidelines and Operations",
   "homepage": "https://uicp.ylb.lt/website",
   "version": "5.0.0",
