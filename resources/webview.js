@@ -126,8 +126,8 @@ root.render(
       trialTime: globalConfig.plan.trialTime,
     }}
     dbs={{
+      palettesDbViewName: globalConfig.dbs.palettesDbViewName,
       palettesDbTableName: globalConfig.dbs.palettesDbTableName,
-      palettesStorageName: globalConfig.dbs.palettesStorageName,
     }}
     urls={{
       authWorkerUrl: globalConfig.urls.authWorkerUrl,
