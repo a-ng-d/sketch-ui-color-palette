@@ -1,6 +1,5 @@
 import { doSpecificMode } from '@ui-lib/stores/features'
 import { locales } from '../resources/content/locales'
-import package_json from '../package.json'
 import { Config } from './types/config'
 
 const isDev = process.env.NODE_ENV === 'development'
@@ -75,7 +74,7 @@ const globalConfig: Config = {
     trialVersion: '2024.03',
     algorithmVersion: 'v3',
     paletteVersion: '2025.06',
-    pluginVersion: package_json.version,
+    pluginVersion: process.env.npm_package_version as string,
   },
   features: doSpecificMode(
     [

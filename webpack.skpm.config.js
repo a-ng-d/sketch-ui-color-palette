@@ -15,9 +15,24 @@ module.exports = function (config, entry) {
   if (process.env.SENTRY_AUTH_TOKEN)
     config.plugins.push(
       new SentryWebpackPlugin({
-        authToken: process.env.SENTRY_AUTH_TOKEN,
         org: 'yelbolt',
         project: 'ui-color-palette',
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        sourcemaps: {
+          assets: './dist/**',
+          filesToDeleteAfterUpload: isDev ? undefined : '**/*.map',
+        },
+        release: {
+          name: process.env.npm_package_version,
+          setCommits: {
+            auto: true,
+          },
+          finalize: true,
+          deploy: {
+            env: 'production',
+          },
+        },
+        telemetry: false,
       })
     )
 
