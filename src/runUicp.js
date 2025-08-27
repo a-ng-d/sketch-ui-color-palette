@@ -400,6 +400,13 @@ export default function () {
       })})`
     )
   })
+  webContents.on('GO_TO_CHECKOUT', () => {
+    // eslint-disable-next-line no-undef
+    NSWorkspace.sharedWorkspace().openURL(
+      // eslint-disable-next-line no-undef
+      NSURL.URLWithString(globalConfig.urls.storeUrl)
+    )
+  })
   webContents.on('ENABLE_PRO_PLAN', () => {
     const userId = Settings.settingForKey('user_id') || ''
     webContents.executeJavaScript(
