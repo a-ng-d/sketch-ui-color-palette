@@ -52,6 +52,7 @@ export default function () {
     x: windowPosition.x,
     y: windowPosition.y,
     fullscreenable: false,
+    alwaysOnTop: true,
     show: true,
     isClosable: true,
     title: `${locales.get().name}${locales.get().separator}${locales.get().tagline}`,
