@@ -52,6 +52,7 @@ export default function () {
     x: windowPosition.x,
     y: windowPosition.y,
     fullscreenable: false,
+    alwaysOnTop: true,
     show: true,
     isClosable: true,
     title: `${locales.get().name}${locales.get().separator}${locales.get().tagline}`,
@@ -398,6 +399,13 @@ export default function () {
           plans: ['ONE'],
         },
       })})`
+    )
+  })
+  webContents.on('GO_TO_CHECKOUT', () => {
+    // eslint-disable-next-line no-undef
+    NSWorkspace.sharedWorkspace().openURL(
+      // eslint-disable-next-line no-undef
+      NSURL.URLWithString(globalConfig.urls.storeUrl)
     )
   })
   webContents.on('ENABLE_PRO_PLAN', () => {
