@@ -3,7 +3,12 @@ import { getWebContents } from '../../utils/webContents'
 
 const checkAnnouncementsStatus = (remoteVersion: string) => {
   const localVersion = Settings.settingForKey('announcements_version')
-  const isOnboardingRead = Settings.settingForKey('is_onboarding_read')
+  let isOnboardingRead = Settings.settingForKey('is_onboarding_read')
+
+  if (isOnboardingRead === undefined) {
+    Settings.setSettingForKey('is_onboarding_read', false)
+    isOnboardingRead = false
+  }
 
   if (localVersion === undefined && remoteVersion === undefined)
     return {
@@ -12,7 +17,7 @@ const checkAnnouncementsStatus = (remoteVersion: string) => {
         status: 'NO_ANNOUNCEMENTS',
       },
     }
-  else if (localVersion === undefined && isOnboardingRead === undefined) {
+  else if (localVersion === undefined && !isOnboardingRead) {
     getWebContents().executeJavaScript(
       `sendData(${JSON.stringify({
         type: 'PUSH_ONBOARDING_STATUS',
