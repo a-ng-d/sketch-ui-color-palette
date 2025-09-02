@@ -2,7 +2,11 @@ import { createRoot } from 'react-dom/client'
 import React from 'react'
 import mixpanel from 'mixpanel-browser'
 import App from '@ui-lib/ui/App'
-import { initMixpanel, setMixpanelEnv } from '@ui-lib/external/tracking/client'
+import {
+  initMixpanel,
+  setMixpanelEnv,
+  setEditor,
+} from '@ui-lib/external/tracking/client'
 import { initSentry } from '@ui-lib/external/monitoring/client'
 import { initSupabase } from '@ui-lib/external/auth/client'
 import { ThemeProvider } from '@ui-lib/config/ThemeContext'
@@ -28,12 +32,17 @@ if (globalConfig.env.isMixpanelEnabled && mixpanelToken !== undefined) {
     disable_cookie: true,
     ignore_dnt: true,
     opt_out_tracking_by_default: true,
+    record_sessions_percent: 5,
+    record_mask_text_selector: '*',
+    record_block_selector: 'img',
+    record_heatmap_data: true,
   })
   mixpanel.opt_in_tracking()
 
   // eslint-disable-next-line no-undef
   setMixpanelEnv(process.env.NODE_ENV)
   initMixpanel(mixpanel)
+  setEditor(globalConfig.env.editor)
 }
 
 if (
@@ -63,7 +72,7 @@ if (
     maxValueLength: 5000,
     maxBreadcrumbs: 150,
     tracesSampleRate: 1.0,
-    replaysSessionSampleRate: 0.1,
+    replaysSessionSampleRate: 0.01,
     replaysOnErrorSampleRate: 1.0,
     release: globalConfig.env.pluginVersion,
   })
