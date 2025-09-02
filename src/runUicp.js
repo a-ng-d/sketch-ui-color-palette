@@ -5,6 +5,7 @@ import Settings from 'sketch/settings'
 import webviewHtmlUrl from '../resources/webview.html'
 import { locales } from '../resources/content/locales.ts'
 import { setWebContents } from './utils/webContents.ts'
+import globalConfig from './global.config.ts'
 import updateThemes from './bridges/updates/updateThemes.ts'
 import updateSettings from './bridges/updates/updateSettings.ts'
 import updateScale from './bridges/updates/updateScale.ts'
@@ -97,6 +98,15 @@ export default function () {
     webContents.executeJavaScript(
       `sendData(${JSON.stringify({
         type: 'CHECK_ANNOUNCEMENTS_VERSION',
+      })})`
+    )
+    webContents.executeJavaScript(
+      `sendData(${JSON.stringify({
+        type: 'CHECK_EDITOR',
+        data: {
+          id: '',
+          editor: globalConfig.env.editor,
+        },
       })})`
     )
 
