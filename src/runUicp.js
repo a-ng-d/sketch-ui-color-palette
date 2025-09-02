@@ -411,7 +411,7 @@ export default function () {
       })})`
     )
   })
-  webContents.on('GO_TO_CHECKOUT', () => {
+  webContents.on('GO_TO_ONE', () => {
     // eslint-disable-next-line no-undef
     NSWorkspace.sharedWorkspace().openURL(
       // eslint-disable-next-line no-undef
