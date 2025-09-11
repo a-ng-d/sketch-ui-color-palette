@@ -68,6 +68,7 @@ const globalConfig: Config = {
     storeManagementUrl: isDev
       ? 'https://uicp.ylb.lt/store-management-dev'
       : 'https://uicp.ylb.lt/store-management',
+    howToUseUrl: 'https://uicp.ylb.lt/how-to-use-sketch',
   },
   versions: {
     userConsentVersion: '2024.01',
