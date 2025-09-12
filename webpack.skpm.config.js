@@ -4,37 +4,6 @@ const path = require('path')
 const Dotenv = require('dotenv-webpack')
 const SentryWebpackPlugin = require('@sentry/webpack-plugin')
 
-const excludeUnwantedCssPlugin = () => {
-  const excludePattern =
-    /figma-types|figma-colors|sketch-colors|sketch-types\.css$/
-
-  return {
-    apply(compiler) {
-      compiler.hooks.normalModuleFactory.tap(
-        'ExcludeUnwantedCssPlugin',
-        (factory) => {
-          factory.hooks.resolve.tapAsync(
-            'ExcludeUnwantedCssPlugin',
-            (data, context, callback) => {
-              if (data.request.endsWith('.css')) {
-                const testPath = path.resolve(context.context, data.request)
-                if (excludePattern.test(testPath))
-                  return callback(null, {
-                    path: require.resolve('./empty-module.js'),
-                    query: data.query,
-                    file: true,
-                    resolved: true,
-                  })
-              }
-              return callback()
-            }
-          )
-        }
-      )
-    },
-  }
-}
-
 module.exports = function (config, entry) {
   config.plugins = config.plugins || []
   config.plugins.push(
@@ -43,7 +12,6 @@ module.exports = function (config, entry) {
       systemvars: true,
     })
   )
-  config.plugins.push(excludeUnwantedCssPlugin())
   if (process.env.SENTRY_AUTH_TOKEN)
     config.plugins.push(
       new SentryWebpackPlugin({
