@@ -24,6 +24,7 @@ const sentryDsn = process.env.REACT_APP_SENTRY_DSN
 // eslint-disable-next-line no-undef
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_PUBLIC_ANON_KEY
 
+// Mixpanel
 if (globalConfig.env.isMixpanelEnabled && mixpanelToken !== undefined) {
   mixpanel.init(mixpanelToken, {
     api_host: 'https://api-eu.mixpanel.com',
@@ -45,6 +46,7 @@ if (globalConfig.env.isMixpanelEnabled && mixpanelToken !== undefined) {
   setEditor(globalConfig.env.editor)
 }
 
+// Sentry
 if (
   globalConfig.env.isSentryEnabled &&
   !globalConfig.env.isDev &&
@@ -96,9 +98,11 @@ if (
   window.Sentry = devLogger
 }
 
+// Supabase
 if (globalConfig.env.isSupabaseEnabled && supabaseAnonKey !== undefined)
   initSupabase(globalConfig.urls.databaseUrl, supabaseAnonKey)
 
+// Bridge Canvas <> UI
 window.sendData = (data) => {
   const pluginEvent = new CustomEvent('pluginMessage', {
     detail: data,
@@ -119,6 +123,7 @@ parent.postMessage = (message, targetOrigin) => {
   }
 }
 
+// Render
 root.render(
   <ConfigProvider
     limits={{
