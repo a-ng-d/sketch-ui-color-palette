@@ -103,25 +103,20 @@ if (globalConfig.env.isSupabaseEnabled && supabaseAnonKey !== undefined)
   initSupabase(globalConfig.urls.databaseUrl, supabaseAnonKey)
 
 // Bridge Canvas <> UI
-window.sendData = (data) => {
-  const pluginEvent = new CustomEvent('pluginMessage', {
+window.addEventListener('message', (event) => {
+  const data = event.data
+  const pluginEvent = new CustomEvent('platformMessage', {
     detail: data,
   })
   window.dispatchEvent(pluginEvent)
-}
+})
 
-const originalPostMessage = parent.postMessage
-
-parent.postMessage = (message, targetOrigin) => {
-  originalPostMessage.call(parent, message, targetOrigin)
-
-  if (message && message.pluginMessage !== undefined) {
-    const eventName = message.pluginMessage.type || 'sketchMessage'
-    const eventData = message.pluginMessage || {}
-
-    window.postMessage(eventName, eventData)
+window.addEventListener('pluginMessage', (event) => {
+  if (event instanceof CustomEvent && window.parent !== window) {
+    const { message, targetOrigin } = event.detail
+    window.postMessage(message, targetOrigin)
   }
-}
+})
 
 // Render
 root.render(
