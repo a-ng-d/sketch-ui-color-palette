@@ -111,10 +111,8 @@ window.sendData = (data) => {
 }
 
 window.addEventListener('pluginMessage', (event) => {
-  if (event instanceof CustomEvent && window.parent !== window) {
-    const { message, targetOrigin } = event.detail
-    window.postMessage(message, targetOrigin)
-  }
+  const { message } = event.detail
+  window.postMessage(message.pluginMessage.type, message.pluginMessage)
 })
 
 // Render
