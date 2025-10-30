@@ -87,7 +87,7 @@
     "resources/**/*.js"
   ],
   "dependencies": {
-    "@a_ng_d/figmug-ui": "^1.19.21",
+    "@a_ng_d/figmug-ui": "^1.19.22",
     "@a_ng_d/figmug-utils": "^0.7.3",
     "@a_ng_d/utils-ui-color-palette": "^1.7.6",
     "@babel/preset-react": "^7.27.1",
@@ -103,8 +103,8 @@
     "preact": "^10.6.4",
     "react": "npm:@preact/compat",
     "react-dom": "npm:@preact/compat",
-    "sketch-module-web-view": "^3.1.4",
     "react-syntax-highlighter": "^15.6.1",
+    "sketch-module-web-view": "^3.1.4",
     "uid": "^2.0.2"
   },
   "overrides": {
