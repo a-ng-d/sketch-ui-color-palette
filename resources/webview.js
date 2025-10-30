@@ -8,6 +8,7 @@ import {
   setEditor,
 } from '@ui-lib/external/tracking/client'
 import { initSentry } from '@ui-lib/external/monitoring/client'
+import { initMistral } from '@ui-lib/external/mistral'
 import { initSupabase } from '@ui-lib/external/auth/client'
 import { ThemeProvider } from '@ui-lib/config/ThemeContext'
 import { ConfigProvider } from '@ui-lib/config/ConfigContext'
@@ -23,6 +24,8 @@ const mixpanelToken = process.env.REACT_APP_MIXPANEL_TOKEN
 const sentryDsn = process.env.REACT_APP_SENTRY_DSN
 // eslint-disable-next-line no-undef
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_PUBLIC_ANON_KEY
+// eslint-disable-next-line no-undef
+const mistralApiKey = process.env.REACT_APP_MISTRAL_AI_API_KEY
 
 // Mixpanel
 if (globalConfig.env.isMixpanelEnabled && mixpanelToken !== undefined) {
@@ -102,6 +105,10 @@ if (
 if (globalConfig.env.isSupabaseEnabled && supabaseAnonKey !== undefined)
   initSupabase(globalConfig.urls.databaseUrl, supabaseAnonKey)
 
+// Mistral AI
+if (globalConfig.env.isMistralAiEnabled)
+  initMistral(globalConfig.urls.aiApiUrl, mistralApiKey)
+
 // Bridge Canvas <> UI
 window.sendData = (data) => {
   const pluginEvent = new CustomEvent('platformMessage', {
@@ -118,66 +125,16 @@ window.addEventListener('pluginMessage', (event) => {
 // Render
 root.render(
   <ConfigProvider
-    limits={{
-      pageSize: globalConfig.limits.pageSize,
-    }}
-    env={{
-      platform: globalConfig.env.platform,
-      ui: globalConfig.env.ui,
-      colorMode: globalConfig.env.colorMode,
-      editor: globalConfig.env.editor,
-      isDev: globalConfig.env.isDev,
-      isSupabaseEnabled: globalConfig.env.isSupabaseEnabled,
-      isMixpanelEnabled: globalConfig.env.isMixpanelEnabled,
-      isSentryEnabled: globalConfig.env.isSentryEnabled,
-      announcementsDbId: globalConfig.env.announcementsDbId,
-      onboardingDbId: globalConfig.env.onboardingDbId,
-      pluginId: globalConfig.env.pluginId,
-    }}
-    plan={{
-      isProEnabled: globalConfig.plan.isProEnabled,
-      isTrialEnabled: globalConfig.plan.isTrialEnabled,
-      trialTime: globalConfig.plan.trialTime,
-    }}
-    dbs={{
-      palettesDbViewName: globalConfig.dbs.palettesDbViewName,
-      palettesDbTableName: globalConfig.dbs.palettesDbTableName,
-    }}
-    urls={{
-      authWorkerUrl: globalConfig.urls.authWorkerUrl,
-      announcementsWorkerUrl: globalConfig.urls.announcementsWorkerUrl,
-      databaseUrl: globalConfig.urls.databaseUrl,
-      authUrl: globalConfig.urls.authUrl,
-      storeApiUrl: globalConfig.urls.storeApiUrl,
-      platformUrl: globalConfig.urls.platformUrl,
-      uiUrl: globalConfig.urls.uiUrl,
-      documentationUrl: globalConfig.urls.documentationUrl,
-      repositoryUrl: globalConfig.urls.repositoryUrl,
-      supportEmail: globalConfig.urls.supportEmail,
-      communityUrl: globalConfig.urls.communityUrl,
-      feedbackUrl: globalConfig.urls.feedbackUrl,
-      trialFeedbackUrl: globalConfig.urls.trialFeedbackUrl,
-      requestsUrl: globalConfig.urls.requestsUrl,
-      networkUrl: globalConfig.urls.networkUrl,
-      authorUrl: globalConfig.urls.authorUrl,
-      licenseUrl: globalConfig.urls.licenseUrl,
-      privacyUrl: globalConfig.urls.privacyUrl,
-      vsCodeFigmaPluginUrl: globalConfig.urls.vsCodeFigmaPluginUrl,
-      isbUrl: globalConfig.urls.isbUrl,
-      uicpUrl: globalConfig.urls.uicpUrl,
-      storeUrl: globalConfig.urls.storeUrl,
-      storeManagementUrl: globalConfig.urls.storeManagementUrl,
-      howToUseUrl: globalConfig.urls.howToUseUrl,
-    }}
-    versions={{
-      userConsentVersion: globalConfig.versions.userConsentVersion,
-      trialVersion: globalConfig.versions.trialVersion,
-      algorithmVersion: globalConfig.versions.algorithmVersion,
-      paletteVersion: globalConfig.versions.paletteVersion,
-      pluginVersion: globalConfig.versions.pluginVersion,
-    }}
+    limits={globalConfig.limits}
+    env={globalConfig.env}
+    plan={globalConfig.plan}
+    dbs={globalConfig.dbs}
+    urls={globalConfig.urls}
+    versions={globalConfig.versions}
     features={globalConfig.features}
     locales={globalConfig.locales}
+    lang={globalConfig.lang}
+    fees={globalConfig.fees}
   >
     <ThemeProvider
       theme={globalConfig.env.ui}
