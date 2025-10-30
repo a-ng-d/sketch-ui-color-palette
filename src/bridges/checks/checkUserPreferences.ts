@@ -1,7 +1,7 @@
 import Settings from 'sketch/settings'
+import { locales } from '@ui-lib/content/locales'
 import { getWebContents } from '../../utils/webContents'
 import { Language } from '../../types/translations'
-import { locales } from '../../../resources/content/locales'
 
 const checkUserPreferences = async () => {
   let isWCAGDisplayed = Settings.settingForKey('is_wcag_displayed')

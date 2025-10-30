@@ -1,4 +1,4 @@
-import { locales } from '../../resources/content/locales'
+import { locales } from '@ui-lib/content/locales'
 
 const setPaletteName = (
   name: string,

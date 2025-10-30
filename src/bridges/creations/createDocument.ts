@@ -1,11 +1,11 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
+import { locales } from '@ui-lib/content/locales'
 import {
   Data,
   FullConfiguration,
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
-import { locales } from '../../../resources/content/locales'
 //import Documents from "../../canvas/Documents";
 
 const createDocument = async (id: string, view: ViewConfiguration) => {

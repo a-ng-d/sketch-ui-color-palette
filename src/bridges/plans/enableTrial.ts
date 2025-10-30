@@ -1,5 +1,5 @@
 import Settings from 'sketch/settings'
-import { getWebContents } from '../utils/webContents'
+import { getWebContents } from '../../utils/webContents'
 
 const enableTrial = async (trialTime: number, trialVersion: string) => {
   const now = new Date().getTime()

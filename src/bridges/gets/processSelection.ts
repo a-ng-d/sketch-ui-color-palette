@@ -7,7 +7,7 @@ import {
   HexModel,
   SourceColorConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
-import { getWebContents } from '../utils/webContents'
+import { getWebContents } from '../../utils/webContents'
 
 export let currentSelection: Array<any> = []
 export let previousSelection: Array<any> = []

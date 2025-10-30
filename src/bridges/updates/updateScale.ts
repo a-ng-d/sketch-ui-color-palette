@@ -1,10 +1,10 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
+import { locales } from '@ui-lib/content/locales'
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { doScale } from '@a_ng_d/figmug-utils'
 import { getWebContents } from '../../utils/webContents'
 import { ScaleMessage } from '../../types/messages'
-import { locales } from '../../../resources/content/locales'
 
 const updateScale = async (msg: ScaleMessage) => {
   const Document = Dom.getSelectedDocument()

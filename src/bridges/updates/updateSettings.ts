@@ -1,9 +1,9 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
+import { locales } from '@ui-lib/content/locales'
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { getWebContents } from '../../utils/webContents'
 import { SettingsMessage } from '../../types/messages'
-import { locales } from '../../../resources/content/locales'
 
 const updateSettings = async (msg: SettingsMessage) => {
   const Document = Dom.getSelectedDocument()

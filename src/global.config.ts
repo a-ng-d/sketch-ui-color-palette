@@ -1,6 +1,6 @@
+import { Config } from '@ui-lib/types/config'
 import { doSpecificMode } from '@ui-lib/stores/features'
-import { locales } from '../resources/content/locales'
-import { Config } from './types/config'
+import { locales } from '@ui-lib/content/locales'
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -17,6 +17,7 @@ const globalConfig: Config = {
     isSupabaseEnabled: true,
     isMixpanelEnabled: true,
     isSentryEnabled: true,
+    isMistralAiEnabled: true,
     announcementsDbId: process.env.REACT_APP_NOTION_ANNOUNCEMENTS_ID as string,
     onboardingDbId: process.env.REACT_APP_NOTION_ONBOARDING_ID as string,
     pluginId: '123456789',
@@ -25,12 +26,16 @@ const globalConfig: Config = {
     isProEnabled: true,
     isTrialEnabled: false,
     trialTime: 72,
+    creditsLimit: 400,
+    creditsRenewalPeriodDays: 1,
+    creditsRenewalPeriodHours: 24,
   },
   dbs: {
     palettesDbViewName: isDev
       ? 'sandbox_palettes_with_creators'
       : 'palettes_with_creators',
     palettesDbTableName: isDev ? 'sandbox_palettes' : 'palettes',
+    starredPalettesDbTableName: 'starred_palettes',
   },
   urls: {
     authWorkerUrl: isDev
@@ -44,6 +49,7 @@ const globalConfig: Config = {
       ? 'http://localhost:3000'
       : (process.env.REACT_APP_AUTH_URL as string),
     storeApiUrl: process.env.REACT_APP_LEMONSQUEEZY_URL as string,
+    aiApiUrl: process.env.REACT_APP_MISTRAL_AI_API_URL as string,
     platformUrl: '*',
     uiUrl: isDev
       ? 'http://localhost:4400'
@@ -76,6 +82,7 @@ const globalConfig: Config = {
     algorithmVersion: 'v3',
     paletteVersion: '2025.06',
     pluginVersion: process.env.npm_package_version as string,
+    creditsVersion: '2025.10',
   },
   features: doSpecificMode(
     [
@@ -136,6 +143,15 @@ const globalConfig: Config = {
     ['SCALE_CONTRAST_RATIO', 'INVOLVE_COMMUNITY']
   ),
   locales: locales.get(),
+  lang: 'en-US',
+  fees: {
+    colourLoversImport: 25,
+    coolorsImport: 25,
+    realtimeColorsImport: 25,
+    imageColorsExtract: 100,
+    harmonyCreate: 50,
+    aiColorsGenerate: 100,
+  },
 }
 
 export default globalConfig

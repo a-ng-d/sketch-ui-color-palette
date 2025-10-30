@@ -39,3 +39,4 @@ declare module "sketch" {
     Swatch: any,
   };
 }
+declare module 'mixpanel-browser'
