@@ -30,6 +30,7 @@ import checkUserPreferences from './bridges/checks/checkUserPreferences.ts'
 import checkUserLicense from './bridges/checks/checkUserLicense.ts'
 import checkUserConsent from './bridges/checks/checkUserConsent.ts'
 import checkTrialStatus from './bridges/checks/checkTrialStatus.ts'
+import checkCredits from './bridges/checks/checkCredits.ts'
 import checkAnnouncementsStatus from './bridges/checks/checkAnnouncementsStatus.ts'
 
 const webviewIdentifier = 'sketch-ui-color-palette.webview'
@@ -113,6 +114,7 @@ export default function () {
     // Checks
     checkUserConsent()
       .then(() => checkTrialStatus())
+      .then(() => checkCredits())
       .then(() => checkUserLicense())
       .then(() => checkUserPreferences())
       .then(() => processSelection())
@@ -392,7 +394,7 @@ export default function () {
       .then(() => checkTrialStatus())
       .catch((error) => {
         console.error(error)
-        
+
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({
             type: 'POST_MESSAGE',

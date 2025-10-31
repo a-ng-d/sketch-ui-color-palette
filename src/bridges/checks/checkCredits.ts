@@ -9,7 +9,9 @@ const addHours = (date: Date, hours: number) => {
 const checkCredits = async () => {
   let creditsCount = Settings.settingForKey('credits_count')
   let renewDate = Settings.settingForKey('credits_renew_date')
-  const creditsVersion = Settings.settingForKey('credits_version')
+  const creditsVersion =
+    Settings.settingForKey('credits_version') ||
+    globalConfig.versions.creditsVersion
 
   const now = new Date()
 
@@ -20,10 +22,10 @@ const checkCredits = async () => {
   if (renewDate === undefined) {
     const next = addHours(now, periodHours)
     Settings.setSettingForKey('credits_renew_date', next.getTime())
-    renewDate = next
+    renewDate = next.getTime()
   }
 
-  if (renewDate && renewDate.getTime() <= now.getTime()) {
+  if (renewDate <= now.getTime()) {
     Settings.setSettingForKey('credits_count', globalConfig.plan.creditsLimit)
     const next = addHours(now, periodHours)
     Settings.setSettingForKey('credits_renew_date', next.getTime())
@@ -47,7 +49,7 @@ const checkCredits = async () => {
     const next = addHours(now, periodHours)
     Settings.setSettingForKey('credits_renew_date', next.getTime())
     creditsCount = globalConfig.plan.creditsLimit
-    renewDate = next
+    renewDate = next.getTime()
   }
 
   getWebContents().executeJavaScript(
@@ -55,7 +57,7 @@ const checkCredits = async () => {
       type: 'CHECK_CREDITS',
       data: {
         creditsCount: creditsCount,
-        creditsRenewalDate: renewDate?.getTime() ?? null,
+        creditsRenewalDate: renewDate,
       },
     })})`
   )
