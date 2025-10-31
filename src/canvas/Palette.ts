@@ -139,9 +139,11 @@ export default class Palette {
       ) ?? { hex: '#000000', rgb: [0, 0, 0] }
 
       let radii = []
-      if (index === 0) radii = [0, 0, 16, 16]
-      else if (index === this.data.colors.length - 1) radii = [16, 16, 0, 0]
+      if (index === 0) radii = [16, 16, 0, 0]
+      else if (index === this.data.colors.length - 1) radii = [0, 0, 16, 16]
       else radii = [0, 0, 0, 0]
+
+      if (this.data.colors.length === 1) radii = [16, 16, 16, 16]
 
       // Base
       this.nodeRow = new Group({
