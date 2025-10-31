@@ -125,9 +125,6 @@ export default class Palette {
       style: {
         fills: [],
         borders: [],
-        corners: {
-          radii: 16,
-        },
       },
     })
 
@@ -136,10 +133,15 @@ export default class Palette {
     this.nodeShades.verticalSizing = FlexSizing.Fit
 
     // Insert
-    this.data?.colors.reverse().forEach((color) => {
+    this.data?.colors.reverse().forEach((color, index) => {
       const sourceColor = color.shades.find(
         (shade) => shade.name === 'source'
       ) ?? { hex: '#000000', rgb: [0, 0, 0] }
+
+      let radii = []
+      if (index === 0) radii = [0, 0, 16, 16]
+      else if (index === this.data.colors.length - 1) radii = [16, 16, 0, 0]
+      else radii = [0, 0, 0, 0]
 
       // Base
       this.nodeRow = new Group({
@@ -159,6 +161,9 @@ export default class Palette {
         style: {
           fills: [],
           borders: [],
+          corners: {
+            radii: radii,
+          },
         },
       })
 
