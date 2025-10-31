@@ -144,6 +144,8 @@ export default function () {
         )
       )
       .catch((error) => {
+        console.error(error)
+
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({
             type: 'POST_MESSAGE',
@@ -188,6 +190,8 @@ export default function () {
         )
       )
       .catch((error) => {
+        console.error(error)
+
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({
             type: 'POST_MESSAGE',
@@ -209,6 +213,8 @@ export default function () {
         )
       )
       .catch((error) => {
+        console.error(error)
+
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({
             type: 'POST_MESSAGE',
@@ -243,6 +249,8 @@ export default function () {
         )
       )
       .catch((error) => {
+        console.error(error)
+
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({
             type: 'POST_MESSAGE',
@@ -277,6 +285,8 @@ export default function () {
         )
       )
       .catch((error) => {
+        console.error(error)
+
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({
             type: 'POST_MESSAGE',
@@ -353,6 +363,8 @@ export default function () {
         )
       })
       .catch((error) => {
+        console.error(error)
+
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({
             type: 'POST_MESSAGE',
@@ -379,6 +391,8 @@ export default function () {
     enableTrial(msg.data.trialTime, msg.data.trialVersion)
       .then(() => checkTrialStatus())
       .catch((error) => {
+        console.error(error)
+        
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({
             type: 'POST_MESSAGE',
