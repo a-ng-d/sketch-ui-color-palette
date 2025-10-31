@@ -15,7 +15,7 @@ const globalConfig: Config = {
     colorMode: 'sketch-dark',
     isDev,
     isSupabaseEnabled: true,
-    isMixpanelEnabled: true,
+    isMixpanelEnabled: false,
     isSentryEnabled: true,
     isMistralAiEnabled: true,
     announcementsDbId: process.env.REACT_APP_NOTION_ANNOUNCEMENTS_ID as string,
@@ -23,7 +23,7 @@ const globalConfig: Config = {
     pluginId: '123456789',
   },
   plan: {
-    isProEnabled: true,
+    isProEnabled: false,
     isTrialEnabled: false,
     trialTime: 72,
     creditsLimit: 400,
@@ -88,12 +88,10 @@ const globalConfig: Config = {
     [
       'RESIZE_UI',
       'HELP_CHAT',
-      'DOCUMENT_PALETTE',
-      'DOCUMENT_PALETTE_PROPERTIES',
-      'DOCUMENT_SHEET',
-      'DOCUMENT_PUSH_UPDATES',
       'DOWNLOAD_EXPORT',
       'EXPORT_CSV',
+      'DOCUMENT_SHEET',
+      'VIEWS_SHEET',
       'LOCAL_PALETTES_PAGE',
     ],
     [

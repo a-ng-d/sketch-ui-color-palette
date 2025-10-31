@@ -6,19 +6,18 @@ import {
   FullConfiguration,
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
-//import Documents from "../../canvas/Documents";
+import Documents from '../../canvas/Documents'
 
 const createDocument = async (id: string, view: ViewConfiguration) => {
-  /*const Document = Dom.getSelectedDocument();
-  const Page = Document.selectedPage;
+  const Document = Dom.getSelectedDocument()
+  const Page = Document.selectedPage
 
   const currentPalettes: Array<FullConfiguration> =
-    Settings.documentSettingForKey(Document, "ui_color_palettes") ?? [];
+    Settings.documentSettingForKey(Document, 'ui_color_palettes') ?? []
 
-  const palette = currentPalettes.find((palette) => palette.meta.id === id);
+  const palette = currentPalettes.find((palette) => palette.meta.id === id)
 
-  if (palette === undefined)
-    throw new Error(locales.get().error.unfoundPalette);
+  if (palette === undefined) throw new Error(locales.get().error.unfoundPalette)
 
   const documents = new Documents({
     base: palette.base,
@@ -26,14 +25,12 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
     data: new Data(palette).makePaletteData(),
     meta: palette.meta,
     view: view,
-  });
+  })
 
-  Page.layers.push(...documents.documents);
+  Page.layers.push(...documents.documents)
+  documents.documents.forEach((document) => (document.selected = true))
 
-  //Document.selectedLayer.push(...documents.documents);
-  Document.centerOnLayer(documents.documents[0]);
-
-  return palette;*/
+  return palette
 }
 
 export default createDocument

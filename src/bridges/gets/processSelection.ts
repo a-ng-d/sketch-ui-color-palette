@@ -31,7 +31,7 @@ const processSelection = (webContents?: any) => {
   const selectionHandler = (state: string) => {
     const actions: { [key: string]: () => void } = {
       DOCUMENT_SELECTED: async () => {
-        const id = Settings.documentSettingForKey(Document, 'id')
+        const id = Settings.layerSettingForKey(document, 'id')
         const currentPalettes: Array<FullConfiguration> =
           Settings.documentSettingForKey(Document, 'ui_color_palettes')
         const palette = currentPalettes.find(
@@ -42,9 +42,9 @@ const processSelection = (webContents?: any) => {
           `sendData(${JSON.stringify({
             type: 'DOCUMENT_SELECTED',
             data: {
-              view: Settings.documentSettingForKey(Document, 'view'),
+              view: Settings.layerSettingForKey(document, 'view'),
               id: id,
-              updatedAt: Settings.documentSettingForKey(Document, 'updatedAt'),
+              updatedAt: Settings.layerSettingForKey(document, 'updatedAt'),
               isLinkedToPalette: palette !== undefined,
             },
           })})`
@@ -74,7 +74,7 @@ const processSelection = (webContents?: any) => {
 
   if (
     selection.length === 1 &&
-    Settings.documentSettingForKey(Document, 'type') === 'UI_COLOR_PALETTE' &&
+    Settings.layerSettingForKey(document, 'type') === 'UI_COLOR_PALETTE' &&
     (document.type !== 'SymbolMaster' || document.type !== 'SymbolInstance')
   )
     return selectionHandler('DOCUMENT_SELECTED')

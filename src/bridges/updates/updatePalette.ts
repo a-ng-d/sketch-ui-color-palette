@@ -21,7 +21,7 @@ const updatePalette = async ({
   const palette = currentPalettes.find((palette) => palette.meta.id === msg.id)
   const now = new Date().toISOString()
 
-  if (palette === undefined) throw new Error(locales.get().error.fetchPalette)
+  if (palette === undefined) throw new Error(locales.get().error.unfoundPalette)
 
   msg.items.forEach((item) => {
     const flatPalette = flattenObject(palette)

@@ -16,7 +16,7 @@ const updateScale = async (msg: ScaleMessage) => {
   )
   const now = new Date().toISOString()
 
-  if (palette === undefined) throw new Error(locales.get().error.fetchPalette)
+  if (palette === undefined) throw new Error(locales.get().error.unfoundPalette)
 
   const theme = palette.themes.find((theme) => theme.isEnabled)
   if (theme !== undefined) theme.scale = msg.data.scale

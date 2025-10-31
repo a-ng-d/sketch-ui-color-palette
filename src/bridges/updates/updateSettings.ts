@@ -13,7 +13,7 @@ const updateSettings = async (msg: SettingsMessage) => {
   const palette = currentPalettes.find((palette) => palette.meta.id === msg.id)
   const now = new Date().toISOString()
 
-  if (palette === undefined) throw new Error(locales.get().error.fetchPalette)
+  if (palette === undefined) throw new Error(locales.get().error.unfoundPalette)
 
   const theme = palette.themes.find((theme) => theme.isEnabled)
   if (theme !== undefined) {

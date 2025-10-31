@@ -26,12 +26,26 @@ declare module 'sketch/settings' {
 }
 declare module "sketch/dom" {
   export default {
+    StackLayout: any,
+    Direction: any,
+    AlignItems: any,
+    JustifyContent: any,
+    Group: any,
     getSelectedDocument: () => any,
     Artboard: any,
     Rectangle: any,
     FlexLayout: any,
     SharedStyle: any,
-  };
+    FillType: any,
+    Style: any,
+    FlexSizing: any,
+    GroupBehavior: any,
+    Text: any,
+    ShapePath: any,
+    Image: any,
+    Sketch: any,
+    createLayerFromData: (data: string, type: string) => any,
+  }
 }
 declare module "sketch" {
   export default {

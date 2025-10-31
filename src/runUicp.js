@@ -2,8 +2,8 @@ import { getWebview } from 'sketch-module-web-view/remote'
 import BrowserWindow from 'sketch-module-web-view'
 import UI from 'sketch/ui'
 import Settings from 'sketch/settings'
+import { locales } from '@ui-lib/content/locales.ts'
 import webviewHtmlUrl from '../resources/webview.html'
-import { locales } from '../resources/content/locales.ts'
 import { setWebContents } from './utils/webContents.ts'
 import globalConfig from './global.config.ts'
 import updateThemes from './bridges/updates/updateThemes.ts'
@@ -12,25 +12,25 @@ import updateScale from './bridges/updates/updateScale.ts'
 import updatePalette from './bridges/updates/updatePalette.ts'
 import updateLocalVariables from './bridges/updates/updateLocalVariables.ts'
 import updateLocalStyles from './bridges/updates/updateLocalStyles.ts'
+import updateDocument from './bridges/updates/updateDocument'
 import updateColors from './bridges/updates/updateColors.ts'
+import enableTrial from './bridges/plans/enableTrial.ts'
 import processSelection from './bridges/gets/processSelection.ts'
 import jumpToPalette from './bridges/gets/jumpToPalette.ts'
 import getPalettesOnCurrentFile from './bridges/gets/getPalettesOnCurrentFile.ts'
-import enableTrial from './bridges/enableTrial.ts'
-import deletePalette from './bridges/creations/deletePalette.ts'
+import deletePalette from './bridges/deletions/deletePalette.ts'
 import createPaletteFromRemote from './bridges/creations/createPaletteFromRemote.ts'
 import createPaletteFromDuplication from './bridges/creations/createPaletteFromDuplication.ts'
 import createPaletteFromDocument from './bridges/creations/createPaletteFromDocument.ts'
 import createPalette from './bridges/creations/createPalette.ts'
 import createLocalVariables from './bridges/creations/createLocalVariables.ts'
 import createLocalStyles from './bridges/creations/createLocalStyles.ts'
+import createDocument from './bridges/creations/createDocument'
 import checkUserPreferences from './bridges/checks/checkUserPreferences.ts'
 import checkUserLicense from './bridges/checks/checkUserLicense.ts'
 import checkUserConsent from './bridges/checks/checkUserConsent.ts'
 import checkTrialStatus from './bridges/checks/checkTrialStatus.ts'
 import checkAnnouncementsStatus from './bridges/checks/checkAnnouncementsStatus.ts'
-// import createDocument from "./bridges/creations/createDocument";
-// import updateDocument from "./bridges/updates/updateDocument";
 
 const webviewIdentifier = 'sketch-ui-color-palette.webview'
 
@@ -134,27 +134,27 @@ export default function () {
       shouldLoadPalette: msg.shouldLoadPalette,
     })
   )
-  // webContents.on("UPDATE_DOCUMENT", (msg) =>
-  //   updateDocument(msg.view)
-  //     .finally(() =>
-  //       webContents.executeJavaScript(
-  //         `sendData(${JSON.stringify({
-  //           type: "STOP_LOADER",
-  //         })})`
-  //       )
-  //     )
-  //     .catch((error) => {
-  //       webContents.executeJavaScript(
-  //         `sendData(${JSON.stringify({
-  //           type: "POST_MESSAGE",
-  //           data: {
-  //             type: "ERROR",
-  //             message: error.message,
-  //           },
-  //         })})`
-  //       );
-  //     })
-  // );
+  webContents.on('UPDATE_DOCUMENT', (msg) =>
+    updateDocument(msg.view)
+      .finally(() =>
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: 'STOP_LOADER',
+          })})`
+        )
+      )
+      .catch((error) => {
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: 'POST_MESSAGE',
+            data: {
+              type: 'ERROR',
+              message: error.message,
+            },
+          })})`
+        )
+      })
+  )
   webContents.on('UPDATE_LANGUAGE', (msg) => {
     Settings.setSettingForKey('user_language', msg.data.lang)
     locales.set(msg.lang)
@@ -199,27 +199,27 @@ export default function () {
         )
       })
   )
-  // webContents.on("CREATE_DOCUMENT", (msg) =>
-  //   createDocument(msg.id, msg.view)
-  //     .finally(() =>
-  //       webContents.executeJavaScript(
-  //         `sendData(${JSON.stringify({
-  //           type: "STOP_LOADER",
-  //         })})`
-  //       )
-  //     )
-  //     .catch((error) => {
-  //       webContents.executeJavaScript(
-  //         `sendData(${JSON.stringify({
-  //           type: "POST_MESSAGE",
-  //           data: {
-  //             type: "ERROR",
-  //             message: error.message,
-  //           },
-  //         })})`
-  //       );
-  //     })
-  // );
+  webContents.on('CREATE_DOCUMENT', (msg) =>
+    createDocument(msg.id, msg.view)
+      .finally(() =>
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: 'STOP_LOADER',
+          })})`
+        )
+      )
+      .catch((error) => {
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: 'POST_MESSAGE',
+            data: {
+              type: 'ERROR',
+              message: error.message,
+            },
+          })})`
+        )
+      })
+  )
   webContents.on('SYNC_LOCAL_STYLES', (msg) =>
     createLocalStyles(msg.id)
       .then(async (message) => [message, await updateLocalStyles(msg.id)])
