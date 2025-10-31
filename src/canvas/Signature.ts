@@ -1,7 +1,7 @@
 import Dom from 'sketch/dom'
 import { locales } from '@ui-lib/content/locales'
 import Tag from './Tag'
-import { darkColor } from './styles'
+import { bodyFontFamily, darkColor } from './styles'
 
 const Group = Dom.Group
 const StackLayout = Dom.StackLayout
@@ -39,7 +39,7 @@ export default class Signature {
           name: '_url',
           content: locales.get().url,
           url: 'https://ui-color-palette.com',
-          fontFamily: 'Lexend',
+          fontFamily: bodyFontFamily,
         }).makeNodeTag(),
         new Tag({
           name: '_tagline',

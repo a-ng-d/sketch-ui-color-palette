@@ -1,1 +1,5 @@
-export const darkColor = '#00424F'
+export const darkColor = '#00212B'
+export const titleFontFamily = 'SF Mono'
+export const propertyFontFamily = 'SF Mono'
+export const bodyFontFamily = 'SF Pro'
+export type FontFamily = 'SF Mono' | 'SF Pro'

@@ -125,6 +125,9 @@ export default class Palette {
       style: {
         fills: [],
         borders: [],
+        corners: {
+          radii: 16,
+        },
       },
     })
 

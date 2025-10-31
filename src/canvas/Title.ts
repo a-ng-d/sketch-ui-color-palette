@@ -7,6 +7,7 @@ import {
   ThemeConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
 import Tag from './Tag'
+import { bodyFontFamily } from './styles'
 import Paragraph from './Paragraph'
 
 const Group = Dom.Group
@@ -138,7 +139,7 @@ export default class Title {
           type: 'FIXED',
           width: 644,
           fontSize: 12,
-          fontFamily: 'Lexend',
+          fontFamily: bodyFontFamily,
         }).node
       )
 
@@ -150,7 +151,7 @@ export default class Title {
           type: 'FIXED',
           width: 644,
           fontSize: 12,
-          fontFamily: 'Lexend',
+          fontFamily: bodyFontFamily,
         }).node
       )
 
