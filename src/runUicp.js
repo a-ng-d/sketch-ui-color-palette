@@ -503,6 +503,7 @@ export const onShutdown = () => {
 export const onChangeSelection = () => {
   const existingWebview = getWebview(webviewIdentifier)
   if (existingWebview) processSelection(existingWebview.webContents)
+  if (existingWebview) checkTrialStatus(existingWebview.webContents)
 }
 
 export const onOpenDocument = () => {

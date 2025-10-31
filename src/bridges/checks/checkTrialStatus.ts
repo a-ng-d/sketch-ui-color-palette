@@ -2,7 +2,7 @@ import Settings from 'sketch/settings'
 import { getWebContents } from '../../utils/webContents'
 import globalConfig from '../../global.config'
 
-const checkTrialStatus = async () => {
+const checkTrialStatus = async (webContents?: any) => {
   const trialStartDate =
     Settings.settingForKey('trial_start_date') !== ''
       ? parseFloat(Settings.settingForKey('trial_start_date') || '')
@@ -13,6 +13,8 @@ const checkTrialStatus = async () => {
   const currentTrialTime: number = parseFloat(
     Settings.settingForKey('trial_time') || '72'
   )
+  const sharedWebContents =
+    webContents === undefined ? getWebContents() : webContents
 
   let consumedTime = 0,
     trialStatus = 'UNUSED'
@@ -43,7 +45,7 @@ const checkTrialStatus = async () => {
     planStatus = 'PAID'
   else planStatus = undefined
 
-  getWebContents().executeJavaScript(
+  sharedWebContents.executeJavaScript(
     `sendData(${JSON.stringify({
       type: 'CHECK_TRIAL_STATUS',
       data: {
