@@ -396,12 +396,12 @@ export default class Properties {
 
   makeNode = () => {
     // Insert
-    const nodeTopPropsNode = this.makeNodeTopProps()
-    const nodeBasePropsNode = this.makeNodeBaseProps()
-    const nodeBottomPropsNode = this.makeNodeBottomProps()
+    const nodeTopProps = this.makeNodeTopProps()
+    const nodeBaseProps = this.makeNodeBaseProps()
+    const nodeBottomProps = this.makeNodeBottomProps()
 
     if (this.nodeTopProps) {
-      this.nodeTopProps.layers.push(nodeBasePropsNode)
+      this.nodeTopProps.layers.push(nodeBaseProps)
       this.nodeTopProps.layers.push(
         new Tag({
           name: '_scale',
@@ -430,7 +430,7 @@ export default class Properties {
         fills: [],
         borders: [],
       },
-      layers: [nodeBottomPropsNode, nodeTopPropsNode],
+      layers: [nodeBottomProps, nodeTopProps],
     })
 
     // Layout
