@@ -4,9 +4,9 @@ import { getWebContents } from '../../utils/webContents'
 const enableTrial = async (trialTime: number, trialVersion: string) => {
   const now = new Date().getTime()
 
-  Settings.setSettingForKey('trial_start_date', now.toString())
+  Settings.setSettingForKey('trial_start_date', now)
   Settings.setSettingForKey('trial_version', trialVersion)
-  Settings.setSettingForKey('trial_time', trialTime.toString())
+  Settings.setSettingForKey('trial_time', trialTime)
 
   getWebContents().executeJavaScript(
     `sendData(${JSON.stringify({

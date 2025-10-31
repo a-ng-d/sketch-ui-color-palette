@@ -3,16 +3,12 @@ import { getWebContents } from '../../utils/webContents'
 import globalConfig from '../../global.config'
 
 const checkTrialStatus = async (webContents?: any) => {
-  const trialStartDate =
-    Settings.settingForKey('trial_start_date') !== ''
-      ? parseFloat(Settings.settingForKey('trial_start_date') || '')
-      : null
-  const currentTrialVersion: string =
+  const trialStartDate = Settings.settingForKey('trial_start_date')
+  const currentTrialVersion =
     Settings.settingForKey('trial_version') ||
     globalConfig.versions.trialVersion
-  const currentTrialTime: number = parseFloat(
-    Settings.settingForKey('trial_time') || '72'
-  )
+  const currentTrialTime = Settings.settingForKey('trial_time')
+
   const sharedWebContents =
     webContents === undefined ? getWebContents() : webContents
 
