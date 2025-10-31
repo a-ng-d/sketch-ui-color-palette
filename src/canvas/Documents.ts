@@ -145,17 +145,13 @@ export default class Documents {
       'updatedAt',
       this.meta.dates.updatedAt as string
     )
-    Settings.setLayerSettingForKey(
-      document,
-      'backup',
-      JSON.stringify({
-        base: this.base,
-        themes: this.themes,
-        meta: this.meta,
-        version: globalConfig.versions.paletteVersion,
-        type: 'UI_COLOR_PALETTE',
-      })
-    )
+    Settings.setLayerSettingForKey(document, 'backup', {
+      base: this.base,
+      themes: this.themes,
+      meta: this.meta,
+      version: globalConfig.versions.paletteVersion,
+      type: 'UI_COLOR_PALETTE',
+    })
 
     return document
   }

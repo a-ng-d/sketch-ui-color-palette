@@ -165,21 +165,49 @@ export default function () {
   })
 
   webContents.on('CREATE_PALETTE', (msg) =>
-    createPalette(msg).finally(() =>
-      webContents.executeJavaScript(
-        `sendData(${JSON.stringify({
-          type: 'STOP_LOADER',
-        })})`
+    createPalette(msg)
+      .finally(() =>
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: 'STOP_LOADER',
+          })})`
+        )
       )
-    )
+      .catch((error) => {
+        console.error(error)
+
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: 'POST_MESSAGE',
+            data: {
+              type: 'ERROR',
+              message: error.message,
+            },
+          })})`
+        )
+      })
   )
   webContents.on('CREATE_PALETTE_FROM_DOCUMENT', () =>
     createPaletteFromDocument().finally(() =>
-      webContents.executeJavaScript(
-        `sendData(${JSON.stringify({
-          type: 'STOP_LOADER',
-        })})`
-      )
+      webContents
+        .executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: 'STOP_LOADER',
+          })})`
+        )
+        .catch((error) => {
+          console.error(error)
+
+          webContents.executeJavaScript(
+            `sendData(${JSON.stringify({
+              type: 'POST_MESSAGE',
+              data: {
+                type: 'ERROR',
+                message: error.message,
+              },
+            })})`
+          )
+        })
     )
   )
   webContents.on('CREATE_PALETTE_FROM_REMOTE', (msg) =>

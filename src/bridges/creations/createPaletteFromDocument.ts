@@ -1,38 +1,23 @@
-import { uid } from 'uid/single'
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
+import { locales } from '@ui-lib/content/locales'
 import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import processSelection from '../gets/processSelection'
 import { getWebContents } from '../../utils/webContents'
 
 const createPaletteFromDocument = async () => {
   const Document = Dom.getSelectedDocument()
-
+  const document = Document.selectedLayers.layers[0]
   const currentPalettes: Array<FullConfiguration> =
     Settings.documentSettingForKey(Document, 'ui_color_palettes') ?? []
-  const document = Document.selectedLayers.layers[0]
-  const backup = Settings.documentSettingForKey(
-    document,
-    'backup'
-  ) as FullConfiguration
 
-  const now = new Date().toISOString()
-  delete (backup as Partial<FullConfiguration>).libraryData
-  backup.meta.id = uid()
-  backup.meta.dates.openedAt = now
-  backup.meta.dates.createdAt = now
-  backup.meta.dates.updatedAt = now
-  backup.meta.publicationStatus.isPublished = false
-  backup.meta.publicationStatus.isShared = false
-  backup.meta.creatorIdentity.creatorId = ''
-  backup.meta.creatorIdentity.creatorFullName = ''
-  backup.meta.creatorIdentity.creatorAvatar = ''
+  const palette = Settings.layerSettingForKey(document, 'backup')
 
-  Settings.setDocumentSettingForKey(Document, 'id', backup.meta.id)
-  Settings.setDocumentSettingForKey(Document, 'createdAt', now)
-  Settings.setDocumentSettingForKey(Document, 'updatedAt', now)
+  if (palette === undefined) throw new Error(locales.get().error.unfoundPalette)
 
-  currentPalettes.push(backup)
+  const backup = palette as FullConfiguration
+
+  currentPalettes.push(palette)
   Settings.setDocumentSettingForKey(
     Document,
     'ui_color_palettes',
@@ -42,11 +27,10 @@ const createPaletteFromDocument = async () => {
   getWebContents().executeJavaScript(
     `sendData(${JSON.stringify({
       type: 'LOAD_PALETTE',
-      data: backup,
+      data: palette,
     })})`
   )
-
-  processSelection(getWebContents())
+  processSelection()
 
   return backup
 }
