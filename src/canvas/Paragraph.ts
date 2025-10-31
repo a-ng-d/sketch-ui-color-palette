@@ -1,5 +1,5 @@
 import Dom from 'sketch/dom'
-import { darkColor, FontFamily, titleFontFamily } from './styles'
+import { darkColor, FontFamily, propertyFontFamily } from './styles'
 
 const Group = Dom.Group
 const Text = Dom.Text
@@ -25,7 +25,7 @@ export default class Paragraph {
     type,
     width,
     fontSize = 12,
-    fontFamily = titleFontFamily,
+    fontFamily = propertyFontFamily,
   }: {
     name: string
     content: string

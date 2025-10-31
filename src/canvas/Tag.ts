@@ -1,7 +1,7 @@
 import Dom from 'sketch/dom'
 import chroma from 'chroma-js'
 import { RgbModel } from '@a_ng_d/utils-ui-color-palette'
-import { darkColor, FontFamily, titleFontFamily } from './styles'
+import { darkColor, FontFamily, propertyFontFamily } from './styles'
 
 const Group = Dom.Group
 const Text = Dom.Text
@@ -33,7 +33,7 @@ export default class Tag {
     name,
     content,
     fontSize = 8,
-    fontFamily = titleFontFamily,
+    fontFamily = propertyFontFamily,
     backgroundColor = {
       rgb: {
         r: 1,
