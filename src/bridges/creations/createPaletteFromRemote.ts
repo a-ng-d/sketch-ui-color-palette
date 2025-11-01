@@ -9,6 +9,7 @@ import {
   ThemeConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
 import { getWebContents } from '../../utils/webContents'
+import createDocument from './createDocument'
 
 interface Msg {
   data: {
@@ -67,6 +68,7 @@ const createPaletteFromRemote = async (msg: Msg) => {
     'ui_color_palettes',
     currentPalettes
   )
+  createDocument(palette.meta.id, 'PALETTE')
 
   getWebContents().executeJavaScript(
     `sendData(${JSON.stringify({
