@@ -450,7 +450,7 @@ export default function () {
       `sendData(${JSON.stringify({
         type: 'GET_PRICING',
         data: {
-          plans: ['ONE'],
+          plans: ['ONE', 'ACTIVATE'],
         },
       })})`
     )
