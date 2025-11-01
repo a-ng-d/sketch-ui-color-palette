@@ -85,6 +85,8 @@ const updateScale = async (msg: ScaleMessage) => {
     currentPalettes
   )
 
+  Document.save()
+
   return palette
 }
 

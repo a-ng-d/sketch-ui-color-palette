@@ -68,7 +68,6 @@ const createPaletteFromRemote = async (msg: Msg) => {
     'ui_color_palettes',
     currentPalettes
   )
-  createDocument(palette.meta.id, 'PALETTE')
 
   getWebContents().executeJavaScript(
     `sendData(${JSON.stringify({
@@ -76,6 +75,10 @@ const createPaletteFromRemote = async (msg: Msg) => {
       data: palette,
     })})`
   )
+
+  createDocument(palette.meta.id, 'PALETTE')
+
+  Document.save()
 
   return palette
 }

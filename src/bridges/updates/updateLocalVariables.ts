@@ -113,6 +113,8 @@ const updateLocalVariables = async (id: string) => {
         }
       })
 
+    Document.save()
+
     if (i > 1)
       messages.push(
         locales

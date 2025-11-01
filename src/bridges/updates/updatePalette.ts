@@ -67,6 +67,8 @@ const updatePalette = async ({
     currentPalettes
   )
 
+  Document.save()
+
   return palette
 }
 

@@ -76,6 +76,8 @@ const createLocalStyles = async (id: string) => {
       currentPalettes
     )
 
+    Document.save()
+
     if (i > 1)
       return locales
         .get()

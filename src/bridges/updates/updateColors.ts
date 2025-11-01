@@ -36,6 +36,8 @@ const updateColors = async (msg: ColorsMessage) => {
     currentPalettes
   )
 
+  Document.save()
+
   return palette
 }
 

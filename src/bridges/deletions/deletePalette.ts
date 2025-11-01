@@ -18,6 +18,8 @@ const deletePalette = async (id: string) => {
     currentPalettes.filter((palette) => palette.meta.id !== id)
   )
 
+  Document.save()
+
   return palette
 }
 

@@ -33,11 +33,14 @@ const createPaletteFromDuplication = async (id: string) => {
   palette.meta.creatorIdentity.creatorAvatar = ''
 
   currentPalettes.push(palette)
+
   Settings.setDocumentSettingForKey(
     Document,
     'ui_color_palettes',
     currentPalettes
   )
+
+  Document.save()
 
   return palette
 }

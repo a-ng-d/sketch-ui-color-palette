@@ -50,6 +50,8 @@ const updateSettings = async (msg: SettingsMessage) => {
     currentPalettes
   )
 
+  Document.save()
+
   return palette
 }
 

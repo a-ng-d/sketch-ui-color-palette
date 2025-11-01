@@ -71,6 +71,8 @@ const updateDocument = async (view: ViewConfiguration) => {
     })})`
   )
 
+  Document.save()
+
   return palette
 }
 

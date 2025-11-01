@@ -106,7 +106,6 @@ const createPalette = async (msg: Msg) => {
     'ui_color_palettes',
     currentPalettes
   )
-  createDocument(palette.meta.id, 'PALETTE')
 
   getWebContents().executeJavaScript(
     `sendData(${JSON.stringify({
@@ -115,6 +114,9 @@ const createPalette = async (msg: Msg) => {
     })})`
   )
 
+  createDocument(palette.meta.id, 'PALETTE')
+  Document.save()
+  
   return palette
 }
 

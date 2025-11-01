@@ -36,6 +36,8 @@ const updateThemes = async (msg: ThemesMessage) => {
     currentPalettes
   )
 
+  Document.save()
+
   return palette
 }
 

@@ -30,7 +30,10 @@ const createPaletteFromDocument = async () => {
       data: palette,
     })})`
   )
+
   processSelection()
+
+  Document.save()
 
   return backup
 }
