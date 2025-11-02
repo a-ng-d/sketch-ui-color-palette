@@ -9,6 +9,7 @@ import {
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
 import { getWebContents } from '../../utils/webContents'
+import setPaletteName from '../../utils/setPaletteName'
 import Palette from '../../canvas/Palette'
 
 const updateDocument = async (view: ViewConfiguration) => {
@@ -49,6 +50,13 @@ const updateDocument = async (view: ViewConfiguration) => {
       color: currentTheme.paletteBackground,
     },
   ]
+  document.name = setPaletteName(
+    palette.base.name,
+    currentTheme.name,
+    palette.base.preset.name,
+    palette.base.colorSpace,
+    currentTheme.visionSimulationMode
+  )
 
   // Update
   Settings.setLayerSettingForKey(document, 'view', view)

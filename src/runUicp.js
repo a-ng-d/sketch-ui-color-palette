@@ -455,11 +455,15 @@ export default function () {
       })})`
     )
   })
-  webContents.on('GO_TO_ONE', () => {
+  webContents.on('GO_TO_ONE', (msg) => {
     // eslint-disable-next-line no-undef
     NSWorkspace.sharedWorkspace().openURL(
       // eslint-disable-next-line no-undef
-      NSURL.URLWithString(globalConfig.urls.storeUrl)
+      NSURL.URLWithString(
+        msg.data.context === 'REGULAR'
+          ? globalConfig.urls.storeUrl
+          : globalConfig.urls.storeWithDiscountUrl
+      )
     )
   })
   webContents.on('ENABLE_PRO_PLAN', () => {
