@@ -27,8 +27,11 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
     view: view,
   })
 
-  Page.layers.push(...documents.documents)
-  documents.documents.forEach((document) => (document.selected = true))
+  Page.layers.push(documents.documents)
+  documents.documents.layers.forEach(
+    (document: any) => (document.selected = true)
+  )
+  Document.centerOnLayer(documents.documents)
 
   return palette
 }

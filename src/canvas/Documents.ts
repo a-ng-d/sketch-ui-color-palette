@@ -17,6 +17,7 @@ const Style = Dom.Style
 const StackLayout = Dom.StackLayout
 const GroupBehavior = Dom.GroupBehavior
 const Rectangle = Dom.Rectangle
+const FlexSizing = Dom.FlexSizing
 
 export default class Documents {
   private base: BaseConfiguration
@@ -24,7 +25,7 @@ export default class Documents {
   private data: PaletteData
   private meta: MetaConfiguration
   private view: ViewConfiguration
-  documents: Array<any>
+  documents: any
 
   constructor({
     base,
@@ -48,9 +49,26 @@ export default class Documents {
   }
 
   makeDocuments = () => {
-    let x = 0
-    const y = 0
-    const documents: Array<any> = []
+    const documents = new Group({
+      name: '_documents',
+      stackLayout: {
+        direction: StackLayout.Direction.Row,
+        padding: {
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+        },
+        gap: 32,
+        alignItems: StackLayout.AlignItems.Start,
+        justifyContent: StackLayout.JustifyContent.Start,
+      },
+      style: {
+        fills: [],
+        borders: [],
+      },
+    })
+
     const workingThemesData =
       this.data.themes.filter((theme) => theme.type === 'custom theme')
         .length === 0
@@ -61,17 +79,14 @@ export default class Documents {
         ? this.themes.filter((theme) => theme.type === 'default theme')
         : this.themes.filter((theme) => theme.type === 'custom theme')
 
-    workingThemesData.forEach((theme, index) => {
+    workingThemesData.reverse().forEach((theme, index) => {
       const document = this.makeDocument(workingThemes[index], theme)
-
-      setTimeout(() => {
-        x = x + 32 + document.frame.width
-        document.frame.x = x
-        document.frame.y = y
-      }, 2000)
-
-      documents.push(document)
+      documents.layers.push(document)
     })
+
+    // Layout
+    documents.horizontalSizing = FlexSizing.Fit
+    documents.verticalSizing = FlexSizing.Fit
 
     return documents
   }
