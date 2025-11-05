@@ -89,6 +89,7 @@ const processSelection = (webContents?: any) => {
       element.type !== 'Image' &&
       element.type !== 'SymbolMaster' &&
       element.type !== 'SymbolInstance' &&
+      element.type !== 'Text' &&
       foundColors.length > 0
     ) {
       foundColors.forEach((color: any) => {
