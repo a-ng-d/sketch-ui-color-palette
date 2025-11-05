@@ -1,9 +1,9 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
+import { locales } from '@ui-lib/content/locales'
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { getWebContents } from '../../utils/webContents'
 import { ColorsMessage } from '../../types/messages'
-import { locales } from '../../../resources/content/locales'
 
 const updateColors = async (msg: ColorsMessage) => {
   const Document = Dom.getSelectedDocument()
@@ -35,6 +35,8 @@ const updateColors = async (msg: ColorsMessage) => {
     'ui_color_palettes',
     currentPalettes
   )
+
+  Document.save()
 
   return palette
 }

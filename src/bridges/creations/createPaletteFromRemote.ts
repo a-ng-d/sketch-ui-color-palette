@@ -1,5 +1,6 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
+import { locales } from '@ui-lib/content/locales'
 import {
   BaseConfiguration,
   Data,
@@ -8,7 +9,7 @@ import {
   ThemeConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
 import { getWebContents } from '../../utils/webContents'
-import { locales } from '../../../resources/content/locales'
+import createDocument from './createDocument'
 
 interface Msg {
   data: {
@@ -74,6 +75,10 @@ const createPaletteFromRemote = async (msg: Msg) => {
       data: palette,
     })})`
   )
+
+  createDocument(palette.meta.id, 'PALETTE')
+
+  Document.save()
 
   return palette
 }

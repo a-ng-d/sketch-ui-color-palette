@@ -1,8 +1,8 @@
 import { uid } from 'uid/single'
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
+import { locales } from '@ui-lib/content/locales'
 import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
-import { locales } from '../../../resources/content/locales'
 
 const createPaletteFromDuplication = async (id: string) => {
   const Document = Dom.getSelectedDocument()
@@ -33,11 +33,14 @@ const createPaletteFromDuplication = async (id: string) => {
   palette.meta.creatorIdentity.creatorAvatar = ''
 
   currentPalettes.push(palette)
+
   Settings.setDocumentSettingForKey(
     Document,
     'ui_color_palettes',
     currentPalettes
   )
+
+  Document.save()
 
   return palette
 }

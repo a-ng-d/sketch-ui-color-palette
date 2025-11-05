@@ -1,6 +1,6 @@
+import { Config } from '@ui-lib/types/config'
 import { doSpecificMode } from '@ui-lib/stores/features'
-import { locales } from '../resources/content/locales'
-import { Config } from './types/config'
+import { locales } from '@ui-lib/content/locales'
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -15,8 +15,9 @@ const globalConfig: Config = {
     colorMode: 'sketch-dark',
     isDev,
     isSupabaseEnabled: true,
-    isMixpanelEnabled: true,
+    isMixpanelEnabled: false,
     isSentryEnabled: true,
+    isMistralAiEnabled: true,
     announcementsDbId: process.env.REACT_APP_NOTION_ANNOUNCEMENTS_ID as string,
     onboardingDbId: process.env.REACT_APP_NOTION_ONBOARDING_ID as string,
     pluginId: '123456789',
@@ -25,12 +26,16 @@ const globalConfig: Config = {
     isProEnabled: true,
     isTrialEnabled: false,
     trialTime: 72,
+    creditsLimit: 400,
+    creditsRenewalPeriodDays: 1,
+    creditsRenewalPeriodHours: 24,
   },
   dbs: {
     palettesDbViewName: isDev
       ? 'sandbox_palettes_with_creators'
       : 'palettes_with_creators',
     palettesDbTableName: isDev ? 'sandbox_palettes' : 'palettes',
+    starredPalettesDbTableName: 'starred_palettes',
   },
   urls: {
     authWorkerUrl: isDev
@@ -44,6 +49,7 @@ const globalConfig: Config = {
       ? 'http://localhost:3000'
       : (process.env.REACT_APP_AUTH_URL as string),
     storeApiUrl: process.env.REACT_APP_LEMONSQUEEZY_URL as string,
+    aiApiUrl: process.env.REACT_APP_MISTRAL_AI_API_URL as string,
     platformUrl: '*',
     uiUrl: isDev
       ? 'http://localhost:4400'
@@ -62,12 +68,9 @@ const globalConfig: Config = {
     vsCodeFigmaPluginUrl: 'https://uicp.ylb.lt/vscode-figma-plugin',
     isbUrl: 'https://isb.ylb.lt/website',
     uicpUrl: 'https://uicp.ylb.lt/website',
-    storeUrl: isDev
-      ? 'https://uicp.ylb.lt/store-dev'
-      : 'https://uicp.ylb.lt/store',
-    storeManagementUrl: isDev
-      ? 'https://uicp.ylb.lt/store-management-dev'
-      : 'https://uicp.ylb.lt/store-management',
+    storeUrl: 'https://uicp.ylb.lt/store',
+    storeManagementUrl: 'https://uicp.ylb.lt/store-management',
+    storeWithDiscountUrl: 'https://uicp.ylb.lt/store-discount',
     howToUseUrl: 'https://uicp.ylb.lt/how-to-use-sketch',
   },
   versions: {
@@ -76,17 +79,16 @@ const globalConfig: Config = {
     algorithmVersion: 'v3',
     paletteVersion: '2025.06',
     pluginVersion: process.env.npm_package_version as string,
+    creditsVersion: '2025.10',
   },
   features: doSpecificMode(
     [
       'RESIZE_UI',
       'HELP_CHAT',
-      'DOCUMENT_PALETTE',
-      'DOCUMENT_PALETTE_PROPERTIES',
-      'DOCUMENT_SHEET',
-      'DOCUMENT_PUSH_UPDATES',
       'DOWNLOAD_EXPORT',
       'EXPORT_CSV',
+      'DOCUMENT_SHEET',
+      'VIEWS_SHEET',
       'LOCAL_PALETTES_PAGE',
     ],
     [
@@ -97,13 +99,14 @@ const globalConfig: Config = {
       'USER_PREFERENCES_SYNC_DEEP_VARIABLES',
       'PREVIEW_LOCK_SOURCE_COLORS',
       'SOURCE',
-      'PRESETS_MATERIAL_3',
-      'PRESETS_TAILWIND',
-      'PRESETS_ADS',
-      'PRESETS_ADS_NEUTRAL',
-      'PRESETS_CARBON',
-      'PRESETS_BASE',
-      'PRESETS_POLARIS',
+      'SOURCE_COOLORS_ADD',
+      'SOURCE_REALTIME_COLORS_ADD',
+      'SOURCE_EXPLORE_ADD',
+      'SOURCE_AI_REQUEST',
+      'SOURCE_IMAGE_UPLOAD',
+      'SOURCE_HARMONY_BASE',
+      'SOURCE_HARMONY_ADD',
+      'SOURCE_EXPLORE_ADD',
       'PRESETS_CUSTOM_ADD',
       'SCALE_CHROMA',
       'THEMES',
@@ -133,9 +136,32 @@ const globalConfig: Config = {
       'SETTINGS_VISION_SIMULATION_MODE_ACHROMATOMALY',
       'SETTINGS_VISION_SIMULATION_MODE_ACHROMATOPSIA',
     ],
-    ['SCALE_CONTRAST_RATIO', 'INVOLVE_COMMUNITY']
+    [
+      'SOURCE_AI',
+      'SOURCE_IMAGE',
+      'SOURCE_HARMONY',
+      'PRESETS_SPECTRUM',
+      'PRESETS_SPECTRUM_NEUTRAL',
+      'PRESETS_BOOTSTRAP',
+      'PRESETS_RADIX',
+      'PRESETS_UNTITLED_UI',
+      'PRESETS_OPEN_COLOR',
+      'PRESETS_FLUENT',
+      'REMOTE_PALETTES_STARRED',
+      'REMOTE_PALETTES_ORG',
+      'INVOLVE_COMMUNITY',
+    ]
   ),
   locales: locales.get(),
+  lang: 'en-US',
+  fees: {
+    colourLoversImport: 25,
+    coolorsImport: 25,
+    realtimeColorsImport: 25,
+    imageColorsExtract: 100,
+    harmonyCreate: 50,
+    aiColorsGenerate: 100,
+  },
 }
 
 export default globalConfig

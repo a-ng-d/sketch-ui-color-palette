@@ -1,6 +1,6 @@
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/a-ng-d/sketch-ui-color-palette?color=informational) ![GitHub last commit](https://img.shields.io/github/last-commit/a-ng-d/sketch-ui-color-palette?color=informational) ![GitHub](https://img.shields.io/github/license/a-ng-d/sketch-ui-color-palette?color=informational) ![GitHub actiond](https://img.shields.io/github/actions/workflow/status/a-ng-d/sketch-ui-color-palette/release.yml?label=Download)
 
-# UI Color Palette
+# UI Color Palette on Sketch
 UI Color Palette is a Sketch plugin that creates consistent and accessible color palettes specifically for UI. The plugin uses alternative color spaces, like `LCH`, `OKLCH`, `CIELAB`, `OKLAB`, and `HSLuv`, to create color shades based on the configured lightness scale. These spaces ensure [WCAG standards](https://www.w3.org/WAI/standards-guidelines/wcag/) compliance and sufficient contrast between information and background color.
 
 The idea to make this Sketch plugin comes from the article: [Accessible Palette: stop using HSL for color systems](https://wildbit.com/blog/accessible-palette-stop-using-hsl-for-color-systems).
@@ -63,7 +63,8 @@ The `-f` option causes `skpm log` to not stop when the end of logs is reached, b
 ## Attribution
 - The colors are managed thanks to the [chroma.js](https://github.com/gka/chroma.js) library by [Gregor Aisch](https://github.com/gka)
 - The APCA algorithm is provided thanks to the [apca-w3](https://www.npmjs.com/package/apca-w3) module by [Andrew Somers](https://github.com/Myndex)
+- The color names are provided by [color-name](https://github.com/meodai/color-names) by [meodai](https://github.com/meodai/color-names)
 
 ## Support
-- [Follow the plugin LinkedIn page](https://uicp.ylb.lt/network).
-- [Follow the author page](https://uicp.ylb.lt/author).
+- [Follow the plugin LinkedIn page](https://uicp.ylb.lt/network)
+- [Support the author](https://uicp.ylb.lt/author)

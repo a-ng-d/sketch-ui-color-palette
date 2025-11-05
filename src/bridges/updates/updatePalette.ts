@@ -1,9 +1,9 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
+import { locales } from '@ui-lib/content/locales'
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { getWebContents } from '../../utils/webContents'
 import { PaletteMessage } from '../../types/messages'
-import { locales } from '../../../resources/content/locales'
 
 const updatePalette = async ({
   msg,
@@ -21,7 +21,7 @@ const updatePalette = async ({
   const palette = currentPalettes.find((palette) => palette.meta.id === msg.id)
   const now = new Date().toISOString()
 
-  if (palette === undefined) throw new Error(locales.get().error.fetchPalette)
+  if (palette === undefined) throw new Error(locales.get().error.unfoundPalette)
 
   msg.items.forEach((item) => {
     const flatPalette = flattenObject(palette)
@@ -66,6 +66,8 @@ const updatePalette = async ({
     'ui_color_palettes',
     currentPalettes
   )
+
+  Document.save()
 
   return palette
 }

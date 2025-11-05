@@ -1,4 +1,6 @@
-import { Board } from '@penpot/plugin-types'
+import Settings from 'sketch/settings'
+import Dom from 'sketch/dom'
+import { locales } from '@ui-lib/content/locales'
 import {
   Data,
   FullConfiguration,
@@ -6,21 +8,22 @@ import {
   ThemeConfiguration,
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
-import { locales } from '../../content/locales'
-import Sheet from '../../canvas/Sheet'
+import { getWebContents } from '../../utils/webContents'
+import setPaletteName from '../../utils/setPaletteName'
 import Palette from '../../canvas/Palette'
 
 const updateDocument = async (view: ViewConfiguration) => {
-  const document = penpot.selection[0] as Board
-  const id = document.getPluginData('id')
-  const themeId = document.getPluginData('themeId')
+  const Document = Dom.getSelectedDocument()
+  const document = Document.selectedLayers.layers[0]
 
-  const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
+  const id = Settings.layerSettingForKey(document, 'id')
+  const themeId = Settings.layerSettingForKey(document, 'themeId')
 
-  if (rawPalette === undefined || rawPalette === null)
-    throw new Error(locales.get().error.unfoundPalette)
+  const currentPalettes: Array<FullConfiguration> =
+    Settings.documentSettingForKey(Document, 'ui_color_palettes') ?? []
+  const palette = currentPalettes.find((palette) => palette.meta.id === id)
 
-  const palette = JSON.parse(rawPalette) as FullConfiguration
+  if (palette === undefined) throw new Error(locales.get().error.unfoundPalette)
 
   const themeData = new Data(palette)
     .makePaletteData()
@@ -32,40 +35,51 @@ const updateDocument = async (view: ViewConfiguration) => {
   if (themeData === undefined || currentTheme === undefined)
     throw new Error(locales.get().error.document)
 
-  const newDocument =
-    view === 'PALETTE_WITH_PROPERTIES' || view === 'PALETTE'
-      ? new Palette({
-          base: palette.base,
-          theme: currentTheme,
-          data: themeData,
-          meta: palette.meta,
-          view: view,
-        }).node
-      : new Sheet({
-          base: palette.base,
-          theme: currentTheme,
-          data: themeData,
-          meta: palette.meta,
-          view: view,
-        }).node
+  const newDocument = new Palette({
+    base: palette.base,
+    theme: currentTheme,
+    data: themeData,
+    meta: palette.meta,
+    view: view,
+  }).node
 
-  document.children[0].remove()
-  document.appendChild(newDocument)
-  document.fills = [
+  document.layers[0].remove()
+  document.layers.push(newDocument)
+  document.style.fills = [
     {
-      fillColor: currentTheme.paletteBackground,
+      color: currentTheme.paletteBackground,
     },
   ]
+  document.name = setPaletteName(
+    palette.base.name,
+    currentTheme.name,
+    palette.base.preset.name,
+    palette.base.colorSpace,
+    currentTheme.visionSimulationMode
+  )
 
   // Update
-  document.setPluginData('view', view)
-  document.setPluginData('updatedAt', palette.meta.dates.updatedAt.toString())
-  document.setPluginData('backup', JSON.stringify(palette))
-
-  await new Promise((r) => setTimeout(r, 1000))
-  await penpot.currentFile?.saveVersion(
-    `${palette.base.name} - ${locales.get().events.documentUpdated}`
+  Settings.setLayerSettingForKey(document, 'view', view)
+  Settings.setLayerSettingForKey(
+    document,
+    'updatedAt',
+    palette.meta.dates.updatedAt.toString()
   )
+  Settings.setLayerSettingForKey(document, 'backup', JSON.stringify(palette))
+
+  getWebContents().executeJavaScript(
+    `sendData(${JSON.stringify({
+      type: 'DOCUMENT_SELECTED',
+      data: {
+        view: view,
+        id: id,
+        updatedAt: palette.meta.dates.updatedAt.toString(),
+        isLinkedToPalette: true,
+      },
+    })})`
+  )
+
+  Document.save()
 
   return palette
 }

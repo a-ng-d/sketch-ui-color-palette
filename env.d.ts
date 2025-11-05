@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 declare module '*.webp' {
   const value: string
   export = value
@@ -15,27 +17,16 @@ declare module 'jszip'
 declare module 'react-dom/client'
 declare module 'apca-w3'
 declare module 'sketch/settings' {
-  export default {
-    settingForKey: (key: string) => any,
-    setSettingForKey: (key: string, value: any) => any,
-    documentSettingForKey: (document: any, key: string) => any,
-    setDocumentSettingForKey: (document: any, key: string, value: any) => any,
-    layerSettingForKey: (layer: any, key: string) => any,
-    setLayerSettingForKey: (layer: any, key: string, value: any) => any,
-  };
+  const sketchSettings: any
+  export default sketchSettings
 }
-declare module "sketch/dom" {
-  export default {
-    getSelectedDocument: () => any,
-    Artboard: any,
-    Rectangle: any,
-    FlexLayout: any,
-    SharedStyle: any,
-  };
+
+declare module 'sketch/dom' {
+  const sketchDom: any
+  export default sketchDom
 }
-declare module "sketch" {
-  export default {
-    settingForKey: (key: string) => any,
-    Swatch: any,
-  };
+declare module 'sketch' {
+  const sketch: any
+  export default sketch
 }
+declare module 'mixpanel-browser'
