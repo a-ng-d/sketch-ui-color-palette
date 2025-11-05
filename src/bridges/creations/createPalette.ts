@@ -116,7 +116,7 @@ const createPalette = async (msg: Msg) => {
 
   createDocument(palette.meta.id, 'PALETTE')
   Document.save()
-  
+
   return palette
 }
 
