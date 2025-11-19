@@ -74,8 +74,7 @@ export default function () {
   const webContents = browserWindow.webContents
   setWebContents(webContents)
 
-  webContents.on('did-finish-load', () => {
-    // Canvas > UI
+  webContents.on('LOAD_DATA', () => {
     webContents.executeJavaScript(
       `sendData(${JSON.stringify({
         type: 'CHECK_USER_AUTHENTICATION',
@@ -111,7 +110,6 @@ export default function () {
       })})`
     )
 
-    // Checks
     checkUserConsent()
       .then(() => checkTrialStatus())
       .then(() => checkCredits())
@@ -119,7 +117,6 @@ export default function () {
       .then(() => checkUserPreferences())
       .then(() => processSelection())
   })
-
   webContents.on('CHECK_USER_CONSENT', () => checkUserConsent())
   webContents.on('CHECK_ANNOUNCEMENTS_STATUS', (msg) =>
     checkAnnouncementsStatus(msg.data.version)
