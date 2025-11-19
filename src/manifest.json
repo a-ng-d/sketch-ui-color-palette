@@ -4,7 +4,7 @@
   "authorEmail": "hello@ui-color-palette.com",
   "description": "Color Palettes that meet WCAG Guidelines and Operations",
   "homepage": "https://uicp.ylb.lt/website",
-  "version": "5.0.5",
+  "version": "5.1.1",
   "icon": "./uicp_icon.png",
   "scope": "document",
   "identifier": "com.ui-color-palette.sketch",
