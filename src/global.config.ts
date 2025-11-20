@@ -49,7 +49,6 @@ const globalConfig: Config = {
       ? 'http://localhost:3000'
       : (process.env.REACT_APP_AUTH_URL as string),
     storeApiUrl: process.env.REACT_APP_LEMONSQUEEZY_URL as string,
-    aiApiUrl: process.env.REACT_APP_MISTRAL_AI_API_URL as string,
     platformUrl: '*',
     uiUrl: isDev
       ? 'http://localhost:4400'
@@ -90,6 +89,8 @@ const globalConfig: Config = {
       'DOCUMENT_SHEET',
       'VIEWS_SHEET',
       'LOCAL_PALETTES_PAGE',
+      'USER_LANGUAGE_ZH_CN',
+      'USER_LANGUAGE_PT_BR',
     ],
     [
       'LOCAL_PALETTES',
@@ -150,6 +151,9 @@ const globalConfig: Config = {
       'REMOTE_PALETTES_STARRED',
       'REMOTE_PALETTES_ORG',
       'INVOLVE_COMMUNITY',
+      'USER_PREFERENCES',
+      'USER_LANGUAGE',
+      'USER_LANGUAGE_FR_FR',
     ]
   ),
   locales: locales.get(),
@@ -159,7 +163,7 @@ const globalConfig: Config = {
     coolorsImport: 50,
     realtimeColorsImport: 50,
     imageColorsExtract: 100,
-    harmonyCreate: 50,
+    harmonyCreate: 100,
     aiColorsGenerate: 100,
   },
 }
