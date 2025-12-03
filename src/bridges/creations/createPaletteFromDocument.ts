@@ -1,9 +1,9 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
-import { locales } from '@ui-lib/content/locales'
 import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import processSelection from '../gets/processSelection'
 import { getWebContents } from '../../utils/webContents'
+import { tolgee } from '../../runUicp'
 
 const createPaletteFromDocument = async () => {
   const Document = Dom.getSelectedDocument()
@@ -13,7 +13,7 @@ const createPaletteFromDocument = async () => {
 
   const palette = Settings.layerSettingForKey(document, 'backup')
 
-  if (palette === undefined) throw new Error(locales.get().error.unfoundPalette)
+  if (palette === undefined) throw new Error(tolgee.t('error.unfoundPalette'))
 
   const backup = palette as FullConfiguration
 

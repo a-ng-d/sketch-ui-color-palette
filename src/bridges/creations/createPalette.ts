@@ -1,7 +1,6 @@
 import { uid } from 'uid/single'
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
-import { locales } from '@ui-lib/content/locales'
 import {
   ColorConfiguration,
   Data,
@@ -11,6 +10,7 @@ import {
   ThemeConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
 import { getWebContents } from '../../utils/webContents'
+import { tolgee } from '../../runUicp'
 import createDocument from './createDocument'
 
 interface Msg {
@@ -54,7 +54,7 @@ const createPalette = async (msg: Msg) => {
 
   const themes: Array<ThemeConfiguration> = [
     {
-      name: locales.get().themes.switchTheme.defaultTheme,
+      name: tolgee.t('defaultThemeName'),
       description: '',
       scale: msg.data.exchange.scale,
       paletteBackground: '#FFFFFF',

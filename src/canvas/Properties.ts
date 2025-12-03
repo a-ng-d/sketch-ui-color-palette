@@ -1,6 +1,5 @@
 import Dom from 'sketch/dom'
 import chroma from 'chroma-js'
-import { locales } from '@ui-lib/content/locales'
 import {
   Channel,
   Color,
@@ -10,6 +9,7 @@ import {
   TextColorsThemeConfiguration,
   VisionSimulationModeConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
+import { tolgee } from '../runUicp'
 import Tag from './Tag'
 
 const Group = Dom.Group
@@ -109,21 +109,20 @@ export default class Properties {
       | 'CONTENT_TEXT'
       | 'FLUENT_TEXT'
   ) => {
-    if (recommendedUsage === 'AVOID')
-      return locales.get().paletteProperties.avoid
+    if (recommendedUsage === 'AVOID') return tolgee.t('paletteProperties.avoid')
     else if (recommendedUsage === 'NON_TEXT')
-      return locales.get().paletteProperties.nonText
+      return tolgee.t('paletteProperties.nonText')
     else if (recommendedUsage === 'SPOT_TEXT')
-      return locales.get().paletteProperties.spotText
+      return tolgee.t('paletteProperties.spotText')
     else if (recommendedUsage === 'HEADLINES')
-      return locales.get().paletteProperties.headlines
+      return tolgee.t('paletteProperties.headlines')
     else if (recommendedUsage === 'BODY_TEXT')
-      return locales.get().paletteProperties.bodyText
+      return tolgee.t('paletteProperties.bodyText')
     else if (recommendedUsage === 'CONTENT_TEXT')
-      return locales.get().paletteProperties.contentText
+      return tolgee.t('paletteProperties.contentText')
     else if (recommendedUsage === 'FLUENT_TEXT')
-      return locales.get().paletteProperties.fluentText
-    return locales.get().paletteProperties.unknown
+      return tolgee.t('paletteProperties.fluentText')
+    return tolgee.t('paletteProperties.unknown')
   }
 
   makeNodeTopProps = () => {

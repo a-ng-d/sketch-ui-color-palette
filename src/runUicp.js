@@ -2,9 +2,13 @@ import { getWebview } from 'sketch-module-web-view/remote'
 import BrowserWindow from 'sketch-module-web-view'
 import UI from 'sketch/ui'
 import Settings from 'sketch/settings'
-import { locales } from '@ui-lib/content/locales.ts'
+import zh_Hans_CN from '@ui-lib/content/translations/zh-Hans-CN.json'
+import pt_BR from '@ui-lib/content/translations/pt-BR.json'
+import fr_FR from '@ui-lib/content/translations/fr-FR.json'
+import en_US from '@ui-lib/content/translations/en-US.json'
 import webviewHtmlUrl from '../resources/webview.html'
 import { setWebContents } from './utils/webContents.ts'
+import { createI18n } from './utils/i18n.ts'
 import globalConfig from './global.config.ts'
 import updateThemes from './bridges/updates/updateThemes.ts'
 import updateSettings from './bridges/updates/updateSettings.ts'
@@ -35,6 +39,8 @@ import checkAnnouncementsStatus from './bridges/checks/checkAnnouncementsStatus.
 
 const webviewIdentifier = 'sketch-ui-color-palette.webview'
 
+export let tolgee
+
 export default function () {
   const windowSize = {
     width: parseFloat(Settings.settingForKey('plugin_window_width') ?? '640'),
@@ -44,6 +50,17 @@ export default function () {
     x: parseFloat(Settings.settingForKey('plugin_window_x') ?? '0'),
     y: parseFloat(Settings.settingForKey('plugin_window_y') ?? '0'),
   }
+
+  // Initialize i18n system (avoiding Tolgee webpack export issues)
+  tolgee = createI18n(
+    {
+      'zh-Hans-CN': zh_Hans_CN,
+      'pt-BR': pt_BR,
+      'fr-FR': fr_FR,
+      'en-US': en_US,
+    },
+    globalConfig.lang
+  )
 
   const options = {
     identifier: webviewIdentifier,
@@ -57,7 +74,9 @@ export default function () {
     alwaysOnTop: true,
     show: true,
     isClosable: true,
-    title: `${locales.get().name}${locales.get().separator}${locales.get().tagline}`,
+    title: tolgee.t('fullName', {
+      instance: '/one',
+    }),
     webPreferences: {
       plugins: false,
       devTools: true,
@@ -74,7 +93,7 @@ export default function () {
   const webContents = browserWindow.webContents
   setWebContents(webContents)
 
-  webContents.on('LOAD_DATA', () => {
+  webContents.on('LOAD_DATA', (msg) => {
     webContents.executeJavaScript(
       `sendData(${JSON.stringify({
         type: 'CHECK_USER_AUTHENTICATION',
@@ -110,14 +129,13 @@ export default function () {
       })})`
     )
 
-    checkUserConsent()
+    checkUserConsent(msg.data.userConsent)
       .then(() => checkTrialStatus())
       .then(() => checkCredits())
       .then(() => checkUserLicense())
       .then(() => checkUserPreferences())
       .then(() => processSelection())
   })
-  webContents.on('CHECK_USER_CONSENT', () => checkUserConsent())
   webContents.on('CHECK_ANNOUNCEMENTS_STATUS', (msg) =>
     checkAnnouncementsStatus(msg.data.version)
   )
@@ -158,7 +176,7 @@ export default function () {
   )
   webContents.on('UPDATE_LANGUAGE', (msg) => {
     Settings.setSettingForKey('user_language', msg.data.lang)
-    locales.set(msg.lang)
+    tolgee.changeLanguage(msg.data.lang)
   })
 
   webContents.on('CREATE_PALETTE', (msg) =>
@@ -262,7 +280,7 @@ export default function () {
             type: 'POST_MESSAGE',
             data: {
               type: 'INFO',
-              message: messages.join(locales.get().separator),
+              message: messages.join(tolgee.t('separator')),
               timer: 10000,
             },
           })})`
@@ -298,7 +316,7 @@ export default function () {
             type: 'POST_MESSAGE',
             data: {
               type: 'INFO',
-              message: messages.join(locales.get().separator),
+              message: messages.join(tolgee.t('separator')),
               timer: 10000,
             },
           })})`

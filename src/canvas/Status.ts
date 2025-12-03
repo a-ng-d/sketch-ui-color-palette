@@ -1,5 +1,5 @@
 import Dom from 'sketch/dom'
-import { locales } from '@ui-lib/content/locales'
+import { tolgee } from '../runUicp'
 import Tag from './Tag'
 
 const Group = Dom.Group
@@ -47,7 +47,7 @@ export default class Status {
       layers.push(
         new Tag({
           name: '_close',
-          content: locales.get().paletteProperties.closest,
+          content: tolgee.t('paletteProperties.closest'),
           fontSize: 10,
         }).makeNodeTagwithIndicator(
           [this.source.r, this.source.g, this.source.b, 1],
@@ -59,7 +59,7 @@ export default class Status {
       layers.push(
         new Tag({
           name: '_lock',
-          content: locales.get().paletteProperties.locked,
+          content: tolgee.t('paletteProperties.locked'),
           fontSize: 10,
         }).makeNodeTag()
       )

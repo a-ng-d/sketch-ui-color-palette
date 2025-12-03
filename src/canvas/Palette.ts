@@ -1,5 +1,4 @@
 import Dom from 'sketch/dom'
-import { locales } from '@ui-lib/content/locales'
 import {
   BaseConfiguration,
   MetaConfiguration,
@@ -7,6 +6,7 @@ import {
   ThemeConfiguration,
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
+import { tolgee } from '../runUicp'
 import Title from './Title'
 import Signature from './Signature'
 import Sample from './Sample'
@@ -85,7 +85,7 @@ export default class Palette {
       },
       layers: [
         new Sample({
-          name: locales.get().warning.emptySourceColors,
+          name: tolgee.t('warning.emptySourceColors'),
           rgb: [255, 255, 255],
           colorSpace: this.base.colorSpace,
           visionSimulationMode: this.theme.visionSimulationMode,
@@ -294,7 +294,7 @@ export default class Palette {
   makeNode = () => {
     // Base
     this.node = new Group({
-      name: `_colors${locales.get().separator}do not edit any layer`,
+      name: `_colors${tolgee.t('separator')}do not edit any layer`,
       stackLayout: {
         direction: StackLayout.Direction.Column,
         padding: {

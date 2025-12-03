@@ -1,10 +1,10 @@
 import Dom from 'sketch/dom'
-import { locales } from '@ui-lib/content/locales'
 import {
   BaseConfiguration,
   ThemeConfiguration,
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
+import { tolgee } from '../runUicp'
 import Sample from './Sample'
 
 const Group = Dom.Group
@@ -60,7 +60,7 @@ export default class Header {
 
     layers.push(
       new Sample({
-        name: locales.get().paletteProperties.sourceColors,
+        name: tolgee.t('paletteProperties.sourceColors'),
         rgb: [255, 255, 255],
         colorSpace: this.base.colorSpace,
         visionSimulationMode: this.theme.visionSimulationMode,

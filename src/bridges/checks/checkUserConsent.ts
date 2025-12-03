@@ -1,9 +1,9 @@
 import Settings from 'sketch/settings'
+import { ConsentConfiguration } from '@a_ng_d/figmug-ui'
 import { getWebContents } from '../../utils/webContents'
-import { userConsent } from '../../utils/userConsent'
 import globalConfig from '../../global.config'
 
-const checkUserConsent = async () => {
+const checkUserConsent = async (userConsent: Array<ConsentConfiguration>) => {
   const currentUserConsentVersion = Settings.settingForKey(
     'user_consent_version'
   )

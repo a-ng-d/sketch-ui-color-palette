@@ -30,3 +30,8 @@ declare module 'sketch' {
   export default sketch
 }
 declare module 'mixpanel-browser'
+
+declare module '*/runUicp' {
+  import { TolgeeInstance } from '@tolgee/web'
+  export const tolgee: TolgeeInstance
+}

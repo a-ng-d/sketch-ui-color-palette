@@ -1,10 +1,10 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
-import { locales } from '@ui-lib/content/locales'
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { doScale } from '@a_ng_d/figmug-utils'
 import { getWebContents } from '../../utils/webContents'
 import { ScaleMessage } from '../../types/messages'
+import { tolgee } from '../../runUicp'
 
 const updateScale = async (msg: ScaleMessage) => {
   const Document = Dom.getSelectedDocument()
@@ -16,7 +16,7 @@ const updateScale = async (msg: ScaleMessage) => {
   )
   const now = new Date().toISOString()
 
-  if (palette === undefined) throw new Error(locales.get().error.unfoundPalette)
+  if (palette === undefined) throw new Error(tolgee.t('error.unfoundPalette'))
 
   const theme = palette.themes.find((theme) => theme.isEnabled)
   if (theme !== undefined) theme.scale = msg.data.scale

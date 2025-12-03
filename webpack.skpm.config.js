@@ -89,6 +89,7 @@ module.exports = function (config, entry) {
       /node_modules\/@sentry-internal/,
       /node_modules\/@a_ng_d/,
       /node_modules\/@mistralai/,
+      /node_modules\/@tolgee/,
     ],
     use: {
       loader: 'babel-loader',

@@ -1,11 +1,11 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
-import { locales } from '@ui-lib/content/locales'
 import {
   Data,
   FullConfiguration,
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
+import { tolgee } from '../../runUicp'
 import Documents from '../../canvas/Documents'
 
 const createDocument = async (id: string, view: ViewConfiguration) => {
@@ -17,7 +17,7 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
 
   const palette = currentPalettes.find((palette) => palette.meta.id === id)
 
-  if (palette === undefined) throw new Error(locales.get().error.unfoundPalette)
+  if (palette === undefined) throw new Error(tolgee.t('error.unfoundPalette'))
 
   const documents = new Documents({
     base: palette.base,

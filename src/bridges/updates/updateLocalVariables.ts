@@ -1,7 +1,7 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
-import { locales } from '@ui-lib/content/locales'
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import { tolgee } from '../../runUicp'
 import LocalVariable from '../../canvas/LocalVariable'
 
 const updateLocalVariables = async (id: string) => {
@@ -11,7 +11,7 @@ const updateLocalVariables = async (id: string) => {
     Settings.documentSettingForKey(Document, 'ui_color_palettes') ?? []
   const palette = currentPalettes.find((palette) => palette.meta.id === id)
 
-  if (palette === undefined) throw new Error(locales.get().error.unfoundPalette)
+  if (palette === undefined) throw new Error(tolgee.t('error.unfoundPalette'))
 
   palette.libraryData = new Data(palette).makeLibraryData(
     ['hex'],
@@ -44,10 +44,10 @@ const updateLocalVariables = async (id: string) => {
             const path = [
               libraryItem.paletteName,
               libraryItem.themeName === ''
-                ? locales.get().themes.defaultName
+                ? tolgee.t('defaultThemeName')
                 : libraryItem.themeName,
               libraryItem.colorName === ''
-                ? locales.get().colors.defaultName
+                ? tolgee.t('defaultColorName')
                 : libraryItem.colorName,
               libraryItem.shadeName,
             ]
@@ -81,12 +81,8 @@ const updateLocalVariables = async (id: string) => {
       .forEach((item) => {
         const path = [
           item.paletteName,
-          item.themeName === ''
-            ? locales.get().themes.defaultName
-            : item.themeName,
-          item.colorName === ''
-            ? locales.get().colors.defaultName
-            : item.colorName,
+          item.themeName === '' ? tolgee.t('defaultThemeName') : item.themeName,
+          item.colorName === '' ? tolgee.t('defaultColorName') : item.colorName,
           item.shadeName,
         ]
           .filter((item) => item !== '' && item !== 'None')
@@ -115,27 +111,10 @@ const updateLocalVariables = async (id: string) => {
 
     Document.save()
 
-    if (i > 1)
-      messages.push(
-        locales
-          .get()
-          .info.updatedLocalVariables.plural.replace('{count}', i.toString())
-      )
-    else if (i === 1)
-      messages.push(locales.get().info.updatedLocalVariables.single)
-    else messages.push(locales.get().info.updatedLocalVariables.none)
+    messages.push(tolgee.t('info.updatedLocalVariables', { count: i }))
+    messages.push(tolgee.t('info.removedLocalVariables', { count: k }))
 
-    if (k > 1)
-      messages.push(
-        locales
-          .get()
-          .info.removedLocalVariables.plural.replace('{count}', k.toString())
-      )
-    else if (k === 1)
-      messages.push(locales.get().info.removedLocalVariables.single)
-    else messages.push(locales.get().info.removedLocalVariables.none)
-
-    return messages.join(locales.get().separator)
+    return messages.join(tolgee.t('separator'))
   })
 
   return updatedLocalVariablesStatusMessage

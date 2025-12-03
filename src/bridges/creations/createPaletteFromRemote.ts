@@ -1,6 +1,5 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
-import { locales } from '@ui-lib/content/locales'
 import {
   BaseConfiguration,
   Data,
@@ -9,6 +8,7 @@ import {
   ThemeConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
 import { getWebContents } from '../../utils/webContents'
+import { tolgee } from '../../runUicp'
 import createDocument from './createDocument'
 
 interface Msg {
@@ -28,7 +28,7 @@ const createPaletteFromRemote = async (msg: Msg) => {
     (palette) => palette.meta.id === msg.data.meta.id
   )
 
-  if (localPalette !== undefined) throw new Error(locales.get().info.addToLocal)
+  if (localPalette !== undefined) throw new Error(tolgee.t('info.addToLocal'))
 
   const palette = new Data({
     base: {
