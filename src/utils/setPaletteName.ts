@@ -12,15 +12,15 @@ const setPaletteName = (
   if (name === '') parameters.push(tolgee.t('name'))
   else parameters.push(name)
 
-  if (theme !== 'None' && theme !== undefined) parameters.push(theme)
+  if (theme !== undefined) parameters.push(theme)
 
   parameters.push(preset)
   parameters.push(colorSpace)
 
   if (visionSimulationMode !== 'NONE') {
     const mode = visionSimulationMode.toLowerCase()
-    const key = `settings.color.visionSimulationMode.${mode}`
-    parameters.push(tolgee.t(key))
+    const visionModes = tolgee.t(`settings.color.visionSimulationMode.${mode}`)
+    parameters.push(visionModes)
   }
 
   return parameters.join(tolgee.t('separator'))
