@@ -84,9 +84,11 @@ export default class Status {
           bottom: 0,
           right: 0,
         },
-        gap: 0,
+        gap: 4,
+        crossAxisGap: 4,
         alignItems: StackLayout.AlignItems.Center,
         justifyContent: StackLayout.JustifyContent.Start,
+        wraps: true,
       },
       style: {
         fills: [],

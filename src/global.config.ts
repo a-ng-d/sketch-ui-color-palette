@@ -92,8 +92,6 @@ const globalConfig: Config = {
       'HELP_CHAT',
       'DOWNLOAD_EXPORT',
       'EXPORT_CSV',
-      'DOCUMENT_SHEET',
-      'VIEWS_SHEET',
       'LOCAL_PALETTES_PAGE',
       'USER_LANGUAGE_ZH_CN',
     ],

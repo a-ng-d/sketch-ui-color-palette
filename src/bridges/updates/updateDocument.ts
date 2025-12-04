@@ -10,6 +10,7 @@ import {
 import { getWebContents } from '../../utils/webContents'
 import setPaletteName from '../../utils/setPaletteName'
 import { tolgee } from '../../runUicp'
+import Sheet from '../../canvas/Sheet'
 import Palette from '../../canvas/Palette'
 
 const updateDocument = async (view: ViewConfiguration) => {
@@ -35,13 +36,22 @@ const updateDocument = async (view: ViewConfiguration) => {
   if (themeData === undefined || currentTheme === undefined)
     throw new Error(tolgee.t('error.document'))
 
-  const newDocument = new Palette({
-    base: palette.base,
-    theme: currentTheme,
-    data: themeData,
-    meta: palette.meta,
-    view: view,
-  }).node
+  const newDocument =
+    view === 'PALETTE_WITH_PROPERTIES' || view === 'PALETTE'
+      ? new Palette({
+          base: palette.base,
+          theme: currentTheme,
+          data: themeData,
+          meta: palette.meta,
+          view: view,
+        }).node
+      : new Sheet({
+          base: palette.base,
+          theme: currentTheme,
+          data: themeData,
+          meta: palette.meta,
+          view: view,
+        }).node
 
   document.layers[0].remove()
   document.layers.push(newDocument)
