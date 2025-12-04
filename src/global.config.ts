@@ -8,8 +8,11 @@ const globalConfig: Config = {
     pageSize: 20,
     width: 640,
     height: 640,
-    minWidth: 240,
+    minWidth: 420,
     minHeight: 420,
+    localPalettes: 1,
+    sourceColors: 5,
+    customStops: 8,
   },
   env: {
     platform: 'sketch',
@@ -29,7 +32,7 @@ const globalConfig: Config = {
     isProEnabled: false,
     isTrialEnabled: false,
     trialTime: 72,
-    creditsLimit: 200,
+    creditsLimit: 250,
     creditsRenewalPeriodDays: 1,
     creditsRenewalPeriodHours: 24,
   },
@@ -101,6 +104,13 @@ const globalConfig: Config = {
       'USER_PREFERENCES_SYNC_DEEP_STYLES',
       'USER_PREFERENCES_SYNC_DEEP_VARIABLES',
       'PREVIEW_LOCK_SOURCE_COLORS',
+      'DOCUMENT_PALETTE',
+      'DOCUMENT_PALETTE_PROPERTIES',
+      'DOCUMENT_SHEET',
+      'DOCUMENT_PUSH_UPDATES',
+      'VIEWS_PALETTE',
+      'VIEWS_PALETTE_WITH_PROPERTIES',
+      'VIEWS_SHEET',
       'SOURCE',
       'SOURCE_COOLORS_ADD',
       'SOURCE_REALTIME_COLORS_ADD',
@@ -167,7 +177,26 @@ const globalConfig: Config = {
     imageColorsExtract: 100,
     harmonyCreate: 100,
     aiColorsGenerate: 100,
+    paletteGenerate: 50,
+    paletteWithPropsGenerate: 100,
+    sheetGenerate: 200,
+    paletteUpdates: 50,
+    localStylesSync: 200,
+    localVariablesSync: 200,
   },
 }
+
+const limitsMapping: { [key: string]: keyof typeof globalConfig.limits } = {
+  LOCAL_PALETTES: 'localPalettes',
+  SOURCE: 'sourceColors',
+  COLORS: 'sourceColors',
+  PRESETS_CUSTOM_ADD: 'customStops',
+}
+
+globalConfig.features.forEach((feature) => {
+  const limitKey = limitsMapping[feature.name]
+  if (limitKey && globalConfig.limits[limitKey] !== undefined)
+    feature.limit = globalConfig.limits[limitKey]
+})
 
 export default globalConfig
