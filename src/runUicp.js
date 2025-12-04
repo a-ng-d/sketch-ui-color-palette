@@ -39,35 +39,36 @@ import checkAnnouncementsStatus from './bridges/checks/checkAnnouncementsStatus.
 
 const webviewIdentifier = 'sketch-ui-color-palette.webview'
 
-export let tolgee
+export const tolgee = createI18n(
+  {
+    'zh-Hans-CN': zh_Hans_CN,
+    'pt-BR': pt_BR,
+    'fr-FR': fr_FR,
+    'en-US': en_US,
+  },
+  globalConfig.lang
+)
 
 export default function () {
   const windowSize = {
-    width: parseFloat(Settings.settingForKey('plugin_window_width') ?? '640'),
-    height: parseFloat(Settings.settingForKey('plugin_window_height') ?? '640'),
+    width:
+      Settings.settingForKey('plugin_window_width') ??
+      globalConfig.limits.width,
+    height:
+      Settings.settingForKey('plugin_window_height') ??
+      globalConfig.limits.height,
   }
   const windowPosition = {
-    x: parseFloat(Settings.settingForKey('plugin_window_x') ?? '0'),
-    y: parseFloat(Settings.settingForKey('plugin_window_y') ?? '0'),
+    x: Settings.settingForKey('plugin_window_x') ?? 0,
+    y: Settings.settingForKey('plugin_window_y') ?? 0,
   }
-
-  // Initialize i18n system (avoiding Tolgee webpack export issues)
-  tolgee = createI18n(
-    {
-      'zh-Hans-CN': zh_Hans_CN,
-      'pt-BR': pt_BR,
-      'fr-FR': fr_FR,
-      'en-US': en_US,
-    },
-    globalConfig.lang
-  )
 
   const options = {
     identifier: webviewIdentifier,
     width: windowSize.width,
     height: windowSize.height,
-    minWidth: 640,
-    minHeight: 640,
+    minWidth: globalConfig.limits.minWidth,
+    minHeight: globalConfig.limits.minHeight,
     x: windowPosition.x,
     y: windowPosition.y,
     fullscreenable: false,
