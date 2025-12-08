@@ -10,6 +10,7 @@ import {
 } from '@a_ng_d/utils-ui-color-palette'
 import setPaletteName from '../utils/setPaletteName'
 import globalConfig from '../global.config'
+import Sheet from './Sheet'
 import Palette from './Palette'
 
 const Group = Dom.Group
@@ -121,19 +122,27 @@ export default class Documents {
       },
       name: setPaletteName(
         this.base.name,
-        theme.name,
+        theme.type === 'default theme' ? undefined : theme.name,
         this.base.preset.name,
         this.base.colorSpace,
         theme.visionSimulationMode
       ),
       layers: [
-        new Palette({
-          base: this.base,
-          theme: theme,
-          data: data,
-          meta: this.meta,
-          view: this.view,
-        }).node,
+        this.view === 'PALETTE' || this.view === 'PALETTE_WITH_PROPERTIES'
+          ? new Palette({
+              base: this.base,
+              theme: theme,
+              data: data,
+              meta: this.meta,
+              view: this.view,
+            }).node
+          : new Sheet({
+              base: this.base,
+              theme: theme,
+              data: data,
+              meta: this.meta,
+              view: this.view,
+            }).node,
       ],
     })
 

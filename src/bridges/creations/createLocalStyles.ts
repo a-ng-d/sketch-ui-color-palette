@@ -1,7 +1,7 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
-import { locales } from '@ui-lib/content/locales'
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import { tolgee } from '../../runUicp'
 import LocalStyle from '../../canvas/LocalStyle'
 
 const createLocalStyles = async (id: string) => {
@@ -11,7 +11,7 @@ const createLocalStyles = async (id: string) => {
     Settings.documentSettingForKey(Document, 'ui_color_palettes') ?? []
   const palette = currentPalettes.find((palette) => palette.meta.id === id)
 
-  if (palette === undefined) throw new Error(locales.get().error.unfoundPalette)
+  if (palette === undefined) throw new Error(tolgee.t('error.unfoundPalette'))
 
   palette.libraryData = new Data(palette).makeLibraryData(
     ['style_id', 'hex'],
@@ -36,12 +36,8 @@ const createLocalStyles = async (id: string) => {
       .forEach((item) => {
         const path = [
           item.paletteName,
-          item.themeName === ''
-            ? locales.get().themes.defaultName
-            : item.themeName,
-          item.colorName === ''
-            ? locales.get().colors.defaultName
-            : item.colorName,
+          item.themeName === '' ? tolgee.t('defaultThemeName') : item.themeName,
+          item.colorName === '' ? tolgee.t('defaultColorName') : item.colorName,
           item.shadeName,
         ]
           .filter((item) => item !== '' && item !== 'None')
@@ -78,12 +74,7 @@ const createLocalStyles = async (id: string) => {
 
     Document.save()
 
-    if (i > 1)
-      return locales
-        .get()
-        .info.createdLocalStyles.plural.replace('{count}', i.toString())
-    else if (i === 1) return locales.get().info.createdLocalStyles.single
-    else return locales.get().info.createdLocalStyles.none
+    return tolgee.t('info.createdLocalStyles', { count: i })
   })
 
   return createdLocalStylesStatusMessage

@@ -11,6 +11,7 @@ import {
 import Status from './Status'
 import Property from './Property'
 import Properties from './Properties'
+import Paragraph from './Paragraph'
 
 const Group = Dom.Group
 const StackLayout = Dom.StackLayout
@@ -239,6 +240,146 @@ export default class Sample {
 
       this.node.layers.push(nodeProperty)
     }
+
+    return this.node
+  }
+
+  makeNodeRichShade = ({
+    width,
+    height,
+    name,
+    description = '',
+    isColorName = false,
+  }: {
+    width: number
+    height: number
+    name: string
+    description?: string
+    isColorName?: boolean
+  }) => {
+    const newFills = [
+      {
+        color: chroma(this.rgb)
+          .alpha(this.alpha ?? 1)
+          .hex(),
+        fillType: Style.FillType.Color,
+      },
+    ]
+
+    if (this.backgroundColor !== undefined)
+      newFills.unshift({
+        color: chroma(this.backgroundColor).hex(),
+        fillType: Style.FillType.Color,
+      })
+
+    // Color
+    const colorLayers: Array<any> = []
+
+    if (
+      this.status.isClosestToRef ||
+      this.status.isLocked ||
+      this.status.isTransparent
+    ) {
+      const nodeStatus = new Status({
+        status: this.status,
+        source: this.source
+          ? { r: this.source.r, g: this.source.g, b: this.source.b }
+          : {},
+      }).node
+
+      colorLayers.push(nodeStatus)
+    }
+
+    const nodeProperty = new Property({
+      name: '_label',
+      content: name,
+      size: 10,
+    }).makeNode()
+
+    colorLayers.push(nodeProperty)
+
+    this.nodeColor = new Group({
+      name: '_color',
+      stackLayout: {
+        direction: StackLayout.Direction.Column,
+        padding: {
+          top: 8,
+          left: 8,
+          bottom: 8,
+          right: 8,
+        },
+        gap: 8,
+        alignItems: StackLayout.AlignItems.Start,
+        justifyContent: StackLayout.JustifyContent.Start,
+      },
+      style: {
+        fills: newFills,
+        borders: [],
+        corners: {
+          radii: 16,
+        },
+      },
+      frame: new Rectangle(0, 0, 96, 96),
+      layers: colorLayers,
+    })
+
+    // Layout
+    this.nodeColor.horizontalSizing = FlexSizing.Fill
+    this.nodeColor.verticalSizing = FlexSizing.Fixed
+
+    // Base
+    const nodeLayers: Array<any> = []
+
+    if (isColorName && description !== '') {
+      const nodeParagraph = new Paragraph({
+        name: '_description',
+        content: description,
+        type: 'FILL',
+        fontSize: 8,
+      }).node
+
+      nodeLayers.push(nodeParagraph)
+    } else if (!isColorName) {
+      const nodeProperties = new Properties({
+        name: this.scale ?? '0',
+        rgb: this.rgb,
+        alpha: this.alpha,
+        mixedColor: this.mixedColor,
+        colorSpace: this.colorSpace,
+        visionSimulationMode: this.visionSimulationMode,
+        textColorsTheme: this.textColorsTheme,
+      }).makeNodeDetailed()
+
+      nodeLayers.push(nodeProperties)
+    }
+
+    nodeLayers.push(this.nodeColor)
+
+    this.node = new Group({
+      name: name,
+      stackLayout: {
+        direction: StackLayout.Direction.Column,
+        padding: {
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+        },
+        gap: 8,
+        alignItems: StackLayout.AlignItems.Start,
+        justifyContent: StackLayout.JustifyContent.Start,
+      },
+      style: {
+        fills: [],
+        borders: [],
+      },
+      frame: new Rectangle(0, 0, width, height),
+      layers: nodeLayers,
+    })
+
+    // Layout
+    this.node.horizontalSizing = FlexSizing.Fixed
+    this.node.verticalSizing = FlexSizing.Fixed
 
     return this.node
   }

@@ -1,7 +1,6 @@
 import Settings from 'sketch/settings'
-import { locales } from '@ui-lib/content/locales'
 import { getWebContents } from '../../utils/webContents'
-import { Language } from '../../types/translations'
+import { tolgee } from '../../runUicp'
 import globalConfig from '../../global.config'
 
 const checkUserPreferences = async () => {
@@ -44,7 +43,7 @@ const checkUserPreferences = async () => {
     userLanguage = globalConfig.lang
   }
 
-  locales.set((userLanguage as Language) ?? globalConfig.lang)
+  tolgee.changeLanguage(userLanguage)
 
   getWebContents().executeJavaScript(
     `sendData(${JSON.stringify({

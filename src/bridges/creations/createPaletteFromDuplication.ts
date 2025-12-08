@@ -1,8 +1,8 @@
 import { uid } from 'uid/single'
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
-import { locales } from '@ui-lib/content/locales'
 import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import { tolgee } from '../../runUicp'
 
 const createPaletteFromDuplication = async (id: string) => {
   const Document = Dom.getSelectedDocument()
@@ -13,13 +13,11 @@ const createPaletteFromDuplication = async (id: string) => {
   const now = new Date().toISOString()
 
   if (basePalette === undefined)
-    throw new Error(locales.get().error.unfoundPalette)
+    throw new Error(tolgee.t('error.unfoundPalette'))
 
   const palette = JSON.parse(JSON.stringify(basePalette)) as FullConfiguration
 
-  palette.base.name = locales
-    .get()
-    .browse.copy.replace('{name}', palette.base.name)
+  palette.base.name = tolgee.t('browse.copy', { name: palette.base.name })
   delete (palette as Partial<FullConfiguration>).libraryData
   palette.meta.id = uid()
   palette.meta.publicationStatus.isPublished = false

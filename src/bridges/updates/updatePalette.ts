@@ -1,9 +1,9 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
-import { locales } from '@ui-lib/content/locales'
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { getWebContents } from '../../utils/webContents'
 import { PaletteMessage } from '../../types/messages'
+import { tolgee } from '../../runUicp'
 
 const updatePalette = async ({
   msg,
@@ -21,7 +21,7 @@ const updatePalette = async ({
   const palette = currentPalettes.find((palette) => palette.meta.id === msg.id)
   const now = new Date().toISOString()
 
-  if (palette === undefined) throw new Error(locales.get().error.unfoundPalette)
+  if (palette === undefined) throw new Error(tolgee.t('error.unfoundPalette'))
 
   msg.items.forEach((item) => {
     const pathParts = item.key.split('.')

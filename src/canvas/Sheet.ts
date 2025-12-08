@@ -18,14 +18,16 @@ const FlexSizing = Dom.FlexSizing
 const GroupBehavior = Dom.GroupBehavior
 const Rectangle = Dom.Rectangle
 
-export default class Palette {
+export default class Sheet {
   private base: BaseConfiguration
   private theme: ThemeConfiguration
   private data: PaletteDataThemeItem
   private meta: MetaConfiguration
   private view: ViewConfiguration
+  private sampleScale: number
   private sampleRatio: number
   private sampleSize: number
+  private gap: number
   private nodeRow: any | null
   private nodeRowSource: any | null
   private nodeRowShades: any | null
@@ -51,8 +53,10 @@ export default class Palette {
     this.data = data
     this.meta = meta
     this.view = view
-    this.sampleRatio = 3 / 2
-    this.sampleSize = 220
+    this.sampleScale = 1.25
+    this.sampleRatio = 2
+    this.sampleSize = 184
+    this.gap = 32
     this.nodeRow = null
     this.nodeRowSource = null
     this.nodeRowShades = null
@@ -66,7 +70,7 @@ export default class Palette {
     this.nodeEmpty = new Group({
       name: '_message',
       stackLayout: {
-        direction: StackLayout.Direction.Column,
+        direction: StackLayout.Direction.Row,
         padding: {
           top: 0,
           left: 0,
@@ -107,66 +111,40 @@ export default class Palette {
   }
 
   makeNodeShades = () => {
-    // Base
-    this.nodeShades = new Group({
-      name: '_shades',
-      stackLayout: {
-        direction: StackLayout.Direction.Column,
-        padding: {
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-        },
-        gap: 0,
-        alignItems: StackLayout.AlignItems.Center,
-        justifyContent: StackLayout.JustifyContent.Center,
-      },
-      style: {
-        fills: [],
-        borders: [],
-      },
-    })
+    const shadeLayers: Array<any> = []
 
-    // Layout
-    this.nodeShades.horizontalSizing = FlexSizing.Fit
-    this.nodeShades.verticalSizing = FlexSizing.Fit
+    // Insert header
+    shadeLayers.push(
+      new Header({
+        base: this.base,
+        theme: this.theme,
+        view: this.view,
+        size:
+          this.sampleSize * this.sampleScale * 4 +
+          this.sampleSize * this.sampleRatio +
+          this.gap * 4,
+      }).node
+    )
 
-    // Insert
-    this.data?.colors.reverse().forEach((color, index) => {
+    this.data?.colors.forEach((color) => {
       const sourceColor = color.shades.find(
         (shade) => shade.name === 'source'
       ) ?? { hex: '#000000', rgb: [0, 0, 0] }
 
-      let radii = []
-      if (index === 0) radii = [0, 0, 16, 16]
-      else if (index === this.data.colors.length - 1) radii = [16, 16, 0, 0]
-      else radii = [0, 0, 0, 0]
-
-      if (this.data.colors.length === 1) radii = [16, 16, 16, 16]
-
       // Base
-      this.nodeRow = new Group({
+      const nodeSample = new Sample({
         name: color.name,
-        stackLayout: {
-          direction: StackLayout.Direction.Row,
-          padding: {
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-          },
-          gap: 0,
-          alignItems: StackLayout.AlignItems.Center,
-          justifyContent: StackLayout.JustifyContent.Center,
-        },
-        style: {
-          fills: [],
-          borders: [],
-          corners: {
-            radii: radii,
-          },
-        },
+        rgb: sourceColor.rgb,
+        colorSpace: this.base.colorSpace,
+        visionSimulationMode: this.theme.visionSimulationMode,
+        view: this.view,
+        textColorsTheme: this.theme.textColorsTheme,
+      }).makeNodeRichShade({
+        width: this.sampleSize * this.sampleRatio,
+        height: this.sampleSize * this.sampleRatio * this.sampleScale,
+        name: color.name,
+        description: color.description,
+        isColorName: true,
       })
 
       this.nodeRowSource = new Group({
@@ -180,68 +158,22 @@ export default class Palette {
             right: 0,
           },
           gap: 0,
-          alignItems: StackLayout.AlignItems.Center,
-          justifyContent: StackLayout.JustifyContent.Center,
+          alignItems: StackLayout.AlignItems.Start,
+          justifyContent: StackLayout.JustifyContent.Start,
         },
         style: {
           fills: [],
           borders: [],
         },
-        layers: [
-          new Sample({
-            name: color.name,
-            rgb: sourceColor.rgb,
-            colorSpace: this.base.colorSpace,
-            visionSimulationMode: this.theme.visionSimulationMode,
-            view: this.view,
-            textColorsTheme: this.theme.textColorsTheme,
-          }).makeNodeShade({
-            width: this.sampleSize,
-            height: this.sampleSize * this.sampleRatio,
-            name: color.name,
-            isColorName: true,
-          }),
-        ],
+        layers: [nodeSample],
       })
 
-      this.nodeRowShades = new Group({
-        name: '_shades',
-        stackLayout: {
-          direction: StackLayout.Direction.Row,
-          padding: {
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-          },
-          gap: 0,
-          alignItems: StackLayout.AlignItems.Center,
-          justifyContent: StackLayout.JustifyContent.Center,
-        },
-        style: {
-          fills: [],
-          borders: [],
-        },
-      })
-
-      // Layout
-      if (this.nodeRow && this.nodeRowSource && this.nodeRowShades) {
-        this.nodeRow.verticalSizing = FlexSizing.Fit
-        this.nodeRow.horizontalSizinglSizing = FlexSizing.Fit
-
-        this.nodeRowSource.verticalSizing = FlexSizing.Fit
-        this.nodeRowSource.horizontalSizinglSizing = FlexSizing.Fit
-
-        this.nodeRowShades.verticalSizing = FlexSizing.Fit
-        this.nodeRowShades.horizontalSizinglSizing = FlexSizing.Fit
-      }
-
-      // Insert
+      const rowShadeLayers: Array<any> = []
       color.shades
         .filter((shade) => shade.name !== 'source')
         .reverse()
         .forEach((shade) => {
-          this.nodeRowShades?.layers.push(
+          rowShadeLayers.push(
             new Sample({
               name: color.name,
               source: {
@@ -263,30 +195,103 @@ export default class Palette {
                 isLocked: shade.isSourceColorLocked ?? false,
                 isTransparent: shade.isTransparent ?? false,
               },
-            }).makeNodeShade({
-              width: this.sampleSize,
-              height: this.sampleSize * this.sampleRatio,
+            }).makeNodeRichShade({
+              width: this.sampleSize * this.sampleRatio,
+              height: this.sampleSize * this.sampleRatio * this.sampleScale,
               name: shade.name,
             })
           )
         })
 
-      this.nodeShades?.layers.push(this.nodeRow)
-      this.nodeRow.layers.push(this.nodeRowShades)
-      this.nodeRow.layers.push(this.nodeRowSource)
+      this.nodeRowShades = new Group({
+        name: '_shades',
+        stackLayout: {
+          direction: StackLayout.Direction.Row,
+          padding: {
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+          },
+          gap: this.gap,
+          alignItems: StackLayout.AlignItems.Start,
+          justifyContent: StackLayout.JustifyContent.Start,
+          wraps: true,
+        },
+        style: {
+          fills: [],
+          borders: [],
+        },
+        frame: new Rectangle(
+          0,
+          0,
+          this.sampleSize * this.sampleRatio * 3 + this.gap * 2,
+          100
+        ),
+        layers: rowShadeLayers,
+      })
+
+      // Layout
+      this.nodeRowShades.horizontalSizing = FlexSizing.Fixed
+      this.nodeRowShades.verticalSizing = FlexSizing.Fit
+
+      this.nodeRow = new Group({
+        name: color.name,
+        stackLayout: {
+          direction: StackLayout.Direction.Row,
+          padding: {
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+          },
+          gap: this.gap,
+          alignItems: StackLayout.AlignItems.Start,
+          justifyContent: StackLayout.JustifyContent.Start,
+        },
+        style: {
+          fills: [],
+          borders: [],
+        },
+        layers: [this.nodeRowShades, this.nodeRowSource],
+      })
+
+      // Layout
+      this.nodeRow.horizontalSizing = FlexSizing.Fit
+      this.nodeRow.verticalSizing = FlexSizing.Fit
+      this.nodeRowSource.horizontalSizing = FlexSizing.Fit
+      this.nodeRowSource.verticalSizing = FlexSizing.Fit
+
+      shadeLayers.push(this.nodeRow)
     })
 
-    if (this.base.colors.length === 0)
-      this.nodeShades.layers.push(this.makeEmptyCase())
+    if (this.base.colors.length === 0) shadeLayers.push(this.makeEmptyCase())
 
-    this.nodeShades.layers.push(
-      new Header({
-        base: this.base,
-        theme: this.theme,
-        view: this.view,
-        size: this.sampleSize,
-      }).node
-    )
+    // Base
+    this.nodeShades = new Group({
+      name: '_shades',
+      stackLayout: {
+        direction: StackLayout.Direction.Column,
+        padding: {
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+        },
+        gap: 0,
+        alignItems: StackLayout.AlignItems.Start,
+        justifyContent: StackLayout.JustifyContent.Start,
+      },
+      style: {
+        fills: [],
+        borders: [],
+      },
+      layers: shadeLayers,
+    })
+
+    // Layout
+    this.nodeShades.horizontalSizing = FlexSizing.Fit
+    this.nodeShades.verticalSizing = FlexSizing.Fit
 
     return this.nodeShades
   }
@@ -304,8 +309,8 @@ export default class Palette {
           right: 0,
         },
         gap: 16,
-        alignItems: StackLayout.AlignItems.Center,
-        justifyContent: StackLayout.JustifyContent.Center,
+        alignItems: StackLayout.AlignItems.Start,
+        justifyContent: StackLayout.JustifyContent.Start,
       },
       style: {
         fills: [],

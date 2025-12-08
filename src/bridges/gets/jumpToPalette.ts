@@ -1,8 +1,8 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
-import { locales } from '@ui-lib/content/locales'
 import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { getWebContents } from '../../utils/webContents'
+import { tolgee } from '../../runUicp'
 
 const jumpToPalette = async (id: string) => {
   const Document = Dom.getSelectedDocument()
@@ -11,7 +11,7 @@ const jumpToPalette = async (id: string) => {
     Settings.documentSettingForKey(Document, 'ui_color_palettes') ?? []
   const palette = currentPalettes.find((palette) => palette.meta.id === id)
 
-  if (palette === undefined) throw new Error(locales.get().error.fetchPalette)
+  if (palette === undefined) throw new Error(tolgee.t('error.fetchPalette'))
 
   palette.meta.dates.openedAt = new Date().toISOString()
   Settings.setDocumentSettingForKey(

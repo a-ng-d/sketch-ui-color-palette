@@ -1,5 +1,5 @@
 import Dom from 'sketch/dom'
-import { locales } from '@ui-lib/content/locales'
+import { tolgee } from '../runUicp'
 import Tag from './Tag'
 import { bodyFontFamily, darkColor } from './styles'
 
@@ -37,13 +37,13 @@ export default class Signature {
       layers: [
         new Tag({
           name: '_url',
-          content: locales.get().url,
+          content: tolgee.t('url'),
           url: 'https://ui-color-palette.com',
           fontFamily: bodyFontFamily,
         }).makeNodeTag(),
         new Tag({
           name: '_tagline',
-          content: locales.get().tagline,
+          content: tolgee.t('tagline'),
           fontSize: 10,
         }).makeNodeTag(),
       ],

@@ -1,6 +1,5 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
-import { locales } from '@ui-lib/content/locales'
 import {
   Data,
   FullConfiguration,
@@ -10,6 +9,8 @@ import {
 } from '@a_ng_d/utils-ui-color-palette'
 import { getWebContents } from '../../utils/webContents'
 import setPaletteName from '../../utils/setPaletteName'
+import { tolgee } from '../../runUicp'
+import Sheet from '../../canvas/Sheet'
 import Palette from '../../canvas/Palette'
 
 const updateDocument = async (view: ViewConfiguration) => {
@@ -23,7 +24,7 @@ const updateDocument = async (view: ViewConfiguration) => {
     Settings.documentSettingForKey(Document, 'ui_color_palettes') ?? []
   const palette = currentPalettes.find((palette) => palette.meta.id === id)
 
-  if (palette === undefined) throw new Error(locales.get().error.unfoundPalette)
+  if (palette === undefined) throw new Error(tolgee.t('error.unfoundPalette'))
 
   const themeData = new Data(palette)
     .makePaletteData()
@@ -33,15 +34,24 @@ const updateDocument = async (view: ViewConfiguration) => {
   )
 
   if (themeData === undefined || currentTheme === undefined)
-    throw new Error(locales.get().error.document)
+    throw new Error(tolgee.t('error.document'))
 
-  const newDocument = new Palette({
-    base: palette.base,
-    theme: currentTheme,
-    data: themeData,
-    meta: palette.meta,
-    view: view,
-  }).node
+  const newDocument =
+    view === 'PALETTE_WITH_PROPERTIES' || view === 'PALETTE'
+      ? new Palette({
+          base: palette.base,
+          theme: currentTheme,
+          data: themeData,
+          meta: palette.meta,
+          view: view,
+        }).node
+      : new Sheet({
+          base: palette.base,
+          theme: currentTheme,
+          data: themeData,
+          meta: palette.meta,
+          view: view,
+        }).node
 
   document.layers[0].remove()
   document.layers.push(newDocument)
@@ -52,7 +62,7 @@ const updateDocument = async (view: ViewConfiguration) => {
   ]
   document.name = setPaletteName(
     palette.base.name,
-    currentTheme.name,
+    currentTheme.type === 'default theme' ? undefined : currentTheme.name,
     palette.base.preset.name,
     palette.base.colorSpace,
     currentTheme.visionSimulationMode

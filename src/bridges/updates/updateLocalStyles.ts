@@ -1,7 +1,7 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
-import { locales } from '@ui-lib/content/locales'
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import { tolgee } from '../../runUicp'
 
 const updateLocalStyles = async (id: string) => {
   const Document = Dom.getSelectedDocument()
@@ -10,7 +10,7 @@ const updateLocalStyles = async (id: string) => {
     Settings.documentSettingForKey(Document, 'ui_color_palettes') ?? []
   const palette = currentPalettes.find((palette) => palette.meta.id === id)
 
-  if (palette === undefined) throw new Error(locales.get().error.unfoundPalette)
+  if (palette === undefined) throw new Error(tolgee.t('error.unfoundPalette'))
 
   palette.libraryData = new Data(palette).makeLibraryData(
     ['style_id', 'hex'],
@@ -68,12 +68,8 @@ const updateLocalStyles = async (id: string) => {
         )
         const path = [
           item.paletteName,
-          item.themeName === ''
-            ? locales.get().themes.defaultName
-            : item.themeName,
-          item.colorName === ''
-            ? locales.get().colors.defaultName
-            : item.colorName,
+          item.themeName === '' ? tolgee.t('defaultThemeName') : item.themeName,
+          item.colorName === '' ? tolgee.t('defaultColorName') : item.colorName,
           item.shadeName,
         ]
           .filter((item) => item !== '' && item !== 'None')
@@ -98,27 +94,10 @@ const updateLocalStyles = async (id: string) => {
 
     Document.save()
 
-    if (i > 1)
-      messages.push(
-        locales
-          .get()
-          .info.updatedLocalStyles.plural.replace('{count}', i.toString())
-      )
-    else if (i === 1)
-      messages.push(locales.get().info.updatedLocalStyles.single)
-    else messages.push(locales.get().info.updatedLocalStyles.none)
+    messages.push(tolgee.t('info.updatedLocalStyles', { count: i }))
+    messages.push(tolgee.t('info.removedLocalStyles', { count: k }))
 
-    if (k > 1)
-      messages.push(
-        locales
-          .get()
-          .info.removedLocalStyles.plural.replace('{count}', k.toString())
-      )
-    else if (k === 1)
-      messages.push(locales.get().info.removedLocalStyles.single)
-    else messages.push(locales.get().info.removedLocalStyles.none)
-
-    return messages.join(locales.get().separator)
+    return messages.join(tolgee.t('separator'))
   })
 
   return updatedLocalStylesStatusMessage
