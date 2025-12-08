@@ -64,7 +64,10 @@ export const createI18n = (
 
       let translation: string = rawTranslation
 
-      if (params && (params.count !== undefined || params.value !== undefined)) {
+      if (
+        params &&
+        (params.count !== undefined || params.value !== undefined)
+      ) {
         const count = params.count !== undefined ? params.count : params.value
         translation = pluralize(translation, count)
 
