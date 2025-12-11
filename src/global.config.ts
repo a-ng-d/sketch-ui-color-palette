@@ -50,6 +50,9 @@ const globalConfig: Config = {
     announcementsWorkerUrl: isDev
       ? 'http://localhost:8888'
       : (process.env.REACT_APP_ANNOUNCEMENTS_WORKER_URL as string),
+    corsWorkerUrl: isDev
+      ? 'http://localhost:8989'
+      : (process.env.REACT_APP_CORS_WORKER_URL as string),
     databaseUrl: process.env.REACT_APP_SUPABASE_URL as string,
     authUrl: isDev
       ? 'http://localhost:3000'
