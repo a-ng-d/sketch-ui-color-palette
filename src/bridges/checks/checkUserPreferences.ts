@@ -8,8 +8,8 @@ const checkUserPreferences = async () => {
   let isAPCADisplayed = Settings.settingForKey('is_apca_displayed')
   let canDeepSyncStyles = Settings.settingForKey('can_deep_sync_styles')
   let canDeepSyncVariables = Settings.settingForKey('can_deep_sync_variables')
-  let isVsCodeMessageDisplayed = Settings.settingForKey(
-    'is_vscode_message_displayed'
+  let isSuggestedLanguageDisplayed = Settings.settingForKey(
+    'is_suggested_language_displayed'
   )
   let userLanguage = Settings.settingForKey('user_language')
 
@@ -33,9 +33,9 @@ const checkUserPreferences = async () => {
     canDeepSyncVariables = false
   }
 
-  if (isVsCodeMessageDisplayed === undefined) {
-    Settings.setSettingForKey('is_vscode_message_displayed', true)
-    isVsCodeMessageDisplayed = true
+  if (isSuggestedLanguageDisplayed === undefined) {
+    Settings.setSettingForKey('is_suggested_language_displayed', true)
+    isSuggestedLanguageDisplayed = true
   }
 
   if (userLanguage === undefined) {
@@ -53,7 +53,7 @@ const checkUserPreferences = async () => {
         isAPCADisplayed: isAPCADisplayed,
         canDeepSyncStyles: canDeepSyncStyles,
         canDeepSyncVariables: canDeepSyncVariables,
-        isVsCodeMessageDisplayed: isVsCodeMessageDisplayed,
+        isSuggestedLanguageDisplayed: isSuggestedLanguageDisplayed,
         userLanguage: userLanguage,
       },
     })})`
