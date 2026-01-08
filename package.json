@@ -90,7 +90,7 @@
     "resources/**/*.js"
   ],
   "dependencies": {
-    "@a_ng_d/figmug-ui": "^1.19.42",
+    "@a_ng_d/figmug-ui": "^1.19.43",
     "@a_ng_d/figmug-utils": "^0.7.3",
     "@a_ng_d/utils-ui-color-palette": "^1.7.6",
     "@babel/preset-react": "^7.27.1",
