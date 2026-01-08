@@ -96,7 +96,6 @@ const globalConfig: Config = {
       'DOWNLOAD_EXPORT',
       'EXPORT_CSV',
       'LOCAL_PALETTES_PAGE',
-      'USER_LANGUAGE_ZH_CN',
     ],
     [
       'LOCAL_PALETTES',
@@ -168,6 +167,7 @@ const globalConfig: Config = {
       'USER_LANGUAGE',
       'USER_LANGUAGE_FR_FR',
       'USER_LANGUAGE_PT_BR',
+      'USER_LANGUAGE_ZH_CN',
     ]
   ),
   lang: 'en-US',
