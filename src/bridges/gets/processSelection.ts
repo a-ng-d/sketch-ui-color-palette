@@ -172,22 +172,27 @@ const processSelection = (webContents?: any) => {
               arrayBuffer = new Uint8Array(byteArray).buffer
             }
 
-            console.log('ArrayBuffer created:', {
-              byteLength: arrayBuffer.byteLength,
-              constructor: arrayBuffer.constructor.name,
-            })
-
             if (arrayBuffer.byteLength > 0)
               return selectionHandler('IMAGE_SELECTED', {
                 arrayBuffer,
                 element,
               })
-          } catch (conversionError) {
-            console.error('Conversion error:', conversionError)
+          } catch (error) {
+            sharedWebContents.executeJavaScript(
+              `sendData(${JSON.stringify({
+                type: 'REPORT_ERROR',
+                data: error,
+              })})`
+            )
           }
         }
       } catch (error) {
-        console.error('Error processing image:', error)
+        sharedWebContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: 'REPORT_ERROR',
+            data: error,
+          })})`
+        )
       }
   })
 
