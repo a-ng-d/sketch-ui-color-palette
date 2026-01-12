@@ -12,7 +12,7 @@ module.exports = function (config, entry) {
       systemvars: true,
     })
   )
-  if (process.env.SENTRY_AUTH_TOKEN)
+  if (process.env.SENTRY_AUTH_TOKEN && !isDev)
     config.plugins.push(
       new SentryWebpackPlugin({
         org: 'yelbolt',
