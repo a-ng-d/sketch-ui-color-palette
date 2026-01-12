@@ -36,11 +36,17 @@ const createLocalVariables = async (id: string) => {
       .forEach((item) => {
         const path = [
           item.paletteName,
-          item.themeName === '' ? tolgee.t('defaultThemeName') : item.themeName,
+          ...(item.id.includes('00000000000')
+            ? []
+            : [
+                item.themeName === ''
+                  ? tolgee.t('themes.defaultName')
+                  : item.themeName,
+              ]),
           item.colorName === '' ? tolgee.t('defaultColorName') : item.colorName,
           item.shadeName,
         ]
-          .filter((item) => item !== '' && item !== 'None')
+          .filter((item) => item !== '')
           .join('/')
 
         if (
