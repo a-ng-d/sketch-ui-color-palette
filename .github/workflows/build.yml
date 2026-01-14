@@ -59,6 +59,6 @@ jobs:
     - name: Archive production artifact
       uses: actions/upload-artifact@v4
       with:
-        name: sketch-ui-color-palette
+        name: sketch-ui-color-palette.sketchplugin
         path: artifact/
         retention-days: 5
