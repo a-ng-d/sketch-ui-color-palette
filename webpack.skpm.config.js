@@ -75,6 +75,7 @@ module.exports = function (config, entry) {
           ],
         ],
         plugins: [
+          '@babel/plugin-transform-class-properties',
           '@babel/plugin-proposal-nullish-coalescing-operator',
           '@babel/plugin-proposal-optional-chaining',
         ],
@@ -96,6 +97,7 @@ module.exports = function (config, entry) {
       options: {
         presets: [['@babel/preset-env', { targets: { node: 'current' } }]],
         plugins: [
+          '@babel/plugin-transform-class-properties',
           '@babel/plugin-proposal-nullish-coalescing-operator',
           '@babel/plugin-proposal-optional-chaining',
         ],

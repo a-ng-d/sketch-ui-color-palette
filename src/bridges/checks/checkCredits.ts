@@ -9,9 +9,7 @@ const addHours = (date: Date, hours: number) => {
 const checkCredits = async () => {
   let creditsCount = Settings.settingForKey('credits_count')
   let renewDate = Settings.settingForKey('credits_renew_date')
-  const creditsVersion =
-    Settings.settingForKey('credits_version') ||
-    globalConfig.versions.creditsVersion
+  const creditsVersion = Settings.settingForKey('credits_version')
 
   const now = new Date()
 
@@ -37,12 +35,12 @@ const checkCredits = async () => {
     creditsCount = globalConfig.plan.creditsLimit
   }
 
-  if (creditsVersion !== globalConfig.versions.creditsVersion) {
-    Settings.settingForKey(
+  if (creditsVersion !== globalConfig.versions.creditsVersion.toString()) {
+    Settings.setSettingForKey(
       'credits_version',
       globalConfig.versions.creditsVersion
     )
-    Settings.settingForKey(
+    Settings.setSettingForKey(
       'credits_count',
       globalConfig.plan.creditsLimit.toString()
     )
