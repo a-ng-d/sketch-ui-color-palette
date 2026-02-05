@@ -507,6 +507,13 @@ export default function () {
       })})`
     )
   })
+  webContents.on('GET_LICENSE', () => {
+    webContents.executeJavaScript(
+      `sendData(${JSON.stringify({
+        type: 'GET_LICENSE',
+      })})`
+    )
+  })
   webContents.on('GO_TO_PRO_WEEK', () => {
     // eslint-disable-next-line no-undef
     NSWorkspace.sharedWorkspace().openURL(
