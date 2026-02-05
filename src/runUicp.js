@@ -497,25 +497,49 @@ export default function () {
       })})`
     )
   })
-  webContents.on('GET_PRO_PLAN', () => {
+  webContents.on('GET_PRO', () => {
     webContents.executeJavaScript(
       `sendData(${JSON.stringify({
         type: 'GET_PRICING',
         data: {
-          plans: ['ONE', 'ACTIVATE'],
+          licenseTrigger: 'ACTIVATE',
         },
       })})`
     )
   })
-  webContents.on('GO_TO_ONE', (msg) => {
+  webContents.on('GO_TO_PRO_WEEK', () => {
     // eslint-disable-next-line no-undef
     NSWorkspace.sharedWorkspace().openURL(
       // eslint-disable-next-line no-undef
-      NSURL.URLWithString(
-        msg.data.context === 'REGULAR'
-          ? globalConfig.urls.storeUrl
-          : globalConfig.urls.storeWithDiscountUrl
-      )
+      NSURL.URLWithString(globalConfig.urls.storeProWeekUrl)
+    )
+  })
+  webContents.on('GO_TO_PRO_MONTH', () => {
+    // eslint-disable-next-line no-undef
+    NSWorkspace.sharedWorkspace().openURL(
+      // eslint-disable-next-line no-undef
+      NSURL.URLWithString(globalConfig.urls.storeProMonthUrl)
+    )
+  })
+  webContents.on('GO_TO_PRO_YEAR', () => {
+    // eslint-disable-next-line no-undef
+    NSWorkspace.sharedWorkspace().openURL(
+      // eslint-disable-next-line no-undef
+      NSURL.URLWithString(globalConfig.urls.storeProYearUrl)
+    )
+  })
+  webContents.on('GO_TO_PRO_LIFETIME', () => {
+    // eslint-disable-next-line no-undef
+    NSWorkspace.sharedWorkspace().openURL(
+      // eslint-disable-next-line no-undef
+      NSURL.URLWithString(globalConfig.urls.storeProLifetimeUrl)
+    )
+  })
+  webContents.on('GO_TO_ULTIMATE_REQUEST', () => {
+    // eslint-disable-next-line no-undef
+    NSWorkspace.sharedWorkspace().openURL(
+      // eslint-disable-next-line no-undef
+      NSURL.URLWithString(globalConfig.urls.storeUltimateRequestUrl)
     )
   })
   webContents.on('ENABLE_PRO_PLAN', () => {
