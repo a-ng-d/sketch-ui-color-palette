@@ -6,6 +6,12 @@ import globalConfig from '../../global.config'
 const checkUserPreferences = async () => {
   let isWCAGDisplayed = Settings.settingForKey('is_wcag_displayed')
   let isAPCADisplayed = Settings.settingForKey('is_apca_displayed')
+  let isWCAGIntervalDisplayed = Settings.settingForKey(
+    'is_wcag_interval_displayed'
+  )
+  let isAPCAIntervalDisplayed = Settings.settingForKey(
+    'is_apca_interval_displayed'
+  )
   let canDeepSyncStyles = Settings.settingForKey('can_deep_sync_styles')
   let canDeepSyncVariables = Settings.settingForKey('can_deep_sync_variables')
   let isSuggestedLanguageDisplayed = Settings.settingForKey(
@@ -21,6 +27,16 @@ const checkUserPreferences = async () => {
   if (isAPCADisplayed === undefined) {
     Settings.setSettingForKey('is_apca_displayed', true)
     isAPCADisplayed = true
+  }
+
+  if (isWCAGIntervalDisplayed === undefined) {
+    Settings.setSettingForKey('is_wcag_interval_displayed', false)
+    isWCAGIntervalDisplayed = false
+  }
+
+  if (isAPCAIntervalDisplayed === undefined) {
+    Settings.setSettingForKey('is_apca_interval_displayed', false)
+    isAPCAIntervalDisplayed = false
   }
 
   if (canDeepSyncStyles === undefined) {
@@ -51,6 +67,8 @@ const checkUserPreferences = async () => {
       data: {
         isWCAGDisplayed: isWCAGDisplayed,
         isAPCADisplayed: isAPCADisplayed,
+        isWCAGIntervalDisplayed: isWCAGIntervalDisplayed,
+        isAPCAIntervalDisplayed: isAPCAIntervalDisplayed,
         canDeepSyncStyles: canDeepSyncStyles,
         canDeepSyncVariables: canDeepSyncVariables,
         isSuggestedLanguageDisplayed: isSuggestedLanguageDisplayed,
