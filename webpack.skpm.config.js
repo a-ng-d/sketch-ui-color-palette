@@ -91,6 +91,7 @@ module.exports = function (config, entry) {
       /node_modules\/@a_ng_d/,
       /node_modules\/@mistralai/,
       /node_modules\/@tolgee/,
+      /node_modules\/@unoff/,
     ],
     use: {
       loader: 'babel-loader',

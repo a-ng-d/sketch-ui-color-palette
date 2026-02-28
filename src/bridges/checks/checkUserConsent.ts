@@ -1,5 +1,5 @@
 import Settings from 'sketch/settings'
-import { ConsentConfiguration } from '@a_ng_d/figmug-ui'
+import { ConsentConfiguration } from '@unoff/ui'
 import { getWebContents } from '../../utils/webContents'
 import globalConfig from '../../global.config'
 
