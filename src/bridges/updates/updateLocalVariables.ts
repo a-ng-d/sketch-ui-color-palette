@@ -44,7 +44,7 @@ const updateLocalVariables = async (id: string) => {
             const path = [
               libraryItem.paletteName,
               libraryItem.themeName === ''
-                ? tolgee.t('defaultThemeName')
+                ? tolgee.t('themes.switchTheme.defaultTheme')
                 : libraryItem.themeName,
               libraryItem.colorName === ''
                 ? tolgee.t('defaultColorName')
