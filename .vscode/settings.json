@@ -1,4 +1,10 @@
 {
   "javascript.preferences.importModuleSpecifier": "relative",
-  "typescript.preferences.importModuleSpecifier": "relative"
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "git.ignoredRepositories": [
+    "packages/ui-ui-color-palette/packages/announcements-yelbolt-worker",
+    "packages/ui-ui-color-palette/packages/auth-yelbolt",
+    "packages/ui-ui-color-palette/packages/auth-yelbolt-worker",
+    "packages/ui-ui-color-palette/packages/cors-yelbolt-worker"
+  ]
 }

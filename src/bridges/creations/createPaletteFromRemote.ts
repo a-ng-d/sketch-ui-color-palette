@@ -9,7 +9,6 @@ import {
 } from '@a_ng_d/utils-ui-color-palette'
 import { getWebContents } from '../../utils/webContents'
 import { tolgee } from '../../runUicp'
-import createDocument from './createDocument'
 
 interface Msg {
   data: {
@@ -75,8 +74,6 @@ const createPaletteFromRemote = async (msg: Msg) => {
       data: palette,
     })})`
   )
-
-  createDocument(palette.meta.id, 'PALETTE')
 
   Document.save()
 

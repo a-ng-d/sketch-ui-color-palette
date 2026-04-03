@@ -10,6 +10,7 @@ import {
 } from '@ui-lib/external/tracking/client'
 import { initSentry } from '@ui-lib/external/monitoring'
 import { initMistral } from '@ui-lib/external/mistral'
+import { initNotion } from '@ui-lib/external/cms'
 import { initSupabase } from '@ui-lib/external/auth'
 import zh_Hans_CN from '@ui-lib/content/translations/zh-Hans-CN.json'
 import pt_BR from '@ui-lib/content/translations/pt-BR.json'
@@ -32,6 +33,8 @@ const sentryDsn = process.env.REACT_APP_SENTRY_DSN
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_PUBLIC_ANON_KEY
 // eslint-disable-next-line no-undef
 const mistralApiKey = process.env.REACT_APP_MISTRAL_AI_API_KEY
+// eslint-disable-next-line no-undef
+const notionApiKey = process.env.REACT_APP_NOTION_API_KEY
 // eslint-disable-next-line no-undef
 const tolgeeUrl = process.env.REACT_APP_TOLGEE_URL
 // eslint-disable-next-line no-undef
@@ -117,6 +120,10 @@ if (globalConfig.env.isSupabaseEnabled && supabaseAnonKey !== undefined)
 
 // Mistral AI
 if (globalConfig.env.isMistralAiEnabled) initMistral(mistralApiKey)
+
+// Notion
+if (globalConfig.env.isNotionEnabled && notionApiKey !== undefined)
+  initNotion(notionApiKey)
 
 // Tolgee
 const tolgee = initTolgee(tolgeeUrl, tolgeeApiKey, globalConfig.lang, {
