@@ -53,7 +53,7 @@ const createPalette = async (msg: Msg) => {
 
   const themes: Array<ThemeConfiguration> = [
     {
-      name: tolgee.t('defaultThemeName'),
+      name: tolgee.t('themes.switchTheme.defaultTheme'),
       description: '',
       scale: msg.data.exchange.scale,
       paletteBackground: '#FFFFFF',

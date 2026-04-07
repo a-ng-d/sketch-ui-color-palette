@@ -24,6 +24,9 @@ jobs:
 
       - name: Initialize and update submodules
         run: |
+          git config submodule.skills.update none
+          git submodule update --init --force
+          git -C packages/ui-ui-color-palette config submodule.skills.update none
           git submodule update --init --recursive --force
           echo "Submodule structure:"
           ls -la packages/ui-ui-color-palette/src/stores/ || echo "Stores directory not found"
@@ -41,6 +44,7 @@ jobs:
           echo REACT_APP_CORS_WORKER_URL="${{ vars.REACT_APP_CORS_WORKER_URL }}" >> .env.local
           echo REACT_APP_NOTION_ANNOUNCEMENTS_ID="${{ vars.REACT_APP_NOTION_ANNOUNCEMENTS_ID }}" >> .env.local
           echo REACT_APP_NOTION_ONBOARDING_ID="${{ vars.REACT_APP_NOTION_ONBOARDING_ID }}" >> .env.local
+          echo REACT_APP_NOTION_API_KEY="${{ secrets.REACT_APP_NOTION_API_KEY }}" >> .env.local
           echo REACT_APP_LEMONSQUEEZY_URL="${{ vars.REACT_APP_LEMONSQUEEZY_URL }}" >> .env.local
           echo REACT_APP_LEMONSQUEEZY_API_KEY="${{ secrets.REACT_APP_LEMONSQUEEZY_API_KEY }}" >> .env.local
           echo REACT_APP_MISTRAL_AI_API_URL="${{ vars.REACT_APP_MISTRAL_AI_API_URL }}" >> .env.local
