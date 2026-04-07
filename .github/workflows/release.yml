@@ -15,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: 'recursive'
+          submodules: false
           fetch-depth: 0
       
       - uses: actions/setup-node@v4
@@ -28,8 +28,6 @@ jobs:
           git submodule update --init --force
           git -C packages/ui-ui-color-palette config submodule.skills.update none
           git submodule update --init --recursive --force
-          echo "Submodule structure:"
-          ls -la packages/ui-ui-color-palette/src/stores/ || echo "Stores directory not found"
 
       - name: Create .env.local file
         run: |
