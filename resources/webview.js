@@ -56,6 +56,13 @@ if (globalConfig.env.isMixpanelEnabled && mixpanelToken !== undefined) {
   })
   mixpanel.opt_in_tracking()
 
+  const now = new Date()
+  const cohort = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
+  mixpanel.register({
+    Cohort: cohort,
+    Version: globalConfig.versions.pluginVersion,
+  })
+
   // eslint-disable-next-line no-undef
   setMixpanelEnv(process.env.NODE_ENV)
   initMixpanel(mixpanel)
