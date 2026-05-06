@@ -49,6 +49,7 @@ jobs:
           echo REACT_APP_MISTRAL_AI_API_KEY="${{ secrets.REACT_APP_MISTRAL_AI_API_KEY }}" >> .env.local
           echo REACT_APP_REACT_APP_TOLGEE_URL="${{ vars.REACT_APP_TOLGEE_URL }}" >> .env.local
           echo REACT_APP_TOLGEE_API_KEY="${{ secrets.REACT_APP_TOLGEE_API_KEY }}" >> .env.local
+          echo REACT_APP_POLAR_ACCESS_TOKEN="${{ secrets.REACT_APP_POLAR_ACCESS_TOKEN }}" >> .env.local
           cat .env.local
           touch .env.sentry-build-plugin
           echo SENTRY_AUTH_TOKEN="${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env.sentry-build-plugin
