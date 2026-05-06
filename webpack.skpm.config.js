@@ -91,7 +91,9 @@ module.exports = function (config, entry) {
       /node_modules\/@a_ng_d/,
       /node_modules\/@mistralai/,
       /node_modules\/@tolgee/,
+      /node_modules\/@polar-sh/,
       /node_modules\/@unoff/,
+      /node_modules\/zod/,
     ],
     use: {
       loader: 'babel-loader',
