@@ -4,7 +4,10 @@ import UI from 'sketch/ui'
 import Settings from 'sketch/settings'
 import zh_Hans_CN from '@ui-lib/content/translations/zh-Hans-CN.json'
 import pt_BR from '@ui-lib/content/translations/pt-BR.json'
+import ko_KR from '@ui-lib/content/translations/ko-KR.json'
+import ja_JP from '@ui-lib/content/translations/ja-JP.json'
 import fr_FR from '@ui-lib/content/translations/fr-FR.json'
+import es_ES from '@ui-lib/content/translations/es-ES.json'
 import en_US from '@ui-lib/content/translations/en-US.json'
 import webviewHtmlUrl from '../resources/webview.html'
 import { setWebContents } from './utils/webContents.ts'
@@ -45,6 +48,9 @@ export const tolgee = createI18n(
     'pt-BR': pt_BR,
     'fr-FR': fr_FR,
     'en-US': en_US,
+    'es-ES': es_ES,
+    'ja-JP': ja_JP,
+    'ko-KR': ko_KR,
   },
   globalConfig.lang
 )
@@ -512,34 +518,6 @@ export default function () {
       `sendData(${JSON.stringify({
         type: 'GET_LICENSE',
       })})`
-    )
-  })
-  webContents.on('GO_TO_PRO_WEEK', () => {
-    // eslint-disable-next-line no-undef
-    NSWorkspace.sharedWorkspace().openURL(
-      // eslint-disable-next-line no-undef
-      NSURL.URLWithString(globalConfig.urls.storeProWeekUrl)
-    )
-  })
-  webContents.on('GO_TO_PRO_MONTH', () => {
-    // eslint-disable-next-line no-undef
-    NSWorkspace.sharedWorkspace().openURL(
-      // eslint-disable-next-line no-undef
-      NSURL.URLWithString(globalConfig.urls.storeProMonthUrl)
-    )
-  })
-  webContents.on('GO_TO_PRO_YEAR', () => {
-    // eslint-disable-next-line no-undef
-    NSWorkspace.sharedWorkspace().openURL(
-      // eslint-disable-next-line no-undef
-      NSURL.URLWithString(globalConfig.urls.storeProYearUrl)
-    )
-  })
-  webContents.on('GO_TO_PRO_LIFETIME', () => {
-    // eslint-disable-next-line no-undef
-    NSWorkspace.sharedWorkspace().openURL(
-      // eslint-disable-next-line no-undef
-      NSURL.URLWithString(globalConfig.urls.storeProLifetimeUrl)
     )
   })
   webContents.on('GO_TO_ULTIMATE_REQUEST', () => {
