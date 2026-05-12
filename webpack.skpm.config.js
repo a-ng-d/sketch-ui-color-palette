@@ -156,24 +156,19 @@ module.exports = function (config, entry) {
   })
 
   config.module.rules.push({
-    oneOf: [
+    test: /\.css$/,
+    use: [
+      entry.isPluginCommand
+        ? { loader: '@skpm/extract-loader' }
+        : { loader: 'style-loader' },
       {
-        test: /figma-colors|figma-colors|penpot-colors|penpot-types|framer-colors|framer-types\.css$/,
-        use: [path.resolve(__dirname, 'empty-loader.cjs')],
+        loader: 'css-loader',
+        options: {
+          importLoaders: 1,
+        },
       },
       {
-        test: /\.css$/,
-        use: [
-          entry.isPluginCommand
-            ? { loader: '@skpm/extract-loader' }
-            : { loader: 'style-loader' },
-          {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 1,
-            },
-          },
-        ],
+        loader: path.resolve(__dirname, 'sketch-css-filter-loader.cjs'),
       },
     ],
   })
