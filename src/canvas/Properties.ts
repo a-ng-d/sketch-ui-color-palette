@@ -154,7 +154,7 @@ export default class Properties {
         justifyContent: StackLayout.JustifyContent.Start,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
     })
@@ -183,7 +183,7 @@ export default class Properties {
         justifyContent: StackLayout.JustifyContent.Start,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
       layers: [this.makeNodeContrastScoresProps()],
@@ -277,7 +277,7 @@ export default class Properties {
         justifyContent: StackLayout.JustifyContent.Start,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
       layers: layers,
@@ -387,7 +387,7 @@ export default class Properties {
         justifyContent: StackLayout.JustifyContent.Start,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
       layers: [
@@ -494,7 +494,7 @@ export default class Properties {
         justifyContent: StackLayout.JustifyContent.Start,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
       layers: layers,
@@ -561,7 +561,7 @@ export default class Properties {
         justifyContent: StackLayout.JustifyContent.Start,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
       layers: [
@@ -710,7 +710,7 @@ export default class Properties {
         justifyContent: StackLayout.JustifyContent.Start,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
       layers: [
@@ -747,7 +747,7 @@ export default class Properties {
         justifyContent: StackLayout.JustifyContent.Start,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
       layers: leftNodes,
@@ -768,7 +768,7 @@ export default class Properties {
         justifyContent: StackLayout.JustifyContent.Start,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
       layers: rightNodes,
@@ -789,7 +789,7 @@ export default class Properties {
         justifyContent: StackLayout.JustifyContent.Start,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
       layers: [this.nodeRightColumn, this.nodeLeftColumn],
@@ -832,7 +832,7 @@ export default class Properties {
         justifyContent: StackLayout.JustifyContent.Start,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
       layers: [detailedAPCAScoresProps, nodeColumns],
@@ -878,7 +878,7 @@ export default class Properties {
         justifyContent: StackLayout.JustifyContent.Between,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
       layers: [nodeBottomProps, nodeTopProps],

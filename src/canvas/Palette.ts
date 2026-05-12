@@ -80,7 +80,7 @@ export default class Palette {
       groupBehavior: GroupBehavior.Frame,
       frame: new Rectangle(0, 0, 100, 48),
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
       layers: [
@@ -123,7 +123,7 @@ export default class Palette {
         justifyContent: StackLayout.JustifyContent.Center,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
     })
@@ -161,7 +161,7 @@ export default class Palette {
           justifyContent: StackLayout.JustifyContent.Center,
         },
         style: {
-          fills: [],
+          fills: [{ enabled: false }],
           borders: [],
           corners: {
             radii: radii,
@@ -184,7 +184,7 @@ export default class Palette {
           justifyContent: StackLayout.JustifyContent.Center,
         },
         style: {
-          fills: [],
+          fills: [{ enabled: false }],
           borders: [],
         },
         layers: [
@@ -219,7 +219,7 @@ export default class Palette {
           justifyContent: StackLayout.JustifyContent.Center,
         },
         style: {
-          fills: [],
+          fills: [{ enabled: false }],
           borders: [],
         },
       })
@@ -308,7 +308,7 @@ export default class Palette {
         justifyContent: StackLayout.JustifyContent.Center,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
       locked: true,

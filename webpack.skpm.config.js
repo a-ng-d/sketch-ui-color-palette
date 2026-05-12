@@ -167,6 +167,9 @@ module.exports = function (config, entry) {
           importLoaders: 1,
         },
       },
+      {
+        loader: path.resolve(__dirname, 'sketch-css-filter-loader.cjs'),
+      },
     ],
   })
 }

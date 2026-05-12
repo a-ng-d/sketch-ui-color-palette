@@ -84,7 +84,7 @@ export default class Sheet {
       groupBehavior: GroupBehavior.Frame,
       frame: new Rectangle(0, 0, 100, 48),
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
       layers: [
@@ -162,7 +162,7 @@ export default class Sheet {
           justifyContent: StackLayout.JustifyContent.Start,
         },
         style: {
-          fills: [],
+          fills: [{ enabled: false }],
           borders: [],
         },
         layers: [nodeSample],
@@ -219,7 +219,7 @@ export default class Sheet {
           wraps: true,
         },
         style: {
-          fills: [],
+          fills: [{ enabled: false }],
           borders: [],
         },
         frame: new Rectangle(
@@ -250,7 +250,7 @@ export default class Sheet {
           justifyContent: StackLayout.JustifyContent.Start,
         },
         style: {
-          fills: [],
+          fills: [{ enabled: false }],
           borders: [],
         },
         layers: [this.nodeRowShades, this.nodeRowSource],
@@ -283,7 +283,7 @@ export default class Sheet {
         justifyContent: StackLayout.JustifyContent.Start,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
       layers: shadeLayers,
@@ -313,7 +313,7 @@ export default class Sheet {
         justifyContent: StackLayout.JustifyContent.Start,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
       locked: true,

@@ -33,7 +33,7 @@ export default class Signature {
         alignItems: StackLayout.AlignItems.Start,
         justifyContent: StackLayout.JustifyContent.Start,
       },
-      style: { fills: [], borders: [] },
+      style: { fills: [{ enabled: false }], borders: [] },
       layers: [
         new Tag({
           name: '_url',
@@ -130,7 +130,7 @@ export default class Signature {
         alignItems: StackLayout.AlignItems.Start,
         justifyContent: StackLayout.JustifyContent.Between,
       },
-      style: { fills: [], borders: [] },
+      style: { fills: [{ enabled: false }], borders: [] },
       layers: [logo, info],
     })
 

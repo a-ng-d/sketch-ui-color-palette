@@ -143,6 +143,7 @@ export default function () {
       .then(() => checkUserPreferences())
       .then(() => processSelection())
   })
+  webContents.on('OPEN_DOCUMENT', () => processSelection())
   webContents.on('CHECK_ANNOUNCEMENTS_STATUS', (msg) =>
     checkAnnouncementsStatus(msg.data.version)
   )
