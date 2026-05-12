@@ -91,7 +91,7 @@ export default class Status {
         wraps: true,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
       layers: layers,

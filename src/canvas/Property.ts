@@ -43,7 +43,7 @@ export default class Property {
         justifyContent: StackLayout.JustifyContent.Start,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
     })

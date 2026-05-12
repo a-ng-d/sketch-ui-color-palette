@@ -118,7 +118,7 @@ export default class Sample {
         justifyContent: StackLayout.JustifyContent.Start,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
       frame: new Rectangle(0, 0, width, height),
@@ -370,7 +370,7 @@ export default class Sample {
         justifyContent: StackLayout.JustifyContent.Start,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
       frame: new Rectangle(0, 0, width, height),

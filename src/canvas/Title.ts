@@ -76,7 +76,7 @@ export default class Title {
         justifyContent: StackLayout.JustifyContent.Between,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
     })
@@ -116,7 +116,7 @@ export default class Title {
         justifyContent: StackLayout.JustifyContent.Start,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
     })
@@ -172,7 +172,7 @@ export default class Title {
         justifyContent: StackLayout.JustifyContent.Start,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
     })
@@ -280,7 +280,7 @@ export default class Title {
       groupBehavior: GroupBehavior.Frame,
       frame: new Rectangle(0, 0, 100, 48),
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
       layers: [this.makeNodeProps(), this.makeNodeGlobalInfo()],

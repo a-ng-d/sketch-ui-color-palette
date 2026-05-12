@@ -65,7 +65,7 @@ export default class Documents {
         justifyContent: StackLayout.JustifyContent.Start,
       },
       style: {
-        fills: [],
+        fills: [{ enabled: false }],
         borders: [],
       },
     })
