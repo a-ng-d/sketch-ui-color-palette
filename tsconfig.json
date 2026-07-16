@@ -19,7 +19,8 @@
     "strict": true,
     "typeRoots": ["./node_modules/@types", "./node_modules/@penpot"],
     "types": ["node"],
-    "jsx": "react",
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
     "skipLibCheck": true,
     "paths": {
       "react": ["./node_modules/preact/compat/"],
