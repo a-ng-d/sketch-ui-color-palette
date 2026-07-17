@@ -88,7 +88,7 @@ module.exports = function (config, entry) {
     include: [
       /node_modules\/@sentry/,
       /node_modules\/@sentry-internal/,
-      /node_modules\/@a_ng_d/,
+      /node_modules\/@yelbolt/,
       /node_modules\/@mistralai/,
       /node_modules\/@tolgee/,
       /node_modules\/@polar-sh/,
