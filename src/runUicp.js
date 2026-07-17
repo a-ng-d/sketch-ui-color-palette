@@ -193,13 +193,14 @@ export default function () {
 
   webContents.on('CREATE_PALETTE', (msg) =>
     createPalette(msg)
-      .finally(() =>
+      .finally(() => {
+        getPalettesOnCurrentFile(webContents)
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({
             type: 'STOP_LOADER',
           })})`
         )
-      )
+      })
       .catch((error) => {
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({
@@ -219,41 +220,43 @@ export default function () {
       })
   )
   webContents.on('CREATE_PALETTE_FROM_DOCUMENT', () =>
-    createPaletteFromDocument().finally(() =>
-      webContents
-        .executeJavaScript(
-          `sendData(${JSON.stringify({
-            type: 'STOP_LOADER',
-          })})`
-        )
-        .catch((error) => {
-          webContents.executeJavaScript(
-            `sendData(${JSON.stringify({
-              type: 'REPORT_ERROR',
-              data: error,
-            })})`
-          )
-          webContents.executeJavaScript(
-            `sendData(${JSON.stringify({
-              type: 'POST_MESSAGE',
-              data: {
-                type: 'ERROR',
-                message: error.message,
-              },
-            })})`
-          )
-        })
-    )
-  )
-  webContents.on('CREATE_PALETTE_FROM_REMOTE', (msg) =>
-    createPaletteFromRemote(msg)
-      .finally(() =>
+    createPaletteFromDocument()
+      .finally(() => {
+        getPalettesOnCurrentFile(webContents)
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({
             type: 'STOP_LOADER',
           })})`
         )
-      )
+      })
+      .catch((error) => {
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: 'REPORT_ERROR',
+            data: error,
+          })})`
+        )
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: 'POST_MESSAGE',
+            data: {
+              type: 'ERROR',
+              message: error.message,
+            },
+          })})`
+        )
+      })
+  )
+  webContents.on('CREATE_PALETTE_FROM_REMOTE', (msg) =>
+    createPaletteFromRemote(msg)
+      .finally(() => {
+        getPalettesOnCurrentFile(webContents)
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: 'STOP_LOADER',
+          })})`
+        )
+      })
       .catch((error) => {
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({
