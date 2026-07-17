@@ -1,6 +1,6 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
-import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import { FullConfiguration } from '@yelbolt/engine-ui-color-palette'
 import { getWebContents } from '../../utils/webContents'
 
 const getPalettesOnCurrentFile = async (webContents?: any) => {

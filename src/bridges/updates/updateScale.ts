@@ -1,7 +1,7 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
 import { doScale } from '@unoff/utils'
-import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import { Data, FullConfiguration } from '@yelbolt/engine-ui-color-palette'
 import { getWebContents } from '../../utils/webContents'
 import { ScaleMessage } from '../../types/messages'
 import { tolgee } from '../../runUicp'

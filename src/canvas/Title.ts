@@ -4,7 +4,7 @@ import {
   MetaConfiguration,
   PaletteDataThemeItem,
   ThemeConfiguration,
-} from '@a_ng_d/utils-ui-color-palette'
+} from '@yelbolt/engine-ui-color-palette'
 import { tolgee } from '../runUicp'
 import Tag from './Tag'
 import { bodyFontFamily } from './styles'

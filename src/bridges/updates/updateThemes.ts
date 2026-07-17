@@ -1,6 +1,6 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
-import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import { Data, FullConfiguration } from '@yelbolt/engine-ui-color-palette'
 import { getWebContents } from '../../utils/webContents'
 import { ThemesMessage } from '../../types/messages'
 import { tolgee } from '../../runUicp'

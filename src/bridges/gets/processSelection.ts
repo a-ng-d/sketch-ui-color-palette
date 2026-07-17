@@ -6,7 +6,7 @@ import {
   FullConfiguration,
   HexModel,
   SourceColorConfiguration,
-} from '@a_ng_d/utils-ui-color-palette'
+} from '@yelbolt/engine-ui-color-palette'
 import { getWebContents } from '../../utils/webContents'
 
 export let currentSelection: Array<any> = []
