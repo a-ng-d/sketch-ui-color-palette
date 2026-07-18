@@ -55,7 +55,7 @@ if (globalConfig.env.isMixpanelEnabled && mixpanelToken !== undefined) {
     disable_cookie: true,
     ignore_dnt: true,
     opt_out_tracking_by_default: true,
-    record_sessions_percent: 50,
+    record_sessions_percent: globalConfig.env.isDev ? 0 : 50,
     record_mask_text_selector: '*',
     record_block_selector: 'img',
     record_heatmap_data: true,
@@ -64,13 +64,15 @@ if (globalConfig.env.isMixpanelEnabled && mixpanelToken !== undefined) {
 
   const now = new Date()
   const cohort = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
+  // eslint-disable-next-line no-undef
+  const env = process.env.NODE_ENV
   mixpanel.register({
     Cohort: cohort,
     Version: globalConfig.versions.pluginVersion,
+    Env: env,
   })
 
-  // eslint-disable-next-line no-undef
-  setMixpanelEnv(process.env.NODE_ENV)
+  setMixpanelEnv(env)
   initMixpanel(mixpanel)
   setEditor(globalConfig.env.editor)
 }
