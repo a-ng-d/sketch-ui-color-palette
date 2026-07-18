@@ -10,6 +10,7 @@ import {
   ThemeConfiguration,
 } from '@yelbolt/engine-ui-color-palette'
 import { getWebContents } from '../../utils/webContents'
+import scheduleSaveDocument from '../../utils/scheduleSaveDocument'
 import { tolgee } from '../../runUicp'
 
 interface Msg {
@@ -113,7 +114,7 @@ const createPalette = async (msg: Msg) => {
     })})`
   )
 
-  Document.save()
+  scheduleSaveDocument(Document)
 
   return palette
 }

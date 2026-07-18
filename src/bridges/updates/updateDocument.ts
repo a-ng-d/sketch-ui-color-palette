@@ -9,6 +9,7 @@ import {
 } from '@yelbolt/engine-ui-color-palette'
 import { getWebContents } from '../../utils/webContents'
 import setPaletteName from '../../utils/setPaletteName'
+import scheduleSaveDocument from '../../utils/scheduleSaveDocument'
 import { tolgee } from '../../runUicp'
 import Sheet from '../../canvas/Sheet'
 import Palette from '../../canvas/Palette'
@@ -89,7 +90,7 @@ const updateDocument = async (view: ViewConfiguration) => {
     })})`
   )
 
-  Document.save()
+  scheduleSaveDocument(Document)
 
   return palette
 }

@@ -77,8 +77,6 @@ const createLocalVariables = async (id: string) => {
       currentPalettes
     )
 
-    Document.save()
-
     return tolgee.t('info.createdLocalVariables', { count: i })
   })
 

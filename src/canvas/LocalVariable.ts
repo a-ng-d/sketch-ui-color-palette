@@ -1,7 +1,7 @@
 import Dom from 'sketch/dom'
 import Sketch from 'sketch'
-import FileFormat from '@sketch-hq/sketch-file-format-ts'
 import { HexModel } from '@yelbolt/engine-ui-color-palette'
+import FileFormat from '@sketch-hq/sketch-file-format-ts'
 
 const Swatch = Sketch.Swatch
 const Document = Dom.getSelectedDocument()

@@ -1,8 +1,9 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
-import { doScale } from '@unoff/utils'
 import { Data, FullConfiguration } from '@yelbolt/engine-ui-color-palette'
+import { doScale } from '@unoff/utils'
 import { getWebContents } from '../../utils/webContents'
+import scheduleSaveDocument from '../../utils/scheduleSaveDocument'
 import { ScaleMessage } from '../../types/messages'
 import { tolgee } from '../../runUicp'
 
@@ -85,7 +86,7 @@ const updateScale = async (msg: ScaleMessage) => {
     currentPalettes
   )
 
-  Document.save()
+  scheduleSaveDocument(Document)
 
   return palette
 }

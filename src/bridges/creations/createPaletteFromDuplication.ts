@@ -2,6 +2,7 @@ import { uid } from 'uid/single'
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
 import { FullConfiguration } from '@yelbolt/engine-ui-color-palette'
+import scheduleSaveDocument from '../../utils/scheduleSaveDocument'
 import { tolgee } from '../../runUicp'
 
 const createPaletteFromDuplication = async (id: string) => {
@@ -38,7 +39,7 @@ const createPaletteFromDuplication = async (id: string) => {
     currentPalettes
   )
 
-  Document.save()
+  scheduleSaveDocument(Document)
 
   return palette
 }
