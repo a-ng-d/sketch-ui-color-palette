@@ -78,8 +78,6 @@ const createLocalStyles = async (id: string) => {
       currentPalettes
     )
 
-    Document.save()
-
     return tolgee.t('info.createdLocalStyles', { count: i })
   })
 

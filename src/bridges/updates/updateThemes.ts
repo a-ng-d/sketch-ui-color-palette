@@ -2,6 +2,7 @@ import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
 import { Data, FullConfiguration } from '@yelbolt/engine-ui-color-palette'
 import { getWebContents } from '../../utils/webContents'
+import scheduleSaveDocument from '../../utils/scheduleSaveDocument'
 import { ThemesMessage } from '../../types/messages'
 import { tolgee } from '../../runUicp'
 
@@ -36,7 +37,7 @@ const updateThemes = async (msg: ThemesMessage) => {
     currentPalettes
   )
 
-  Document.save()
+  scheduleSaveDocument(Document)
 
   return palette
 }

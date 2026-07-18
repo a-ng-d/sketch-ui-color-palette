@@ -3,6 +3,7 @@ import Dom from 'sketch/dom'
 import { FullConfiguration } from '@yelbolt/engine-ui-color-palette'
 import processSelection from '../gets/processSelection'
 import { getWebContents } from '../../utils/webContents'
+import scheduleSaveDocument from '../../utils/scheduleSaveDocument'
 import { tolgee } from '../../runUicp'
 
 const createPaletteFromDocument = async () => {
@@ -33,7 +34,7 @@ const createPaletteFromDocument = async () => {
 
   processSelection()
 
-  Document.save()
+  scheduleSaveDocument(Document)
 
   return backup
 }

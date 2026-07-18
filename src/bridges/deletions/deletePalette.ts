@@ -1,6 +1,7 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
 import { FullConfiguration } from '@yelbolt/engine-ui-color-palette'
+import scheduleSaveDocument from '../../utils/scheduleSaveDocument'
 import { tolgee } from '../../runUicp'
 
 const deletePalette = async (id: string) => {
@@ -18,7 +19,7 @@ const deletePalette = async (id: string) => {
     currentPalettes.filter((palette) => palette.meta.id !== id)
   )
 
-  Document.save()
+  scheduleSaveDocument(Document)
 
   return palette
 }

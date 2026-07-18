@@ -1,6 +1,7 @@
 import Settings from 'sketch/settings'
 import Dom from 'sketch/dom'
 import { Data, FullConfiguration } from '@yelbolt/engine-ui-color-palette'
+import scheduleSaveDocument from '../../utils/scheduleSaveDocument'
 import { tolgee } from '../../runUicp'
 import LocalVariable from '../../canvas/LocalVariable'
 
@@ -115,7 +116,7 @@ const updateLocalVariables = async (id: string) => {
         }
       })
 
-    Document.save()
+    scheduleSaveDocument(Document)
 
     messages.push(tolgee.t('info.updatedLocalVariables', { count: i }))
     messages.push(tolgee.t('info.removedLocalVariables', { count: k }))

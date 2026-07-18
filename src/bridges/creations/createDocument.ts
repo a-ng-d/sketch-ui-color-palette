@@ -5,6 +5,7 @@ import {
   FullConfiguration,
   ViewConfiguration,
 } from '@yelbolt/engine-ui-color-palette'
+import scheduleSaveDocument from '../../utils/scheduleSaveDocument'
 import { tolgee } from '../../runUicp'
 import Documents from '../../canvas/Documents'
 
@@ -32,6 +33,7 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
     (document: any) => (document.selected = true)
   )
   Document.centerOnLayer(documents.documents)
+  scheduleSaveDocument(Document)
 
   return palette
 }
