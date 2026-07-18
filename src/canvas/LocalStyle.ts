@@ -1,6 +1,6 @@
 import Dom from 'sketch/dom'
-import FileFormat from '@sketch-hq/sketch-file-format-ts'
 import { HexModel } from '@yelbolt/engine-ui-color-palette'
+import FileFormat from '@sketch-hq/sketch-file-format-ts'
 
 const Document = Dom.getSelectedDocument()
 const SharedStyle = Dom.SharedStyle
