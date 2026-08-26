@@ -54,7 +54,6 @@ function getCommandsFromManifest(manifestPath: string): CommandInfo[] {
     const info = bucket[command.script]
     if (command.handler) pushHandler(info, command.handler)
     if (command.handlers) pushHandler(info, command.handlers)
-    // skpm-build always exposes the default export as `onRun`
     if (!info.handlers.includes('onRun')) info.handlers.push('onRun')
   }
 
