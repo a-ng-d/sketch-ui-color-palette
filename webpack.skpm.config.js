@@ -47,10 +47,6 @@ module.exports = function (config, entry) {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
     alias: {
       ...config.resolve.alias,
-      react: 'preact/compat',
-      'react-dom/test-utils': 'preact/test-utils',
-      'react-dom': 'preact/compat',
-      'react/jsx-runtime': 'preact/jsx-runtime',
       '@ui-lib': require('path').resolve(
         __dirname,
         'packages/ui-ui-color-palette/src'
