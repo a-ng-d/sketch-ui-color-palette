@@ -1,6 +1,6 @@
 {
   "name": "sketch-ui-color-palette",
-  "version": "5.3.4",
+  "version": "5.3.5",
   "private": true,
   "description": "UI Color Palette is a Sketch plugin that creates, manages, exports, and publishes consistent and accessible color palettes.",
   "author": "Aurélien Grimaud",
@@ -25,15 +25,6 @@
   "engines": {
     "sketch": ">=3.0"
   },
-  "skpm": {
-    "name": "sketch-ui-color-palette",
-    "manifest": "src/manifest.json",
-    "main": "sketch-ui-color-palette.sketchplugin",
-    "assets": [
-      "assets/**/*"
-    ],
-    "sketch-assets-file": "sketch-assets/icons.sketch"
-  },
   "scripts": {
     "init:submodules": "cd packages/ui-ui-color-palette && git submodule update --init --recursive",
     "install:ext": "npm install --workspaces && npm install --workspace=packages/ui-ui-color-palette/packages/auth-yelbolt --workspaces && npm install --prefix packages/ui-ui-color-palette/packages/auth-yelbolt/ui-color-palette",
@@ -41,26 +32,19 @@
     "update:unoff": "npm i @unoff/ui@latest @unoff/utils@latest",
     "update:uicp": "npm i @yelbolt/engine-ui-color-palette@latest",
     "start:ext": "npm run start:ext -w ui-ui-color-palette",
-    "start:dev": "skpm-build --watch",
-    "build": "cross-env NODE_ENV=development skpm-build",
-    "build:prod": "cross-env NODE_ENV=production skpm-build",
-    "watch": "skpm-build --watch",
+    "start:dev": "npm run build & npm run hotreload",
+    "build": "node scripts/copy-sketch-bundle.mjs && cross-env npx vite build --mode development & cross-env IS_PLUGIN=true npx vite build --mode development",
+    "build:prod": "node scripts/copy-sketch-bundle.mjs && cross-env npx vite build --mode production && cross-env IS_PLUGIN=true npx vite build --mode production",
     "hotreload": "find ./sketch-ui-color-palette.sketchplugin -name '*js' | entr -r /Applications/Sketch.app/Contents/MacOS/Sketch",
     "typecheck": "npx tsc --noEmit",
-    "lint": "npx eslint ./src ./resources --fix --ext .js,.ts,.tsx .",
+    "lint": "npx eslint ./src ./resources --fix --ext .js,.jsx,.ts,.tsx .",
     "format": "npx prettier './src' './resources' --write",
-    "log": "skpm log"
+    "log": "tail -f ~/Library/Logs/com.bohemiancoding.sketch3/'Plugin Output.log'"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.0",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
-    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
-    "@babel/plugin-transform-class-properties": "^7.28.6",
-    "@babel/preset-env": "^7.28.0",
-    "@sentry/webpack-plugin": "^4.0.0",
+    "@preact/preset-vite": "^2.10.1",
+    "@sentry/vite-plugin": "^3.3.1",
     "@sketch-hq/sketch-file-format-ts": "^6.5.0",
-    "@skpm/builder": "^0.7.4",
-    "@skpm/extract-loader": "^2.0.2",
     "@types/chroma-js": "^3.1.1",
     "@types/file-saver": "^2.0.5",
     "@types/mixpanel-browser": "^2.66.0",
@@ -71,27 +55,17 @@
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "cross-env": "^10.0.0",
-    "css-loader": "^3.2.0",
-    "dotenv": "^17.2.0",
-    "dotenv-webpack": "^8.1.1",
     "eslint": "^8.57.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-react": "^7.25.3",
-    "file-loader": "^4.3.0",
-    "html-loader": "^0.5.5",
     "prettier": "^3.2.5",
     "prettier-plugin-css-order": "^2.1.2",
     "sketch-app-types": "^0.1.1",
-    "style-loader": "^1.3.0",
-    "ts-loader": "^8.4.0",
     "typescript": "^5.4.3",
-    "url-loader": "^4.1.1"
+    "vite": "^6.2.5",
+    "vite-plugin-css-injected-by-js": "^3.5.2"
   },
-  "resources": [
-    "resources/**/*.js"
-  ],
   "dependencies": {
-    "@babel/preset-react": "^7.27.1",
     "@babel/runtime": "^7.27.6",
     "@mistralai/mistralai": "^1.10.0",
     "@nanostores/preact": "^0.5.2",
@@ -99,9 +73,9 @@
     "@supabase/supabase-js": "^2.44.2",
     "@tolgee/format-icu": "^6.2.7",
     "@tolgee/react": "^6.2.7",
-    "@unoff/ui": "^1.24.5",
+    "@unoff/ui": "^1.25.1",
     "@unoff/utils": "^0.8.2",
-    "@yelbolt/engine-ui-color-palette": "^1.10.2",
+    "@yelbolt/engine-ui-color-palette": "^1.12.1",
     "chroma-js": "^3.1.2",
     "color-names": "^2.0.0",
     "fflate": "^0.8.2",

@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
-import React from 'react'
 import mixpanel from 'mixpanel-browser'
+import { commons, sketchColors, sketchTypes } from '@unoff/ui'
 import App from '@ui-lib/ui/App'
 import { initTolgee } from '@ui-lib/external/translation'
 import { initPolar } from '@ui-lib/external/transactional'
@@ -171,6 +171,11 @@ window.addEventListener('pluginMessage', (event) => {
   const { message } = event.detail
   window.postMessage(message.pluginMessage.type, message.pluginMessage)
 })
+
+// Sketch Theme
+void commons
+void sketchColors
+void sketchTypes
 
 // Render
 tolgee?.run().then(() => {

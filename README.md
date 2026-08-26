@@ -50,13 +50,11 @@ To view the output of your `console.log`, you have a few different options:
 - Open `Console.app` and look for the sketch logs
 - Look at the `~/Library/Logs/com.bohemiancoding.sketch3/Plugin Output.log` file
 
-Skpm provides a convenient way to do the latter:
+`npm run log` tails the latter for you:
 
 ```bash
-skpm log
+npm run log
 ```
-
-The `-f` option causes `skpm log` to not stop when the end of logs is reached, but rather to wait for additional data to be appended to the input
 
 ---
 

@@ -6,8 +6,8 @@ const isDev = process.env.NODE_ENV === 'development'
 const globalConfig: Config = {
   limits: {
     pageSize: 20,
-    width: 640,
-    height: 640,
+    width: 800,
+    height: 600,
     minWidth: 420,
     minHeight: 420,
     sourceColors: 5,
@@ -21,6 +21,7 @@ const globalConfig: Config = {
     ui: 'sketch',
     colorMode: 'sketch-dark',
     isDev,
+    isEmbed: false,
     isSupabaseEnabled: true,
     isMixpanelEnabled: true,
     isSentryEnabled: true,
@@ -93,7 +94,7 @@ const globalConfig: Config = {
     userConsentVersion: '2025.09',
     trialVersion: '2024.03',
     algorithmVersion: 'v3',
-    paletteVersion: '2025.06',
+    paletteVersion: '2026.08',
     pluginVersion: process.env.npm_package_version as string,
     creditsVersion: '2026.05',
   },
@@ -162,10 +163,10 @@ const globalConfig: Config = {
     ],
     [
       'INVOLVE_COMMUNITY',
-      'USER_LANGUAGE_JA_JP',
-      'USER_LANGUAGE_KO_KR',
-      'USER_LANGUAGE_ES_ES',
-      'USER_LANGUAGE',
+      'SCALE_CHROMA',
+      'SCALE_HUE',
+      'COLORS_CHROMA_SHIFTING',
+      'COLORS_HUE_SHIFTING',
     ]
   ),
   lang: 'en-US',

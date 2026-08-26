@@ -6,7 +6,8 @@
     "resources/**/*.js",
     "resources/**/*.ts",
     "resources/**/*.tsx",
-    "webpack.skpm.config.js",
+    "vite.config.ts",
+    "vite/**/*.ts",
     "env.d.ts"
   ],
   "compilerOptions": {
