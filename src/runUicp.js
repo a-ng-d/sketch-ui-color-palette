@@ -513,6 +513,7 @@ export default function () {
         type: 'GET_PRICING',
         data: {
           licenseTrigger: 'ACTIVATE',
+          origin: origin ?? 'UNKNOWN',
         },
       })})`
     )

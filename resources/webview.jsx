@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import mixpanel from 'mixpanel-browser'
-import { commons, sketchColors, sketchTypes } from '@unoff/ui'
+import { commons, sketchModes, sketchTypes } from '@unoff/ui'
 import App from '@ui-lib/ui/App'
 import { initTolgee } from '@ui-lib/external/translation'
 import { initPolar } from '@ui-lib/external/transactional'
@@ -174,7 +174,7 @@ window.addEventListener('pluginMessage', (event) => {
 
 // Sketch Theme
 void commons
-void sketchColors
+void sketchModes
 void sketchTypes
 
 // Render

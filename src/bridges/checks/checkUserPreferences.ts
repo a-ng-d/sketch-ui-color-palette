@@ -18,10 +18,12 @@ const checkUserPreferences = async () => {
     'is_suggested_language_displayed'
   )
   let userLanguage = Settings.settingForKey('user_language')
+  let isOnboardingRead = Settings.settingForKey('is_onboarding_read')
+  let palettesView = Settings.settingForKey('palettes_view')
 
   if (isWCAGDisplayed === undefined) {
-    Settings.setSettingForKey('is_wcag_displayed', true)
-    isWCAGDisplayed = true
+    Settings.setSettingForKey('is_wcag_displayed', false)
+    isWCAGDisplayed = false
   }
 
   if (isAPCADisplayed === undefined) {
@@ -59,6 +61,16 @@ const checkUserPreferences = async () => {
     userLanguage = globalConfig.lang
   }
 
+  if (isOnboardingRead === undefined) {
+    Settings.setSettingForKey('is_onboarding_read', false)
+    isOnboardingRead = false
+  }
+
+  if (palettesView === undefined) {
+    Settings.setSettingForKey('palettes_view', 'LIST')
+    palettesView = 'LIST'
+  }
+
   tolgee.changeLanguage(userLanguage)
 
   getWebContents().executeJavaScript(
@@ -73,6 +85,8 @@ const checkUserPreferences = async () => {
         canDeepSyncVariables: canDeepSyncVariables,
         isSuggestedLanguageDisplayed: isSuggestedLanguageDisplayed,
         userLanguage: userLanguage,
+        isOnboardingRead: isOnboardingRead,
+        palettesView: palettesView,
       },
     })})`
   )

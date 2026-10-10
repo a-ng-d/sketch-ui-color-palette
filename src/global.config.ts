@@ -13,7 +13,7 @@ const globalConfig: Config = {
     sourceColors: 5,
     customStops: 6,
     colorThemes: 2,
-    localPalettes: 3,
+    localPalettes: 2,
   },
   env: {
     platform: 'sketch',
@@ -109,10 +109,12 @@ const globalConfig: Config = {
       'VIEWS_PALETTE',
       'VIEWS_PALETTE_WITH_PROPERTIES',
       'VIEWS_SHEET',
+      'HELP_ONBOARDING_AUTO_DISPLAY',
     ],
     [
       'CREATE_PALETTE',
       'LOCAL_PALETTES',
+      'SIMULATE_PALETTE',
       'DOCUMENT_CREATE',
       'SYNC_LOCAL_STYLES',
       'SYNC_LOCAL_VARIABLES',
@@ -143,6 +145,11 @@ const globalConfig: Config = {
       'PRESETS_FLUENT',
       'PRESETS_POLARIS',
       'PRESETS_CUSTOM_ADD',
+      'SCALE_CHROMA',
+      'SCALE_HUE',
+      'COLORS_CHROMA_SHIFTING',
+      'COLORS_HUE_SHIFTING',
+      'PREVIEW_LOCK_SOURCE_COLORS',
       'COLORS_ADD',
       'THEMES_ADD',
       'EXPORT_TOKENS_DTCG',
@@ -161,13 +168,7 @@ const globalConfig: Config = {
       'REPORT',
       'HELP_EMAIL',
     ],
-    [
-      'INVOLVE_COMMUNITY',
-      'SCALE_CHROMA',
-      'SCALE_HUE',
-      'COLORS_CHROMA_SHIFTING',
-      'COLORS_HUE_SHIFTING',
-    ]
+    ['INVOLVE_COMMUNITY']
   ),
   lang: 'en-US',
   fees: {
