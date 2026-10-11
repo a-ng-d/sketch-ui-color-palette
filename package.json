@@ -73,6 +73,7 @@
     "ui-ui-color-palette": "*"
   },
   "overrides": {
+    "@unoff/utils": "^0.9.0",
     "prismjs": "^1.30.0"
   },
   "allowScripts": {
