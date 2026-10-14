@@ -10,6 +10,24 @@ import {
   webviewHtmlPathPlugin,
 } from './vite/sketchCommandPlugin'
 
+const onlyOwnPlatformTokens = () => {
+  const otherTokens =
+    /assets\/styles\/tokens\/modules\/(figma|penpot|framer|yelbolt)-[a-z]+\.css$/
+  const emptyModule = '\0only-sketch-tokens:empty'
+
+  return {
+    name: 'only-sketch-tokens',
+    enforce: 'pre' as const,
+    resolveId(source: string) {
+      if (otherTokens.test(source.split('?')[0])) return emptyModule
+    },
+    load(id: string) {
+      if (id === emptyModule) return 'export default ""'
+      if (otherTokens.test(id.split('?')[0])) return ''
+    },
+  }
+}
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const isDev = mode === 'development'
@@ -39,6 +57,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       preact(),
+      onlyOwnPlatformTokens(),
       cssInjectedByJsPlugin(),
       isPlugin &&
         webviewHtmlPathPlugin(
