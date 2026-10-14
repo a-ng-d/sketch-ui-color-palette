@@ -26,6 +26,7 @@ import processSelection from './bridges/gets/processSelection.ts'
 import jumpToPalette from './bridges/gets/jumpToPalette.ts'
 import getPalettesOnCurrentFile from './bridges/gets/getPalettesOnCurrentFile.ts'
 import deletePalette from './bridges/deletions/deletePalette.ts'
+import createSimulation from './bridges/creations/createSimulation.ts'
 import createPaletteFromRemote from './bridges/creations/createPaletteFromRemote.ts'
 import createPaletteFromDuplication from './bridges/creations/createPaletteFromDuplication.ts'
 import createPaletteFromDocument from './bridges/creations/createPaletteFromDocument.ts'
@@ -89,6 +90,9 @@ export default function () {
       devTools: true,
     },
     hidesOnDeactivate: false,
+    // After a selection on the canvas, the panel is not the key window: without
+    // this, the first click only activates it and never reaches the page
+    acceptsFirstMouse: true,
   }
 
   const browserWindow = new BrowserWindow(options)
@@ -277,6 +281,45 @@ export default function () {
   )
   webContents.on('CREATE_DOCUMENT', (msg) =>
     createDocument(msg.id, msg.view)
+      .finally(() =>
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: 'STOP_LOADER',
+          })})`
+        )
+      )
+      .catch((error) => {
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: 'REPORT_ERROR',
+            data: error,
+          })})`
+        )
+        webContents.executeJavaScript(
+          `sendData(${JSON.stringify({
+            type: 'POST_MESSAGE',
+            data: {
+              type: 'ERROR',
+              message: error.message,
+            },
+          })})`
+        )
+      })
+  )
+  webContents.on('SIMULATE_PALETTE', (msg) =>
+    createSimulation(msg.id)
+      .then((message) => {
+        if (message !== undefined)
+          webContents.executeJavaScript(
+            `sendData(${JSON.stringify({
+              type: 'POST_MESSAGE',
+              data: {
+                type: message.type,
+                message: message.message,
+              },
+            })})`
+          )
+      })
       .finally(() =>
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({
@@ -507,12 +550,13 @@ export default function () {
       })})`
     )
   })
-  webContents.on('GET_PRO', () => {
+  webContents.on('GET_PRO', (msg) => {
     webContents.executeJavaScript(
       `sendData(${JSON.stringify({
         type: 'GET_PRICING',
         data: {
-          licenseTrigger: 'ACTIVATE',
+          licenseTrigger: { type: 'ACTIVATE' },
+          origin: msg?.data?.origin ?? 'UNKNOWN',
         },
       })})`
     )

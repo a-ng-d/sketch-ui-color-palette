@@ -94,7 +94,7 @@ const updateLocalStyles = async (id: string) => {
             j++
           }
 
-          j > 0 ? i++ : i
+          if (j > 0) i++
           j = 0
         }
       })

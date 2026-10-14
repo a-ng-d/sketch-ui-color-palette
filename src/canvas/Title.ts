@@ -56,6 +56,7 @@ export default class Title {
       const nsimage = NSImage.alloc().initWithContentsOfURL(nsurl)
       return nsimage || null
     } catch (e) {
+      console.error('Failed to load image from URL:', e)
       return null
     }
   }
