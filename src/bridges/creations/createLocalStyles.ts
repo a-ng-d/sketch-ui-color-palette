@@ -22,11 +22,11 @@ const createLocalStyles = async (id: string) => {
     (item) => !item.id.includes('00000000000')
   )
 
+  let i = 0
+
   const createdLocalStylesStatusMessage = await Promise.all(
     Document.sharedLayerStyles
   ).then((localStyles) => {
-    let i = 0
-
     palette.libraryData
       .filter((item) => {
         return hasThemes
@@ -81,7 +81,7 @@ const createLocalStyles = async (id: string) => {
     return tolgee.t('info.createdLocalStyles', { count: i })
   })
 
-  return createdLocalStylesStatusMessage
+  return { message: createdLocalStylesStatusMessage, count: i }
 }
 
 export default createLocalStyles

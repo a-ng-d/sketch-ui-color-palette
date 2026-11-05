@@ -7,6 +7,7 @@ import {
   HexModel,
   SourceColorConfiguration,
 } from '@yelbolt/engine-ui-color-palette'
+import { countSimulableLayers } from '../creations/createSimulation'
 import { getWebContents } from '../../utils/webContents'
 
 export let currentSelection: Array<any> = []
@@ -23,6 +24,13 @@ const processSelection = (webContents?: any) => {
 
   const selection: Array<any> = Document.selectedLayers.layers
   currentSelection = Document.selectedLayers
+
+  sharedWebContents.executeJavaScript(
+    `sendData(${JSON.stringify({
+      type: 'SELECTION_MEASURED',
+      data: { layers: countSimulableLayers(selection) },
+    })})`
+  )
 
   const viableSelection: Array<SourceColorConfiguration> = []
 

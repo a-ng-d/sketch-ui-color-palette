@@ -6,6 +6,21 @@ const addHours = (date: Date, hours: number) => {
   return new Date(date.getTime() + hours * 60 * 60 * 1000)
 }
 
+// Calendar month addition, clamping day overflow (Jan 31 + 1 month = Feb 28/29)
+const addMonths = (date: Date, months: number) => {
+  const result = new Date(date.getTime())
+  const day = result.getDate()
+  result.setDate(1)
+  result.setMonth(result.getMonth() + months)
+  const lastDay = new Date(
+    result.getFullYear(),
+    result.getMonth() + 1,
+    0
+  ).getDate()
+  result.setDate(Math.min(day, lastDay))
+  return result
+}
+
 const checkCredits = async () => {
   let creditsCount = Settings.settingForKey('credits_count')
   let renewDate = Settings.settingForKey('credits_renew_date')
@@ -13,19 +28,25 @@ const checkCredits = async () => {
 
   const now = new Date()
 
+  const periodMonths = globalConfig.plan.creditsRenewalPeriodMonths
   const periodHours =
     globalConfig.plan.creditsRenewalPeriodHours ??
     globalConfig.plan.creditsRenewalPeriodDays * 24
 
+  const computeNext = (from: Date) =>
+    periodMonths !== undefined
+      ? addMonths(from, periodMonths)
+      : addHours(from, periodHours)
+
   if (renewDate === undefined) {
-    const next = addHours(now, periodHours)
+    const next = computeNext(now)
     Settings.setSettingForKey('credits_renew_date', next.getTime())
     renewDate = next.getTime()
   }
 
   if (renewDate <= now.getTime()) {
     Settings.setSettingForKey('credits_count', globalConfig.plan.creditsLimit)
-    const next = addHours(now, periodHours)
+    const next = computeNext(now)
     Settings.setSettingForKey('credits_renew_date', next.getTime())
     creditsCount = globalConfig.plan.creditsLimit
   }
@@ -44,7 +65,7 @@ const checkCredits = async () => {
       'credits_count',
       globalConfig.plan.creditsLimit.toString()
     )
-    const next = addHours(now, periodHours)
+    const next = computeNext(now)
     Settings.setSettingForKey('credits_renew_date', next.getTime())
     creditsCount = globalConfig.plan.creditsLimit
     renewDate = next.getTime()
