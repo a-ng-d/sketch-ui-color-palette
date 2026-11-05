@@ -5,6 +5,7 @@ import {
   FullConfiguration,
   ViewConfiguration,
 } from '@yelbolt/engine-ui-color-palette'
+import { makeDocumentPairs } from '../../utils/usage'
 import scheduleSaveDocument from '../../utils/scheduleSaveDocument'
 import { tolgee } from '../../runUicp'
 import Documents from '../../canvas/Documents'
@@ -20,10 +21,11 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
 
   if (palette === undefined) throw new Error(tolgee.t('error.unfoundPalette'))
 
+  const data = new Data(palette).makePaletteData()
   const documents = new Documents({
     base: palette.base,
     themes: palette.themes,
-    data: new Data(palette).makePaletteData(),
+    data,
     meta: palette.meta,
     view: view,
   })
@@ -35,7 +37,7 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
   Document.centerOnLayer(documents.documents)
   scheduleSaveDocument(Document)
 
-  return palette
+  return { palette, pairs: makeDocumentPairs(data.themes) }
 }
 
 export default createDocument
