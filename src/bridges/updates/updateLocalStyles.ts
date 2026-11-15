@@ -23,6 +23,8 @@ const updateLocalStyles = async (id: string) => {
     (item) => !item.id.includes('00000000000')
   )
 
+  let count = 0
+
   const updatedLocalStylesStatusMessage = await Promise.all(
     Document.sharedLayerStyles
   ).then((localStyles) => {
@@ -99,6 +101,8 @@ const updateLocalStyles = async (id: string) => {
         }
       })
 
+    count = i + k
+
     scheduleSaveDocument(Document)
 
     messages.push(tolgee.t('info.updatedLocalStyles', { count: i }))
@@ -107,7 +111,7 @@ const updateLocalStyles = async (id: string) => {
     return messages.join(tolgee.t('separator'))
   })
 
-  return updatedLocalStylesStatusMessage
+  return { message: updatedLocalStylesStatusMessage, count }
 }
 
 export default updateLocalStyles

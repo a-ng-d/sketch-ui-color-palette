@@ -24,6 +24,8 @@ const updateLocalVariables = async (id: string) => {
     (item) => !item.id.includes('00000000000')
   )
 
+  let count = 0
+
   const updatedLocalVariablesStatusMessage = await Promise.all(
     Document.swatches
   ).then((localVariables) => {
@@ -116,6 +118,8 @@ const updateLocalVariables = async (id: string) => {
         }
       })
 
+    count = i + k
+
     scheduleSaveDocument(Document)
 
     messages.push(tolgee.t('info.updatedLocalVariables', { count: i }))
@@ -124,7 +128,7 @@ const updateLocalVariables = async (id: string) => {
     return messages.join(tolgee.t('separator'))
   })
 
-  return updatedLocalVariablesStatusMessage
+  return { message: updatedLocalVariablesStatusMessage, count }
 }
 
 export default updateLocalVariables

@@ -206,36 +206,88 @@ const remapShadows = (
   return hasChanged ? shadows : null
 }
 
-const remapLayer = (layer: any, match: (value: string) => string) => {
+const remapLayer = (layer: any, match: (value: string) => string): boolean => {
   const style = layer.style
-  if (style === undefined || style === null) return
+  if (style === undefined || style === null) return false
+
+  let hasChanged = false
 
   const fills = remapPaints(style.fills, match)
-  if (fills !== null) style.fills = fills
+  if (fills !== null) {
+    style.fills = fills
+    hasChanged = true
+  }
 
   const borders = remapPaints(style.borders, match)
-  if (borders !== null) style.borders = borders
+  if (borders !== null) {
+    style.borders = borders
+    hasChanged = true
+  }
 
   const shadows = remapShadows(style.shadows, match)
-  if (shadows !== null) style.shadows = shadows
+  if (shadows !== null) {
+    style.shadows = shadows
+    hasChanged = true
+  }
 
   const innerShadows = remapShadows(style.innerShadows, match)
-  if (innerShadows !== null) style.innerShadows = innerShadows
+  if (innerShadows !== null) {
+    style.innerShadows = innerShadows
+    hasChanged = true
+  }
 
   if (layer.type === 'Text' && typeof style.textColor === 'string') {
     const textColor = match(style.textColor)
-    if (textColor !== style.textColor) style.textColor = textColor
+    if (textColor !== style.textColor) {
+      style.textColor = textColor
+      hasChanged = true
+    }
   }
+
+  return hasChanged
 }
 
-const simulateLayer = (layer: any, match: (value: string) => string) => {
-  if (layer.hidden === true || layer.locked === true) return
+const simulateLayer = (
+  layer: any,
+  match: (value: string) => string
+): number => {
+  if (layer.hidden === true || layer.locked === true) return 0
 
-  remapLayer(layer, match)
+  let changed = remapLayer(layer, match) ? 1 : 0
 
   if (Array.isArray(layer.layers))
-    layer.layers.forEach((child: any) => simulateLayer(child, match))
+    layer.layers.forEach((child: any) => {
+      changed += simulateLayer(child, match)
+    })
+
+  return changed
 }
+
+const hasRecolorableColor = (layer: any): boolean => {
+  const style = layer.style
+  if (style === undefined || style === null) return false
+
+  const hasColor = (items: Array<any> | undefined) =>
+    Array.isArray(items) && items.some((item) => typeof item.color === 'string')
+
+  return (
+    hasColor(style.fills) ||
+    hasColor(style.borders) ||
+    hasColor(style.shadows) ||
+    hasColor(style.innerShadows) ||
+    (layer.type === 'Text' && typeof style.textColor === 'string')
+  )
+}
+
+export const countSimulableLayers = (layers: Array<any>): number =>
+  layers.reduce((total: number, layer: any) => {
+    if (layer.hidden === true || layer.locked === true) return total
+    return (
+      total +
+      (hasRecolorableColor(layer) ? 1 : 0) +
+      (Array.isArray(layer.layers) ? countSimulableLayers(layer.layers) : 0)
+    )
+  }, 0)
 
 const createSimulation = async (id: string) => {
   const Document = Dom.getSelectedDocument()
@@ -249,15 +301,23 @@ const createSimulation = async (id: string) => {
   const selection: Array<any> = Document.selectedLayers.layers
   if (selection.length === 0)
     return {
-      type: 'WARNING' as const,
-      message: tolgee.t('warning.emptySelection'),
+      notice: {
+        type: 'WARNING' as const,
+        message: tolgee.t('warning.emptySelection'),
+      },
+      layers: undefined,
     }
 
   const matcher = createPaletteMatcher(palette)
 
   if (matcher === null) throw new Error(tolgee.t('error.unfoundPalette'))
 
-  selection.forEach((layer) => simulateLayer(layer, matcher.color))
+  const layers = selection.reduce(
+    (total: number, layer) => total + simulateLayer(layer, matcher.color),
+    0
+  )
+
+  return { notice: undefined, layers }
 }
 
 export default createSimulation

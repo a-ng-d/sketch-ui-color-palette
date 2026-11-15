@@ -8,6 +8,7 @@ import {
   ViewConfiguration,
 } from '@yelbolt/engine-ui-color-palette'
 import { getWebContents } from '../../utils/webContents'
+import { makeDocumentPairs } from '../../utils/usage'
 import setPaletteName from '../../utils/setPaletteName'
 import scheduleSaveDocument from '../../utils/scheduleSaveDocument'
 import { tolgee } from '../../runUicp'
@@ -92,7 +93,7 @@ const updateDocument = async (view: ViewConfiguration) => {
 
   scheduleSaveDocument(Document)
 
-  return palette
+  return { palette, pairs: makeDocumentPairs([themeData]) }
 }
 
 export default updateDocument

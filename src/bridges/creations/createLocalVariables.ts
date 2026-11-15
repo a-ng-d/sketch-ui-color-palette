@@ -22,11 +22,11 @@ const createLocalVariables = async (id: string) => {
     (item) => !item.id.includes('00000000000')
   )
 
+  let i = 0
+
   const createdLocalVariablesStatusMessage = await Promise.all(
     Document.swatches
   ).then((localVariables) => {
-    let i = 0
-
     palette.libraryData
       .filter((item) => {
         return hasThemes
@@ -80,7 +80,7 @@ const createLocalVariables = async (id: string) => {
     return tolgee.t('info.createdLocalVariables', { count: i })
   })
 
-  return createdLocalVariablesStatusMessage
+  return { message: createdLocalVariablesStatusMessage, count: i }
 }
 
 export default createLocalVariables

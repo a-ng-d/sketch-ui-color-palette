@@ -11,6 +11,7 @@ import es_ES from '@ui-lib/content/translations/es-ES.json'
 import en_US from '@ui-lib/content/translations/en-US.json'
 import webviewHtmlUrl from '../resources/webview.html'
 import { setWebContents } from './utils/webContents.ts'
+import { postUsageReport } from './utils/usage.ts'
 import { createI18n } from './utils/i18n.ts'
 import globalConfig from './global.config.ts'
 import updateThemes from './bridges/updates/updateThemes.ts'
@@ -165,6 +166,9 @@ export default function () {
   )
   webContents.on('UPDATE_DOCUMENT', (msg) =>
     updateDocument(msg.view)
+      .then(({ pairs }) =>
+        postUsageReport('UPDATE_DOCUMENT', { color: pairs.size })
+      )
       .finally(() =>
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({
@@ -281,6 +285,9 @@ export default function () {
   )
   webContents.on('CREATE_DOCUMENT', (msg) =>
     createDocument(msg.id, msg.view)
+      .then(({ pairs }) =>
+        postUsageReport('CREATE_DOCUMENT', { color: pairs.size })
+      )
       .finally(() =>
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({
@@ -308,17 +315,19 @@ export default function () {
   )
   webContents.on('SIMULATE_PALETTE', (msg) =>
     createSimulation(msg.id)
-      .then((message) => {
-        if (message !== undefined)
+      .then(({ notice, layers }) => {
+        if (notice !== undefined)
           webContents.executeJavaScript(
             `sendData(${JSON.stringify({
               type: 'POST_MESSAGE',
               data: {
-                type: message.type,
-                message: message.message,
+                type: notice.type,
+                message: notice.message,
               },
             })})`
           )
+        if (layers !== undefined)
+          postUsageReport('SIMULATE_PALETTE', { layer: layers })
       })
       .finally(() =>
         webContents.executeJavaScript(
@@ -347,19 +356,27 @@ export default function () {
   )
   webContents.on('SYNC_LOCAL_STYLES', (msg) =>
     createLocalStyles(msg.id)
-      .then(async (message) => [message, await updateLocalStyles(msg.id)])
-      .then((messages) =>
+      .then(async (created) => ({
+        created,
+        updated: await updateLocalStyles(msg.id),
+      }))
+      .then(({ created, updated }) => {
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({
             type: 'POST_MESSAGE',
             data: {
               type: 'INFO',
-              message: messages.join(tolgee.t('separator')),
+              message: [created.message, updated.message].join(
+                tolgee.t('separator')
+              ),
               timer: 10000,
             },
           })})`
         )
-      )
+        postUsageReport('SYNC_LOCAL_STYLES', {
+          style: created.count + updated.count,
+        })
+      })
       .finally(() =>
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({
@@ -387,19 +404,27 @@ export default function () {
   )
   webContents.on('SYNC_LOCAL_VARIABLES', (msg) =>
     createLocalVariables(msg.id)
-      .then(async (message) => [message, await updateLocalVariables(msg.id)])
-      .then((messages) =>
+      .then(async (created) => ({
+        created,
+        updated: await updateLocalVariables(msg.id),
+      }))
+      .then(({ created, updated }) => {
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({
             type: 'POST_MESSAGE',
             data: {
               type: 'INFO',
-              message: messages.join(tolgee.t('separator')),
+              message: [created.message, updated.message].join(
+                tolgee.t('separator')
+              ),
               timer: 10000,
             },
           })})`
         )
-      )
+        postUsageReport('SYNC_LOCAL_VARIABLES', {
+          variable: created.count + updated.count,
+        })
+      })
       .finally(() =>
         webContents.executeJavaScript(
           `sendData(${JSON.stringify({
