@@ -6,7 +6,6 @@ const addHours = (date: Date, hours: number) => {
   return new Date(date.getTime() + hours * 60 * 60 * 1000)
 }
 
-// Calendar month addition, clamping day overflow (Jan 31 + 1 month = Feb 28/29)
 const addMonths = (date: Date, months: number) => {
   const result = new Date(date.getTime())
   const day = result.getDate()

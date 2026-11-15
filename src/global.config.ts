@@ -125,6 +125,7 @@ const globalConfig: Config = {
       'VIEWS_SHEET',
       'USER_THEME',
       'HELP_ONBOARDING_AUTO_DISPLAY',
+      'PRICING_ULTIMATE',
     ],
     [
       'CREATE_PALETTE',
